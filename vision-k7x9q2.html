@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Jack O'Regan. Find your leak.</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:#fff;color:#111;line-height:1.45;-webkit-font-smoothing:antialiased}
+::selection{background:#0e6b45;color:#fff}
+.topline{height:6px;background:#0e6b45}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+a{color:inherit}
+.topbar{position:sticky;top:0;background:rgba(255,255,255,.97);backdrop-filter:blur(6px);border-bottom:1px solid #ececec;z-index:50}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:13px 0}
+.brand{font-weight:700;font-size:16px;letter-spacing:-.01em;cursor:pointer}
+.barlinks{display:flex;align-items:center;gap:16px}
+.navlink{font-weight:700;font-size:14px;text-decoration:none;color:#444}
+.navlink:hover{color:#0e6b45}
+.btn{display:inline-block;background:#0e6b45;color:#fff;text-decoration:none;font-weight:700;border-radius:4px;padding:16px 30px;font-size:17px;border:none;cursor:pointer;font-family:inherit}
+.btn:hover{background:#0a5636}
+.btn--sm{padding:9px 16px;font-size:14px}
+.btn--big{display:block;text-align:center;padding:19px 34px;font-size:19px}
+.btn--ghost{background:#fff;color:#111;border:2px solid #111;padding:14px 28px}
+.btn--ghost:hover{background:#111;color:#fff}
+.btn--gw{background:#fff;color:#0e6b45}
+.btn--gw:hover{background:#e4f2ea;color:#0e6b45}
+.screen{display:none}
+.screen.on{display:block}
+section{padding:64px 0;border-top:1px solid #ececec}
+.hero{border-top:none;padding:60px 0 56px}
+.pagepad{padding:40px 0 76px}
+.eyebrow,.label{font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#0e6b45;margin:0 0 12px}
+h1{font-size:clamp(46px,13vw,96px);line-height:.95;letter-spacing:-.035em;margin:0 0 16px}
+.position{font-size:clamp(21px,5.4vw,32px);font-weight:600;line-height:1.22;letter-spacing:-.015em;max-width:640px;margin:0}
+.proof{margin:44px 0 36px}
+.proof-num{font-size:clamp(58px,15vw,128px);font-weight:800;letter-spacing:-.045em;line-height:1;color:#0e6b45}
+.proof-line{font-size:clamp(18px,4.6vw,26px);font-weight:600;margin:10px 0 3px;letter-spacing:-.01em}
+.proof-sub{color:#6b6b66;font-size:16px;margin:0}
+.hero-note{color:#6b6b66;font-size:14.5px;margin:14px 0 0}
+h2{font-size:clamp(32px,8.4vw,56px);line-height:1;letter-spacing:-.03em;margin:0 0 28px}
+h2.tight{margin-bottom:14px}
+.sub{color:#444;font-size:17.5px;line-height:1.55;max-width:640px;margin:0 0 26px}
+.ladder{display:grid;gap:14px;grid-template-columns:1fr}
+.card{border:1.5px solid #d9d9d4;border-radius:6px;padding:28px 22px 24px;display:flex;flex-direction:column;gap:9px;background:#fff}
+.card--feature{border:2px solid #0e6b45;position:relative}
+.badge{position:absolute;top:-11px;left:20px;background:#0e6b45;color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:3px}
+.price{font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.card h3{font-size:21px;margin:0;letter-spacing:-.01em}
+.card p{margin:0;color:#444;font-size:16px;line-height:1.5}
+.proofline{color:#0e6b45;font-weight:700;font-size:15px}
+.card-cta{margin-top:auto;padding-top:14px}
+.card-cta .btn{display:block;text-align:center}
+.retainer{border:1.5px solid #d9d9d4;border-radius:6px;margin-top:16px;padding:26px 22px}
+.retainer-grid{display:grid;gap:22px;grid-template-columns:1fr}
+.retainer h3{margin:0 0 4px;font-size:18px;letter-spacing:-.01em}
+.rp{color:#0e6b45;font-weight:800}
+.retainer p{margin:0;color:#444;font-size:15.5px;line-height:1.5}
+.retainer-count{margin:22px 0 0;padding-top:18px;border-top:1px solid #ececec;color:#0e6b45;font-weight:700;font-size:16px}
+.stories{display:grid;gap:14px;grid-template-columns:1fr}
+.story{border:1.5px solid #d9d9d4;border-radius:6px;padding:24px 20px;display:flex;flex-direction:column}
+.found{color:#0e6b45;font-weight:800;font-size:29px;letter-spacing:-.02em}
+.story blockquote{margin:10px 0 14px;font-size:18px;font-weight:600;line-height:1.35;letter-spacing:-.01em}
+.who{color:#6b6b66;font-size:14.5px;margin-top:auto}
+.coach-card{background:#111;color:#fff;border-radius:8px;padding:36px 26px}
+.coach-card .label{color:#34c98e}
+.coach-card h2{color:#fff}
+.coach-body{color:#d8d8d2;font-size:17.5px;line-height:1.55;max-width:640px;margin:0 0 24px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{background:#0e6b45;color:#fff;font-weight:700;font-size:14.5px;padding:9px 14px;border-radius:4px}
+.chip--line{background:#fff;color:#0e6b45;border:2px solid #0e6b45}
+.steps{display:grid;gap:28px;grid-template-columns:1fr;margin-top:6px}
+.step{display:flex;gap:18px}
+.stepnum{color:#0e6b45;font-weight:800;font-size:42px;line-height:.9;min-width:52px;letter-spacing:-.03em}
+.step h3{margin:2px 0 6px;font-size:20px;letter-spacing:-.01em}
+.step p{margin:0;color:#444;font-size:16px;line-height:1.5}
+.about p{font-size:clamp(18px,4.8vw,22px);line-height:1.5;font-weight:500;max-width:720px;margin:0;letter-spacing:-.01em}
+.strip{background:#0e6b45;border-top:none;color:#fff;padding:60px 0}
+.strip .label{color:#bfe6d4}
+.strip h2{color:#fff;margin-bottom:14px}
+.strip p{color:#e4f2ea;font-size:17.5px;max-width:640px;margin:0 0 24px;line-height:1.5}
+.strip .chip{background:transparent;border:2px solid rgba(255,255,255,.85)}
+.chip--solid{background:#fff !important;color:#0e6b45 !important;border:none !important}
+.strip .btn--gw{margin-top:24px}
+.faq-list{border-bottom:1px solid #ececec}
+.faq-item{border-top:1px solid #ececec;padding:20px 0}
+.faq-q{font-weight:700;font-size:19px;margin:0;letter-spacing:-.01em}
+.faq-a{margin:8px 0 0;color:#444;font-size:16.5px;line-height:1.55;max-width:680px}
+.final{text-align:center;padding:88px 0}
+.final h2{margin-bottom:12px}
+.final .sub{margin:0 auto 30px;max-width:520px}
+footer{border-top:1px solid #ececec;padding:30px 0 56px;color:#8a8a84;font-size:14px}
+footer p{margin:4px 0}
+.vision{font-size:13px}
+.back{display:inline-block;color:#6b6b66;font-size:14px;text-decoration:none;margin:0 0 22px;font-weight:700}
+.back:hover{color:#111}
+.panel{border:1.5px solid #d9d9d4;border-radius:6px;padding:26px 22px;max-width:560px;background:#fff}
+.panel--green{border:2px solid #0e6b45}
+.panel h3{margin:0 0 8px;font-size:20px;letter-spacing:-.01em}
+.panel p{color:#444;font-size:16px;line-height:1.5;margin:0 0 14px}
+.field{margin:0 0 14px}
+.field label{display:block;font-size:13.5px;font-weight:700;margin:0 0 6px}
+input,select,textarea{width:100%;padding:13px 14px;border:1.5px solid #d9d9d4;border-radius:4px;font-family:inherit;font-size:16px;background:#fff;color:#111}
+input:focus,select:focus,textarea:focus{border-color:#0e6b45;outline:none}
+input.bad{border-color:#c0392b}
+textarea{min-height:96px;resize:vertical}
+.tiny{color:#8a8a84;font-size:13px;margin:10px 0 0}
+.progress{height:5px;background:#ececec;border-radius:3px;margin:0 0 26px;max-width:560px}
+.progress i{display:block;height:100%;background:#0e6b45;border-radius:3px;transition:width .2s}
+.qnum{color:#6b6b66;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:0 0 8px}
+.qtitle{font-size:clamp(24px,6.4vw,34px);font-weight:700;letter-spacing:-.02em;line-height:1.12;margin:0 0 22px;max-width:560px}
+.opt{display:block;width:100%;max-width:560px;text-align:left;background:#fff;border:1.5px solid #d9d9d4;border-radius:5px;padding:16px;font-family:inherit;font-size:16.5px;font-weight:600;margin:0 0 10px;cursor:pointer;color:#111}
+.opt:hover{border-color:#0e6b45}
+.bigeuro{font-size:clamp(52px,14vw,110px);font-weight:800;color:#0e6b45;letter-spacing:-.045em;line-height:1;margin:6px 0 4px}
+.slot{display:block;width:100%;max-width:560px;text-align:center;background:#fff;border:2px solid #111;border-radius:5px;padding:17px;font-family:inherit;font-size:17px;font-weight:700;margin:0 0 10px;cursor:pointer;color:#111}
+.slot:hover{background:#0e6b45;border-color:#0e6b45;color:#fff}
+.cover{background:#0e6b45;color:#fff;border-radius:6px 10px 10px 6px;border-left:8px solid #0a5636;padding:32px 24px;max-width:270px;aspect-ratio:5/7;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 18px 40px rgba(0,0,0,.18);margin:0 0 30px}
+.cover .ct{font-size:27px;font-weight:800;letter-spacing:-.01em;line-height:1.05}
+.cover .cs{font-size:14px;color:#cfe8db;margin-top:10px;line-height:1.4}
+.cover .ca{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.chapters{list-style:none;margin:0;padding:0;max-width:640px}
+.chapters li{border-top:1px solid #ececec;padding:15px 0;font-size:16.5px;color:#444;line-height:1.5}
+.chapters li b{color:#111}
+.chapters li:last-child{border-bottom:1px solid #ececec}
+.review{border:1.5px solid #d9d9d4;border-radius:6px;padding:20px;margin:0 0 12px;max-width:560px}
+.stars{color:#0e6b45;font-size:15px;letter-spacing:2px;margin:0 0 8px}
+.review p{margin:0 0 8px;font-size:16.5px;font-weight:600;line-height:1.4}
+.review .who{margin:0}
+.timeline{border-left:3px solid #0e6b45;margin:6px 0 0;padding:0 0 0 18px;list-style:none;max-width:600px}
+.timeline li{margin:0 0 18px}
+.timeline b{display:block;font-size:16.5px}
+.timeline span{color:#444;font-size:15.5px;line-height:1.5}
+.wall{color:#444;font-size:16.5px;line-height:1.8;max-width:640px}
+.wall b{color:#0e6b45}
+.secgap{margin-top:44px}
+.post-card{border:1.5px solid #d9d9d4;border-radius:10px;padding:20px;max-width:520px}
+.post-head{display:flex;align-items:center;gap:12px;margin:0 0 12px}
+.avatar{width:44px;height:44px;border-radius:50%;background:#0e6b45;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px}
+.post-name{font-weight:700;font-size:15.5px;line-height:1.2}
+.post-handle{color:#8a8a84;font-size:13.5px}
+.post-body{font-size:17px;line-height:1.45;margin:0 0 14px;font-weight:500}
+.post-meta{color:#8a8a84;font-size:13.5px;border-top:1px solid #ececec;padding-top:12px}
+.mapflow{max-width:560px}
+.mnode{display:block;width:100%;text-align:left;border:1.5px solid #d9d9d4;border-radius:6px;padding:15px 16px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;background:#fff;color:#111}
+.mnode small{display:block;font-weight:600;color:#6b6b66;font-size:13px;margin-top:3px;line-height:1.4}
+.mnode:hover{border-color:#0e6b45}
+.mnode--dash{border-style:dashed}
+.marrow{text-align:center;color:#0e6b45;font-size:20px;line-height:1;margin:7px 0;font-weight:700}
+.msplit{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pricebox{border:2px solid #0e6b45;border-radius:6px;padding:26px 22px;max-width:560px}
+.pricebox .price{color:#0e6b45;margin:0 0 10px}
+.bookpage{border:1.5px solid #d9d9d4;border-radius:6px;background:#fff;padding:26px 22px;max-width:680px;margin:0 0 18px;box-shadow:0 10px 26px rgba(0,0,0,.06)}
+.bookpage h3{font-size:clamp(22px,6vw,28px);font-weight:800;margin:0 0 14px;letter-spacing:-.015em;line-height:1.1}
+.leaknum{display:inline-block;background:#0e6b45;color:#fff;font-size:12.5px;font-weight:800;border-radius:3px;padding:5px 9px;vertical-align:middle;margin-right:10px}
+.blabel{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#0e6b45;margin:18px 0 6px}
+.bookpage p,.bookpage li{font-size:16px;line-height:1.55;color:#222;margin:0 0 10px}
+.bookpage ul{margin:0;padding-left:20px}
+.bbig{font-size:17.5px}
+.tells{font-style:italic;color:#444}
+.mathbox{border:1.5px solid #111;border-radius:4px;padding:14px 15px;margin:6px 0 12px;background:#f7f7f5;font-size:15.5px;line-height:1.7}
+.mathbox .ex{color:#555;font-size:13.5px;margin-top:8px;line-height:1.5}
+.blank{display:inline-block;min-width:64px;border-bottom:1.5px solid #111;vertical-align:bottom}
+.writeline{margin:12px 0 0;font-size:17px;font-weight:700;border-top:2px solid #0e6b45;padding-top:12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.writeline input{width:120px;padding:8px 10px;font-weight:700;font-size:17px}
+.rulebox{border-left:4px solid #0e6b45;background:#f2f7f4;padding:14px 16px;margin:16px 0 0;font-size:15.5px;line-height:1.55}
+.beffort{margin:10px 0 0;font-size:14px;color:#555}
+.beffort b{color:#111}
+.bfoot{margin:20px 0 0;padding-top:10px;border-top:1px solid #ececec;display:flex;justify-content:space-between;color:#999;font-size:12px;letter-spacing:.04em}
+.bcover{background:#0e6b45;color:#fff;border:none}
+.bcover .kicker{font-size:12px;letter-spacing:3px;text-transform:uppercase;opacity:.85}
+.bcover h3{font-size:clamp(34px,10vw,48px);line-height:1.05;margin:14px 0 16px;color:#fff}
+.bcover .promise{font-size:16.5px;line-height:1.5;color:#fff;opacity:.95}
+.bcover .byline{margin-top:40px;font-size:14px;color:#fff;opacity:.9;line-height:1.5}
+table.sb{width:100%;border-collapse:collapse;margin:6px 0 0}
+.sb th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#0e6b45;border-bottom:2px solid #0e6b45;text-align:left;padding:8px 4px}
+.sb td{border-bottom:1px solid #ddd;padding:11px 4px;font-size:15px}
+.sb td.num{text-align:right;font-weight:700;white-space:nowrap;color:#0e6b45}
+.dayrow{display:flex;gap:12px;margin:0 0 14px}
+.daychip{flex:0 0 62px;background:#0e6b45;color:#fff;border-radius:4px;font-weight:800;font-size:13.5px;display:flex;align-items:center;justify-content:center;min-height:44px}
+.ownedline{display:none;color:#0e6b45;font-weight:700;font-size:14.5px;margin:0 0 16px}
+@media (min-width:640px){
+.stories{grid-template-columns:1fr 1fr}
+.retainer-grid{grid-template-columns:1fr 1fr}
+}
+@media (min-width:960px){
+section{padding:88px 0}
+.ladder{grid-template-columns:1fr 1fr 1fr}
+.stories{grid-template-columns:repeat(3,1fr)}
+.steps{grid-template-columns:1fr 1fr}
+.btn--big{display:inline-block}
+.coach-card{padding:52px 48px}
+.bookhero{display:flex;gap:56px;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="topline"></div>
+<header class="topbar">
+<div class="wrap bar">
+<div class="brand" onclick="go('home')">jackoregan.com</div>
+<div class="barlinks">
+<a class="navlink" href="#map">Map</a>
+<a class="btn btn--sm" href="#quiz">Find your leak</a>
+</div>
+</div>
+</header>
+
+<!-- ============ HOME ============ -->
+<div class="screen" id="s-home">
+
+<section class="hero">
+<div class="wrap">
+<p class="eyebrow">Cork, Ireland. August 2027.</p>
+<h1>Jack O&rsquo;Regan</h1>
+<p class="position">I find where a business is leaking money, then fix it so it stays fixed.</p>
+<div class="proof">
+<div class="proof-num">&euro;214,000</div>
+<p class="proof-line">in leaks found for Cork businesses since 2026</p>
+<p class="proof-sub">across 61 paid assessments</p>
+</div>
+<a class="btn btn--big" href="#quiz">Find your leak</a>
+<p class="hero-note">Two minutes, free. Assessments are booked out three weeks, next open slots late August 2027.</p>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<p class="label">The ladder</p>
+<h2>Start where it suits you.</h2>
+<div class="ladder">
+<div class="card">
+<div class="price">Free</div>
+<h3>The Leak Finder</h3>
+<p>A two minute quiz. It points at where you&rsquo;re most likely leaking and roughly what it costs you a month.</p>
+<p class="proofline">Taken 3,214 times</p>
+<div class="card-cta"><a class="btn btn--ghost" href="#quiz">Take the quiz</a></div>
+</div>
+<div class="card">
+<div class="price">&euro;29</div>
+<h3>The DIY Leak Audit</h3>
+<p>The book. Ten leaks, the maths for each one, a 4 day plan. Plug the cheap ones yourself in about 20 minutes.</p>
+<p class="proofline">1,100+ copies sold. 4.8 stars.</p>
+<div class="card-cta"><a class="btn btn--ghost" href="#book">Get the book</a></div>
+</div>
+<div class="card card--feature">
+<span class="badge">Most booked</span>
+<div class="price">&euro;999</div>
+<h3>The Leak Assessment</h3>
+<p>Done for you. One morning inside your business, then a report with every leak priced in euro and the fix order that pays back fastest.</p>
+<p class="proofline">Booked three weeks out</p>
+<div class="card-cta"><a class="btn" href="#assessment">Book the assessment</a></div>
+</div>
+</div>
+<div class="retainer">
+<div class="retainer-grid">
+<div>
+<h3>Keep It Running <span class="rp">&euro;149 a month</span></h3>
+<p>I mind the systems after the fix so they stay fixed. Checked every month, not assumed.</p>
+</div>
+<div>
+<h3>AI Concierge <span class="rp">&euro;400 a month</span></h3>
+<p>Calls answered, quotes sent, diary filled, reviews asked for, while you&rsquo;re on the tools.</p>
+</div>
+</div>
+<p class="retainer-count">34 Cork businesses on retainer, August 2027.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<p class="label">Success stories</p>
+<h2>The ones who let me talk about it.</h2>
+<div class="stories">
+<div class="story">
+<div class="found">&euro;18,400 found</div>
+<blockquote>&ldquo;I was doing quotes at eleven at night. Not anymore.&rdquo;</blockquote>
+<p class="who">Denis, plumber, Douglas</p>
+</div>
+<div class="story">
+<div class="found">&euro;22,100 found</div>
+<blockquote>&ldquo;I thought I needed more lads. I needed to stop losing the jobs I already had.&rdquo;</blockquote>
+<p class="who">Niall, landscaper, Glanmire</p>
+</div>
+<div class="story">
+<div class="found">&euro;31,200 found</div>
+<blockquote>&ldquo;Forty missed calls a month. I never counted them till he did.&rdquo;</blockquote>
+<p class="who">Mick, electrician, Ballincollig</p>
+</div>
+<div class="story">
+<div class="found">&euro;12,750 found</div>
+<blockquote>&ldquo;Half my Saturday was chasing money owed. The invoices chase themselves now.&rdquo;</blockquote>
+<p class="who">Shane, tiler, Carrigaline</p>
+</div>
+<div class="story">
+<div class="found">&euro;26,300 found</div>
+<blockquote>&ldquo;We priced every job out of my head. My head was undercharging by a fifth.&rdquo;</blockquote>
+<p class="who">Aoife, cleaning company, Midleton</p>
+</div>
+<div class="story">
+<div class="found">&euro;15,600 found</div>
+<blockquote>&ldquo;Fellas booked in and half never showed. Now they leave a deposit or they don&rsquo;t get the slot.&rdquo;</blockquote>
+<p class="who">John, garage, Mallow</p>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<div class="coach-card">
+<p class="label">The coach case study</p>
+<h2>The one that started it.</h2>
+<p class="coach-body">Before the trades there were online coaches. One came to me having never booked a single sales call through his own funnel. Not one, ever. We rebuilt the follow up, put an application in front of the diary, and worked every lead the day it landed. Ninety days later the same funnel had collected &euro;25,000. That method is what the trades get now.</p>
+<div class="chips">
+<span class="chip">0 booked calls before</span>
+<span class="chip">&euro;2.83 a lead</span>
+<span class="chip">&euro;25,000 in 90 days</span>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<p class="label">How it works</p>
+<h2>Four steps. No mystery.</h2>
+<div class="steps">
+<div class="step">
+<div class="stepnum">1</div>
+<div>
+<h3>The quiz</h3>
+<p>Two minutes. It points at where you&rsquo;re leaking and whether it&rsquo;s worth a call.</p>
+</div>
+</div>
+<div class="step">
+<div class="stepnum">2</div>
+<div>
+<h3>The book or the call</h3>
+<p>&euro;29 to hunt it yourself with the book. &euro;999 and I come in and do it with you.</p>
+</div>
+</div>
+<div class="step">
+<div class="stepnum">3</div>
+<div>
+<h3>The report, in your numbers</h3>
+<p>No industry averages. Every leak priced in euro from your own jobs, biggest first, fix cost beside it.</p>
+</div>
+</div>
+<div class="step">
+<div class="stepnum">4</div>
+<div>
+<h3>Fixes that stay fixed</h3>
+<p>Simple systems, tested live before I leave them with you. If it needs minding, that&rsquo;s what the retainer is for.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="about">
+<div class="wrap">
+<p class="label">About</p>
+<h2>From the truck to the toolbox.</h2>
+<p>I spent years on the junk trucks in Vancouver, hauling out what other people paid to be rid of. You learn what waste looks like when you carry it down three flights of stairs. Home in Cork I taught myself the tools and cut my teeth building funnels and systems for online coaches. Now it&rsquo;s one job, find the leak, price it, fix it so it stays fixed.</p>
+</div>
+</section>
+
+<section class="strip">
+<div class="wrap">
+<p class="label">Content</p>
+<h2>I post every leak I find.</h2>
+<p>One a week. A real leak from a real business, the numbers, the fix, the name left out. Free to rob for your own place.</p>
+<div class="chips">
+<span class="chip">X @jackoregan</span>
+<span class="chip">Instagram @jackoregan</span>
+<span class="chip chip--solid">8,400 followers, August 2027</span>
+</div>
+<a class="btn btn--gw" href="#post">See this week&rsquo;s post</a>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<p class="label">FAQ</p>
+<h2>Asked straight, answered straight.</h2>
+<div class="faq-list">
+<div class="faq-item">
+<p class="faq-q">What if you find nothing?</p>
+<p class="faq-a">Then the assessment is free. 61 assessments in, it hasn&rsquo;t happened once. Every business leaks somewhere, the only question is how much.</p>
+</div>
+<div class="faq-item">
+<p class="faq-q">Is this an AI thing?</p>
+<p class="faq-a">Sometimes. AI is one tool in the van, not the van. If a paper diary and a deposit rule fix it, that&rsquo;s what you&rsquo;ll get.</p>
+</div>
+<div class="faq-item">
+<p class="faq-q">Do I need to buy software?</p>
+<p class="faq-a">Probably not. Most places I walk into are paying for too much of it already. Half my fixes are cancellations.</p>
+</div>
+<div class="faq-item">
+<p class="faq-q">Why pay &euro;999 to be told what I half know already?</p>
+<p class="faq-a">Because half knowing costs you money every week. The report puts a euro figure on every leak, in your numbers, biggest first. The average assessment last year found more than three times its own fee.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="final">
+<div class="wrap">
+<h2>Stop paying for the leak.</h2>
+<p class="sub">Two minutes, free. Worst case you find out the business is sound, and that&rsquo;s worth knowing too.</p>
+<a class="btn btn--big" href="#quiz">Find your leak</a>
+</div>
+</section>
+
+</div>
+
+<!-- ============ THE POST ============ -->
+<div class="screen" id="s-post">
+<div class="wrap pagepad">
+<a class="back" href="#home">&lsaquo; Back to jackoregan.com</a>
+<p class="label">Where they come from</p>
+<h2 class="tight">This week&rsquo;s leak.</h2>
+<p class="sub">One of these goes out every week on X and Instagram. This is the top of the funnel, no ads needed most months.</p>
+<div class="post-card">
+<div class="post-head">
+<div class="avatar">JO</div>
+<div>
+<div class="post-name">Jack O&rsquo;Regan</div>
+<div class="post-handle">@jackoregan</div>
+</div>
+</div>
+<p class="post-body">Walked a plumber&rsquo;s yard in Douglas this morning. Found &euro;2,100 a month going out the door. Missed calls and no deposits, the same two leaks as half the trades in Cork. The quiz on my site finds yours in two minutes. Free.</p>
+<p class="post-meta">9.41am, 12 August 2027. 48 reposts, 312 likes, 19,400 views.</p>
+</div>
+<div style="margin-top:26px">
+<a class="btn" href="#quiz">Find your leak</a>
+</div>
+</div>
+</div>
+
+<!-- ============ QUIZ ============ -->
+<div class="screen" id="s-quiz">
+<div class="wrap pagepad">
+<a class="back" href="#home">&lsaquo; Back to jackoregan.com</a>
+<div id="quizbox"></div>
+</div>
+</div>
+
+<!-- ============ BOOK ============ -->
+<div class="screen" id="s-book">
+<div class="wrap pagepad">
+<a class="back" href="#home">&lsaquo; Back to jackoregan.com</a>
+
+<div id="b-sales">
+<div class="bookhero">
+<div class="cover">
+<div>
+<div class="ct">THE DIY LEAK AUDIT</div>
+<div class="cs">Find where your business is leaking money, in about 20 minutes, using your own numbers.</div>
+</div>
+<div class="ca">Jack O&rsquo;Regan</div>
+</div>
+<div>
+<p class="label">The &euro;29 book</p>
+<h2 class="tight">The DIY Leak Audit.</h2>
+<p class="sub">Ten leaks, the maths for each one, and a 4 day plan to stop the worst of it yourself. All it takes is a pen, your phone, and an honest look at how last week actually went. The dear leaks, that&rsquo;s what the assessment is for.</p>
+<p class="proofline">1,100+ copies sold. 4.8 stars.</p>
+<div style="margin-top:18px">
+<button class="btn" onclick="bookView('checkout')">Get the book, &euro;29</button>
+<p style="margin:12px 0 0"><button class="btn btn--ghost" onclick="go('reader')">Read the first pages free</button></p>
+</div>
+</div>
+</div>
+
+<div class="secgap">
+<p class="label">The ten leaks</p>
+<ul class="chapters">
+<li><b>1. The missed call.</b> Roughly 3 in 10 missed callers would have booked. The rest were never going to.</li>
+<li><b>2. Slow to quote.</b> First to quote usually wins the job, everyone in the trade knows it.</li>
+<li><b>3. Invoices late, money slow in.</b> Not an estimate, your money, in someone else&rsquo;s account, tonight.</li>
+<li><b>4. Nothing gets followed up.</b> The word for word chase text. Free money for one thumb.</li>
+<li><b>5. Admin eating the evenings.</b> The kitchen table at ten at night, priced honestly.</li>
+<li><b>6. Paying for tools you never use.</b> The bank statement never forgets a direct debit.</li>
+<li><b>7. Drowning in messages.</b> Most owners guess two hours a week and count six.</li>
+<li><b>8. The diary in your head.</b> Double bookings, forgotten jobs, the county driven in the wrong order.</li>
+<li><b>9. Invisible on Google.</b> The review gap between you and the fella ranking first.</li>
+<li><b>10. The same five questions all day.</b> Answer them once, in public, forever.</li>
+<li><b>Plus the scoreboard and the 4 day plan.</b> Total your leaks, circle the biggest, one move a day.</li>
+</ul>
+</div>
+
+<div class="secgap">
+<p class="label">What buyers say</p>
+<div class="review">
+<div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<p>&ldquo;The Day 2 chase text got me two jobs back by the weekend.&rdquo;</p>
+<p class="who">Con, roofer, Bandon</p>
+</div>
+<div class="review">
+<div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<p>&ldquo;Killed &euro;68 a month of dead subscriptions before the dinner. Paid for itself by page nine.&rdquo;</p>
+<p class="who">Dave, painter, Cobh</p>
+</div>
+<div class="review">
+<div class="stars">&#9733;&#9733;&#9733;&#9733;</div>
+<p>&ldquo;Short. No padding. Did what it said.&rdquo;</p>
+<p class="who">Marie, salon, Fermoy</p>
+</div>
+</div>
+
+<div class="secgap">
+<div class="panel panel--green">
+<h3>The guarantee</h3>
+<p>If it doesn&rsquo;t find you your &euro;29 back, reply to the receipt and it&rsquo;s refunded. Out of 1,100 copies, fewer than ten have asked.</p>
+<button class="btn" onclick="bookView('checkout')">Get the book, &euro;29</button>
+</div>
+</div>
+</div>
+
+<div id="b-checkout" style="display:none">
+<p class="label">Checkout</p>
+<h2 class="tight">The DIY Leak Audit, &euro;29.</h2>
+<p class="sub">PDF straight to your inbox, plus the interactive copy that unlocks right here, blanks you can type in and a scoreboard that totals itself.</p>
+<div class="panel">
+<div class="field"><label>Name</label><input id="b-name" type="text" placeholder="Denis Murphy"></div>
+<div class="field"><label>Email</label><input id="b-email" type="email" placeholder="denis@murphyplumbing.ie"></div>
+<div class="field"><label>Card</label><input id="b-card" type="text" placeholder="1234 5678 9012 3456"></div>
+<button class="btn btn--big" style="width:100%" onclick="bookPay()">Pay &euro;29</button>
+<p class="tiny">Demo checkout for the vision build, nothing is charged.</p>
+</div>
+</div>
+
+<div id="b-done" style="display:none">
+<p class="label">Done</p>
+<h2 class="tight">Sent<span id="b-doneName"></span>.</h2>
+<p class="sub">Check your inbox, it&rsquo;s there before the kettle&rsquo;s boiled. Receipt is in the same email. Your interactive copy is unlocked now too, read it right here and type your numbers straight in.</p>
+<p style="margin:0 0 26px"><button class="btn" onclick="go('reader')">Read it now</button></p>
+<div class="panel panel--green">
+<h3>One more thing.</h3>
+<p>Most people read chapter one and want the whole job done properly. Book the assessment inside the week and the &euro;29 comes off it.</p>
+<button class="btn" onclick="go('assessment')">Book the assessment</button>
+</div>
+<p style="margin-top:18px"><a class="back" href="#home" style="margin:0">I&rsquo;ll hunt them myself first</a></p>
+</div>
+
+</div>
+</div>
+
+<!-- ============ READER ============ -->
+<div class="screen" id="s-reader">
+<div class="wrap pagepad">
+<a class="back" href="#book">&lsaquo; Back to the book page</a>
+<p class="label">The interactive copy</p>
+<h2 class="tight">The DIY Leak Audit.</h2>
+<p class="sub">The blanks take your numbers and the scoreboard totals itself. Nothing you type leaves this page.</p>
+<p class="ownedline" id="ownedline">Your copy, unlocked. Every &euro;29 buyer gets this free.</p>
+
+<div class="bookpage bcover">
+<div class="kicker">For trades and small service businesses</div>
+<h3>The DIY<br>Leak Audit</h3>
+<p class="promise">Find where your business is leaking money, in about 20 minutes, using your own numbers. Ten leaks, the maths for each one, and a 4 day plan to stop the worst of it yourself.</p>
+<p class="byline">Jack O&rsquo;Regan &middot; Cork<br>The same ten leaks I check when a business pays me to find them.</p>
+</div>
+
+<div class="bookpage">
+<h3>Read this first</h3>
+<p class="bbig">A leak is money you already did the work to earn, going to someone else or going nowhere. The call that rang the next plumber. The quote that died in your head on a Friday night. The invoice you never sent. None of it needs new customers. It is your money, already in motion, falling out of the bucket.</p>
+<p class="blabel">The one rule this audit runs on</p>
+<p>Your numbers, not mine. Every figure you write in here comes out of your own normal week. Not your best week. Nothing in this book is invented and nothing is a promise, every number is an estimate built from what you put in. It is a torch, it shows you where to look.</p>
+<p class="blabel">What you need</p>
+<ul>
+<li>Your phone and about 20 minutes.</li>
+<li>Your bank app open for one of the pages.</li>
+<li>Honesty about how last week actually went.</li>
+</ul>
+<p class="blabel">The three levers</p>
+<p>Every fix in here pulls at least one of three levers: it makes you money, it saves you time, or it lifts the quality of the job. If a fix someone is selling you pulls none of them, you do not need it.</p>
+<div class="rulebox"><b>Two honesty rules, before you start.</b><br>1. When you total your leaks at the end, cap the total at 15 percent of your yearly turnover. Big numbers feel great and do nothing. The cap keeps you honest.<br>2. A leak under a few grand a year is real, but it is not your priority. You will fix the biggest one first, not the easiest.</div>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage">
+<h3>Your two numbers</h3>
+<p class="bbig">The whole audit runs off two numbers. Put them in once here and every page after uses them.</p>
+<p class="blabel">Number one, your average job</p>
+<p>Think of your last ten jobs. Not the best one, the middle one. What was it worth?</p>
+<div class="writeline">Average job value &nbsp;&euro; <input id="bk-aj" inputmode="numeric" placeholder="300" oninput="calcBook()"></div>
+<p class="blabel">Number two, jobs in a normal week</p>
+<p>Again, a normal week. Not the week before Christmas.</p>
+<div class="writeline">Jobs in a normal week &nbsp;<input id="bk-jw" inputmode="numeric" placeholder="5" oninput="calcBook()" style="width:80px"></div>
+<p class="blabel">Your rough year</p>
+<div class="mathbox">Average job &nbsp;x&nbsp; jobs a week &nbsp;x&nbsp; 48 &nbsp;=&nbsp; your rough year
+<div class="ex">48, not 52. Nobody works every week of the year. Example: &euro;300 jobs, 5 a week: 300 x 5 x 48 = &euro;72,000.</div></div>
+<div class="writeline">Your rough year &nbsp;<span id="bk-ryear" style="color:#0e6b45">&euro; ...</span></div>
+<div class="rulebox">If your work comes in as big projects or contracts instead of weekly jobs, skip the formula and use last year&rsquo;s turnover. The ten leaks apply exactly the same.</div>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage">
+<h3><span class="leaknum">LEAK 1</span>The missed call</h3>
+<p class="blabel">Ask yourself</p>
+<p class="bbig">What happens when someone rings and I can&rsquo;t answer?</p>
+<p class="blabel">You know you have it if you hear yourself saying</p>
+<p class="tells">&ldquo;It goes to voicemail.&rdquo; &ldquo;I ring back when I&rsquo;m off the ladder.&rdquo; &ldquo;I&rsquo;d miss a few a week.&rdquo;</p>
+<p class="blabel">The maths</p>
+<div class="mathbox">Calls missed in a week <span class="blank"></span> &nbsp;x&nbsp; 0.3 &nbsp;x&nbsp; average job &euro; <span class="blank"></span> &nbsp;x&nbsp; 48
+<div class="ex">The 0.3 is honest: roughly 3 in 10 missed callers would have booked. The rest were never going to. Example: miss 4 a week on &euro;300 jobs: 4 x 0.3 x 300 x 48 = &euro;17,280 a year ringing the next name on the list.</div></div>
+<div class="writeline">Your number &nbsp;&euro; <input id="bk-l1" inputmode="numeric" placeholder="0" oninput="calcBook()"> a year</div>
+<p class="blabel">First move</p>
+<p>Missed call text back. The second a call goes unanswered, a text fires by itself: &ldquo;Sorry I missed you, on a job, tell me what you need and I&rsquo;ll come straight back.&rdquo; It catches the lead before they dial the next lad. The bigger version is a receptionist that answers and books for you, that is a proper setup job.</p>
+<p class="beffort"><b>Effort:</b> the text version needs a hand to set up right. The habit version, texting back yourself within five minutes, is free and starts today.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="panel panel--green" id="lockpanel" style="max-width:680px">
+<h3>That&rsquo;s the free sample.</h3>
+<p>Nine more leaks, the scoreboard that totals itself, and the 4 day plan are in the full copy. &euro;29, the PDF lands in your inbox and this page unlocks the second you buy.</p>
+<button class="btn" onclick="buyFromReader()">Get the book, &euro;29</button>
+</div>
+
+<div class="bookpage locked">
+<h3><span class="leaknum">LEAK 2</span>Slow to quote</h3>
+<p class="blabel">Ask yourself</p>
+<p class="bbig">Have I ever lost work because I was too slow to quote?</p>
+<p class="blabel">You know you have it if</p>
+<p class="tells">&ldquo;Quotes pile up.&rdquo; &ldquo;I do them Friday night.&rdquo; &ldquo;It rattles around in my head for days before it&rsquo;s sent.&rdquo; &ldquo;They&rsquo;d booked someone else by the time I got to it.&rdquo;</p>
+<p class="blabel">The maths</p>
+<div class="mathbox">Quotes a month you reckon died of slowness <span class="blank"></span> &nbsp;x&nbsp; average job &euro; <span class="blank"></span> &nbsp;x&nbsp; 12
+<div class="ex">A lost quote is a whole job. Even one a month at &euro;400 is &euro;4,800 a year. First to quote usually wins the job, everyone in the trade knows it.</div></div>
+<div class="writeline">Your number &nbsp;&euro; <input id="bk-l2" inputmode="numeric" placeholder="0" oninput="calcBook()"> a year</div>
+<p class="blabel">First move</p>
+<p>Templates. Take your last good quote, strip the customer&rsquo;s details out, and that is now your template. Every new quote is fill in the blanks, out the same evening from the phone. Five minutes, not forty. The bigger version turns a voice note from the van into a tidy quote before you&rsquo;ve left the driveway.</p>
+<p class="beffort"><b>Effort:</b> DIY in an afternoon.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3><span class="leaknum">LEAK 3</span>Invoices late, money slow in</h3>
+<p class="blabel">Ask yourself</p>
+<p class="bbig">How long between finishing a job and the invoice going out? And getting paid?</p>
+<p class="blabel">You know you have it if</p>
+<p class="tells">&ldquo;A few weeks.&rdquo; &ldquo;When I get around to it.&rdquo; &ldquo;I hate chasing money off people.&rdquo;</p>
+<p class="blabel">The maths, two numbers you can count tonight</p>
+<div class="mathbox">Money sitting in unpaid invoices right now &nbsp;&euro; <span class="blank"></span><br>Jobs finished but never invoiced at all <span class="blank"></span> &nbsp;x&nbsp; average job &euro; <span class="blank"></span>
+<div class="ex">This is not an estimate, it is your money, in someone else&rsquo;s account, tonight. Add the two together.</div></div>
+<div class="writeline">Your number &nbsp;&euro; <input id="bk-l3" inputmode="numeric" placeholder="0" oninput="calcBook()"> sitting out there</div>
+<p class="blabel">First move</p>
+<p>Invoice from the phone before you leave the job. Then a reminder text at day 7 and day 14, the same two lines every time, so chasing money stops being personal. Automatic reminders provably cut the days to paid, it is not opinion. A tap to pay link on the invoice finishes the job, they pay on the spot.</p>
+<p class="beffort"><b>Effort:</b> DIY in an afternoon.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3><span class="leaknum">LEAK 4</span>Nothing gets followed up</h3>
+<p class="blabel">Ask yourself</p>
+<p class="bbig">Where do jobs and customers fall through the cracks?</p>
+<p class="blabel">You know you have it if</p>
+<p class="tells">&ldquo;Once a quote&rsquo;s out I forget about it.&rdquo; &ldquo;Half never hear back from me.&rdquo; &ldquo;I&rsquo;ve a phone full of old customers I never ring.&rdquo;</p>
+<p class="blabel">The maths</p>
+<div class="mathbox">Quotes sitting out there with no answer <span class="blank"></span> &nbsp;x&nbsp; 0.1 &nbsp;x&nbsp; average job &euro; <span class="blank"></span>
+<div class="ex">The 0.1 is deliberately mean: even if only one in ten came back off a single follow up, that is free money for one text. And separately, the old customers in your phone are gold sitting idle. One message pulls jobs this week, for nothing.</div></div>
+<div class="writeline">Your number &nbsp;&euro; <input id="bk-l4" inputmode="numeric" placeholder="0" oninput="calcBook()"> waiting on one text</div>
+<p class="blabel">First move</p>
+<p>Tonight, chase your three newest unanswered quotes, word for word: &ldquo;Hi [name], following up on the quote from [day], will I pencil you in for next week?&rdquo; Then once a season, the reactivation text to old customers: &ldquo;Jack here, any jobs need doing before the winter? I&rsquo;ve a slot free next week.&rdquo; Change the name, obviously.</p>
+<p class="beffort"><b>Effort:</b> free. Costs one thumb.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3><span class="leaknum">LEAK 5</span>Admin eating the evenings</h3>
+<p class="blabel">Ask yourself</p>
+<p class="bbig">What am I doing at the kitchen table at ten at night that should be done inside working hours?</p>
+<p class="blabel">You know you have it if</p>
+<p class="tells">&ldquo;The books on a Sunday night.&rdquo; &ldquo;Paperwork after the tea, every night.&rdquo; &ldquo;I didn&rsquo;t start a business to do this.&rdquo;</p>
+<p class="blabel">The maths</p>
+<div class="mathbox">Evening and weekend hours a week on paperwork <span class="blank"></span> &nbsp;x&nbsp; &euro;25 &nbsp;x&nbsp; 48
+<div class="ex">&euro;25 an hour is the honest office rate for the admin itself. If those hours are also costing you jobs you never quoted, price them at your trade rate instead, &euro;45 or whatever yours is, and watch the number jump.</div></div>
+<div class="writeline">Your number &nbsp;&euro; <input id="bk-l5" inputmode="numeric" placeholder="0" oninput="calcBook()"> a year</div>
+<p class="blabel">First move</p>
+<p>Name the single biggest drain. Not &ldquo;admin&rdquo;, one job, the books or the quotes or the receipts. Then cut its steps in half before you buy anything: what can be done once instead of weekly, on the phone instead of at the table, by a photo instead of typing. Automate last, not first. The real cost of this leak was never the &euro;25 an hour anyway, it is the reason you started the business slipping away.</p>
+<p class="beffort"><b>Effort:</b> naming it is free. The fix depends on the drain.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3><span class="leaknum">LEAK 6</span>Paying for tools you never use</h3>
+<p class="blabel">Ask yourself</p>
+<p class="bbig">What am I paying for every month that I barely open?</p>
+<p class="blabel">You know you have it if</p>
+<p class="tells">&ldquo;I signed up for something last year, never used it.&rdquo; &ldquo;I&rsquo;m paying for I don&rsquo;t even know what.&rdquo;</p>
+<p class="blabel">The maths</p>
+<div class="mathbox">Dead subscriptions &euro; <span class="blank"></span> a month &nbsp;x&nbsp; 12
+<div class="ex">Check the bank statement, not your memory. The statement never forgets a direct debit. Software, apps, a directory listing you never got a job from, the van tracker on the van you sold.</div></div>
+<div class="writeline">Your number &nbsp;&euro; <input id="bk-l6" inputmode="numeric" placeholder="0" oninput="calcBook()"> a year</div>
+<p class="blabel">First move</p>
+<p>Kill them today. All of them. This is the smallest leak in the book and it goes first anyway, because it is pure arithmetic, there is nothing to break, nothing to learn and nothing to argue with. Ten minutes in the bank app and the money stops leaving.</p>
+<p class="beffort"><b>Effort:</b> free. Ten minutes. This is Day 1 of your plan.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3><span class="leaknum">LEAK 7</span>Drowning in messages</h3>
+<p class="blabel">Ask yourself</p>
+<p class="bbig">How much of my day goes on answering the same stuff?</p>
+<p class="blabel">You know you have it if</p>
+<p class="tells">&ldquo;WhatsApp, email, texts, it never ends.&rdquo; &ldquo;I&rsquo;m answering the same questions all day.&rdquo; &ldquo;The phone never stops.&rdquo;</p>
+<p class="blabel">The maths</p>
+<div class="mathbox">Hours a week answering messages <span class="blank"></span> &nbsp;x&nbsp; &euro;25 &nbsp;x&nbsp; 48
+<div class="ex">Count it honestly for one day, then multiply. Most owners guess two hours a week and count six. And the slow replies cost twice, the hours, plus the leads that went cold waiting.</div></div>
+<div class="writeline">Your number &nbsp;&euro; <input id="bk-l7" inputmode="numeric" placeholder="0" oninput="calcBook()"> a year</div>
+<p class="blabel">First move</p>
+<p>Saved replies. The five messages you type most, price ranges, availability, area covered, &ldquo;on a job, back to you at six&rdquo;, become saved templates on your phone. One evening to set up, years of thumb saved. The bigger version answers the common stuff for you before it ever reaches your pocket.</p>
+<p class="beffort"><b>Effort:</b> DIY in an evening.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3><span class="leaknum">LEAK 8</span>The diary in your head</h3>
+<p class="blabel">Ask yourself</p>
+<p class="bbig">Walk through last Monday. Any double bookings, forgotten jobs, or driving the county in the wrong order?</p>
+<p class="blabel">You know you have it if</p>
+<p class="tells">&ldquo;It&rsquo;s all in my head.&rdquo; &ldquo;A notebook in the van.&rdquo; &ldquo;I&rsquo;ve double booked before, aye.&rdquo;</p>
+<p class="blabel">The maths</p>
+<div class="mathbox">Jobs missed, double booked or messed in a month <span class="blank"></span> &nbsp;x&nbsp; average job &euro; <span class="blank"></span> &nbsp;x&nbsp; 12
+<div class="ex">Count the angry phone calls too. A missed slot is a lost job today and a customer who doesn&rsquo;t ring next time, that second cost isn&rsquo;t in the formula but you know it&rsquo;s real.</div></div>
+<div class="writeline">Your number &nbsp;&euro; <input id="bk-l8" inputmode="numeric" placeholder="0" oninput="calcBook()"> a year</div>
+<p class="blabel">First move</p>
+<p>One shared calendar, on the phone, and every job goes in it the minute it is agreed, standing in the driveway if needs be. No second system, no notebook backup, one place. The bigger version is a booking link, customers pick a slot themselves and phone tag dies.</p>
+<p class="beffort"><b>Effort:</b> DIY in an afternoon.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3><span class="leaknum">LEAK 9</span>Invisible on Google</h3>
+<p class="blabel">Ask yourself</p>
+<p class="bbig">How do new customers actually find me? What comes up when I google my trade and my town?</p>
+<p class="blabel">You know you have it if</p>
+<p class="tells">&ldquo;Word of mouth only.&rdquo; &ldquo;I don&rsquo;t ask for reviews.&rdquo; &ldquo;I know I should sort Google, I never did.&rdquo;</p>
+<p class="blabel">The maths, and an honest one</p>
+<div class="mathbox">Your Google reviews <span class="blank"></span> &nbsp;&nbsp;vs&nbsp;&nbsp; the fella ranking first <span class="blank"></span>
+<div class="ex">This is the one leak you can&rsquo;t honestly put a euro on from the kitchen table, so this book won&rsquo;t pretend to. Count the gap instead. Review count is a known local ranking factor. More reviews means ranking higher means free inbound leads, and it compounds while you sleep.</div></div>
+<div class="writeline">The gap &nbsp;<input id="bk-l9" inputmode="numeric" placeholder="0" oninput="calcBook()" style="width:80px"> reviews behind</div>
+<p class="blabel">First move</p>
+<p>Text your last five happy customers the direct review link tonight, two taps for them. Then make it a habit, the link goes out the day after every job, every job, forever. And claim your Google Business Profile properly, photos, hours, area, it is free and half your competitors never bothered.</p>
+<p class="beffort"><b>Effort:</b> free, tonight.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3><span class="leaknum">LEAK 10</span>The same five questions all day</h3>
+<p class="blabel">Ask yourself</p>
+<p class="bbig">What do I answer fifty times a week? For most trades it is price, availability, and do you cover my area.</p>
+<p class="blabel">You know you have it if</p>
+<p class="tells">&ldquo;I answer the same five questions every single day.&rdquo;</p>
+<p class="blabel">The maths</p>
+<div class="mathbox">Already counted in Leak 7&rsquo;s hours. Do not count it twice.
+<div class="ex">This page is here because the fix is different. Leak 7 is about the volume of messages, this one is about the same five answers, and those you can answer once, in public, forever.</div></div>
+<p class="blabel">First move</p>
+<p>Write the five answers once, properly, and put them where people actually look before they message you: your Google Business Profile, your socials, a pinned reply on WhatsApp. Every question answered in public is a message that never arrives. The bigger version is a system trained on your own answers that handles the lot and only hands you the real enquiries.</p>
+<p class="beffort"><b>Effort:</b> DIY in an evening.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3>The scoreboard</h3>
+<p class="bbig">Every number you typed lands here by itself. This is the page to screenshot.</p>
+<table class="sb">
+<tr><th>Leak</th><th style="text-align:right">Your number, &euro; a year</th></tr>
+<tr><td>1. The missed call</td><td class="num" id="sb-l1">...</td></tr>
+<tr><td>2. Slow to quote</td><td class="num" id="sb-l2">...</td></tr>
+<tr><td>3. Invoices late, money slow in</td><td class="num" id="sb-l3">...</td></tr>
+<tr><td>4. Nothing gets followed up</td><td class="num" id="sb-l4">...</td></tr>
+<tr><td>5. Admin eating the evenings</td><td class="num" id="sb-l5">...</td></tr>
+<tr><td>6. Paying for tools you never use</td><td class="num" id="sb-l6">...</td></tr>
+<tr><td>7. Drowning in messages</td><td class="num" id="sb-l7">...</td></tr>
+<tr><td>8. The diary in your head</td><td class="num" id="sb-l8">...</td></tr>
+<tr><td>9. Invisible on Google</td><td class="num" id="sb-l9">...</td></tr>
+<tr><td>10. The same five questions</td><td class="num">counted in 7</td></tr>
+<tr><td><b>Total</b></td><td class="num" id="sb-total">...</td></tr>
+</table>
+<div class="rulebox"><b>The honesty cap.</b> <span id="bk-capmsg">Fill your two numbers at the start of the book and the cap works itself out here.</span></div>
+<p style="margin-top:16px" class="bbig"><b>Now circle the biggest single leak.</b> Not the easiest one. The biggest. That is the one that pays for everything else.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3>Your 4 day plan</h3>
+<p class="bbig">One move a day beats ten moves planned. Each of these is on its leak page in full.</p>
+<div style="margin-top:18px">
+<div class="dayrow"><div class="daychip">DAY 1</div><p><b>Kill the dead subscriptions</b> (Leak 6) and <b>text the review link to your last five happy customers</b> (Leak 9). Free money and free ranking, under an hour, done before the dinner.</p></div>
+<div class="dayrow"><div class="daychip">DAY 2</div><p><b>Chase every quote sitting unanswered</b> (Leak 4). The word for word text is on the page. Watch what comes back by the weekend.</p></div>
+<div class="dayrow"><div class="daychip">DAY 3</div><p><b>Build your quote template</b> (Leak 2) and <b>your five saved replies</b> (Leak 7). One evening, both done.</p></div>
+<div class="dayrow"><div class="daychip">DAY 4</div><p><b>One calendar, every job in it</b> (Leak 8), and <b>decide your answer to the missed call</b> (Leak 1), even if the answer for now is texting back inside five minutes yourself.</p></div>
+</div>
+<div class="rulebox">If you only ever do Day 1 and Day 2, you are already ahead of most businesses your size, and you&rsquo;ll have paid for this book several times over. The rest is compounding.</div>
+<p class="blabel" style="margin-top:18px">Have you tried to sort this before?</p>
+<p>Most owners have. Bought a tool off an ad, used it twice, back to the notebook within the month. The tool was never the problem. Nobody found the biggest leak first and set the thing up around how you actually work. That is the difference between buying software and fixing a leak, and it is why this book made you do the maths before it let you near a fix.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+<div class="bookpage locked">
+<h3>You now know your number</h3>
+<p class="bbig">Which already puts you ahead of nearly every business your size, most owners feel the leaks but never cost them. Everything in the 4 day plan you can do yourself, free, this week. Do it.</p>
+<p class="blabel">If you&rsquo;d rather hand it over</p>
+<p>That is what I do. One morning inside your business, every leak priced from your own numbers, the fixes ranked in the order that pays back fastest, each one marked do it yourself or hand it to me. Nothing goes live until it is tested end to end. &euro;999, booked three weeks out.</p>
+<div class="rulebox"><b>WhatsApp me: wa.me/353894794158</b><br>Say &ldquo;leak audit&rdquo; and tell me your biggest number off the scoreboard. No hard sell, if the 4 day plan is all you need, I&rsquo;ll tell you that straight.</div>
+<p style="margin-top:18px"><button class="btn" onclick="go('assessment')">Book the assessment</button></p>
+<p style="margin-top:14px">Jack O&rsquo;Regan, Cork.<br><span style="color:#555">I find where a business is leaking money, then fix it so it stays fixed.</span></p>
+<p style="margin-top:10px;font-size:12.5px;color:#777">Every figure this audit produces is an estimate built from your own inputs. It is a torch for deciding what to fix first, not a promise of earnings.</p>
+<div class="bfoot"><span>The DIY Leak Audit</span><span>Jack O&rsquo;Regan &middot; Cork</span></div>
+</div>
+
+</div>
+</div>
+
+<!-- ============ ASSESSMENT ============ -->
+<div class="screen" id="s-assessment">
+<div class="wrap pagepad">
+<a class="back" href="#home">&lsaquo; Back to jackoregan.com</a>
+
+<div id="a-sales">
+<p class="label">Done for you. &euro;999.</p>
+<h2 class="tight">One morning. Every leak priced in euro.</h2>
+<p class="sub">I come into your business, find where the money is going, and hand you a report with each leak priced from your own numbers, biggest first. Then we fix them in the order that pays back fastest.</p>
+<div class="chips">
+<span class="chip--line chip">&euro;214,000 found</span>
+<span class="chip--line chip">61 assessments</span>
+<span class="chip--line chip">&euro;3,500 average find</span>
+</div>
+<div style="margin-top:26px">
+<button class="btn btn--big" onclick="aView('apply')">Apply for a slot</button>
+<p class="hero-note">Booked three weeks out. Next open mornings late August 2027.</p>
+</div>
+
+<div class="secgap">
+<p class="label">Who it&rsquo;s for</p>
+<p class="sub" style="margin-bottom:0">Trades and small service businesses around Cork doing steady work. You&rsquo;re busy, the diary is full, and the bank balance doesn&rsquo;t match the effort. That gap is the leak.</p>
+</div>
+
+<div class="secgap">
+<p class="label">The morning</p>
+<ul class="timeline">
+<li><b>8.00, I arrive.</b> <span>Kettle on, then the walk. You keep working, I&rsquo;ll only rob twenty minutes of questions.</span></li>
+<li><b>8.30, the phone, the diary, the quotes.</b> <span>Last 90 days as they are. Don&rsquo;t tidy anything, I want it as it is.</span></li>
+<li><b>10.30, the money.</b> <span>Invoices, prices, what&rsquo;s owed, what&rsquo;s undercharged.</span></li>
+<li><b>12.00, I&rsquo;m gone.</b> <span>You&rsquo;ve a business to run.</span></li>
+<li><b>Inside five working days.</b> <span>The report lands, and a call is booked to walk you through it.</span></li>
+</ul>
+</div>
+
+<div class="secgap">
+<p class="label">What you get</p>
+<p class="sub" style="margin-bottom:0">Every leak with a euro figure on it. What the fix is, what the fix costs, and the payback order. Your numbers, not industry averages. Most of the fixes are small and boring. That&rsquo;s why they work.</p>
+</div>
+
+<div class="secgap">
+<p class="label">Found so far</p>
+<p class="wall"><b>&euro;31,200</b> electrician, Ballincollig. <b>&euro;26,300</b> cleaning company, Midleton. <b>&euro;22,100</b> landscaper, Glanmire. <b>&euro;18,400</b> plumber, Douglas. <b>&euro;15,600</b> garage, Mallow. <b>&euro;12,750</b> tiler, Carrigaline.</p>
+</div>
+
+<div class="secgap">
+<div class="panel panel--green">
+<h3>The guarantee</h3>
+<p>If the morning finds nothing, you don&rsquo;t pay. 61 in, it hasn&rsquo;t happened.</p>
+</div>
+</div>
+
+<div class="secgap">
+<p class="label">After the fix</p>
+<p class="sub" style="margin-bottom:0">Most stay on. Keep It Running, &euro;149 a month, I mind the systems. AI Concierge, &euro;400 a month, the phone answered and the diary filled while you&rsquo;re on the tools. 34 Cork businesses on retainer.</p>
+</div>
+
+<div class="secgap">
+<p class="label">Asked before booking</p>
+<div class="faq-list">
+<div class="faq-item">
+<p class="faq-q">Do I have to close for the morning?</p>
+<p class="faq-a">No. Work away. Twenty minutes of questions is all I need from you directly.</p>
+</div>
+<div class="faq-item">
+<p class="faq-q">Will you sell me software?</p>
+<p class="faq-a">More likely I&rsquo;ll cancel some. You pay for the finding, not for tools.</p>
+</div>
+<div class="faq-item">
+<p class="faq-q">Why &euro;999?</p>
+<p class="faq-a">The average found last year was over &euro;3,500. It&rsquo;s the cheapest morning you&rsquo;ll ever buy.</p>
+</div>
+</div>
+</div>
+
+<div class="secgap">
+<div class="pricebox">
+<div class="price">&euro;999</div>
+<p style="color:#444;font-size:16px;line-height:1.5;margin:0 0 16px">The morning, the report, the fix list in payback order, and a call two weeks after to check what&rsquo;s plugged. &euro;250 holds the slot, balance after the report lands.</p>
+<button class="btn btn--big" style="width:100%" onclick="aView('apply')">Apply for a slot</button>
+</div>
+</div>
+</div>
+
+<div id="a-apply" style="display:none">
+<p class="label">Application</p>
+<h2 class="tight">Apply for a slot.</h2>
+<p class="sub">Slots are mornings, three weeks out. Fill this honest, then pick your morning.</p>
+<div class="panel">
+<div class="field"><label>Name</label><input id="a-name" type="text" placeholder="Denis Murphy"></div>
+<div class="field"><label>Business and trade</label><input id="a-biz" type="text" placeholder="Murphy Plumbing"></div>
+<div class="field"><label>Town</label><input id="a-town" type="text" placeholder="Douglas"></div>
+<div class="field"><label>Phone</label><input id="a-phone" type="text" placeholder="087 123 4567"></div>
+<div class="field"><label>Where do you think it&rsquo;s leaking?</label><textarea id="a-leak" placeholder="Honest guess. Wrong answers welcome, that&rsquo;s the point of the morning."></textarea></div>
+<div class="field"><label>Roughly, monthly turnover</label><select id="a-rev"><option>Under &euro;10,000</option><option selected>&euro;10,000 to &euro;30,000</option><option>Over &euro;30,000</option></select></div>
+<button class="btn btn--big" style="width:100%" onclick="aApply()">Send it in</button>
+<p class="tiny">Applications get a yes or no the same day. If it&rsquo;s not a fit I&rsquo;ll say so and point you at the book.</p>
+</div>
+</div>
+
+<div id="a-slots" style="display:none">
+<p class="label">Pick your morning</p>
+<h2 class="tight" id="a-slotHead">Grand. Pick your morning.</h2>
+<p class="sub">All mornings, 8.00 start. The &euro;250 deposit link follows by text.</p>
+<button class="slot" onclick="aSlot('Tuesday 24 August 2027, 8.00am')">Tuesday 24 August 2027, 8.00am</button>
+<button class="slot" onclick="aSlot('Thursday 26 August 2027, 8.00am')">Thursday 26 August 2027, 8.00am</button>
+<button class="slot" onclick="aSlot('Tuesday 31 August 2027, 8.00am')">Tuesday 31 August 2027, 8.00am</button>
+</div>
+
+<div id="a-done" style="display:none">
+<p class="label">Booked</p>
+<h2 class="tight">Locked in.</h2>
+<p class="bigeuro" style="font-size:clamp(26px,7vw,44px)" id="a-slotText"></p>
+<p class="sub">You&rsquo;ll get a text now and a reminder the evening before. Have the last 90 days of quotes and invoices findable. Don&rsquo;t tidy anything, I want it as it is.</p>
+<p class="tiny" style="margin-bottom:26px">The &euro;250 deposit link is in the text. Balance after the report lands.</p>
+<a class="btn btn--ghost" href="#home">Back to jackoregan.com</a>
+</div>
+
+</div>
+</div>
+
+<!-- ============ MAP ============ -->
+<div class="screen" id="s-map">
+<div class="wrap pagepad">
+<a class="back" href="#home">&lsaquo; Back to jackoregan.com</a>
+<p class="label">The funnel</p>
+<h2 class="tight">Every road in.</h2>
+<p class="sub">This is the whole machine as it runs in August 2027. Tap any box, walk it in whatever order you like.</p>
+<div class="mapflow">
+<button class="mnode mnode--dash" onclick="go('post')">The post<small>One leak a week on X and Instagram, 8,400 following. No ad spend most months.</small></button>
+<div class="marrow">&darr;</div>
+<button class="mnode" onclick="go('home')">jackoregan.com<small>The front door. &euro;214,000 of proof before they scroll.</small></button>
+<div class="marrow">&darr;</div>
+<button class="mnode" onclick="go('quiz')">The Leak Finder quiz<small>Free, two minutes, a euro number at the end. Email captured before the number.</small></button>
+<div class="marrow">&darr;</div>
+<div class="msplit">
+<button class="mnode" onclick="go('book')">The book, &euro;29<small>DIY. 1,100+ sold. The whole book is readable in here, first pages free.</small></button>
+<button class="mnode" onclick="go('assessment')">The assessment, &euro;999<small>Done for you. Booked three weeks out.</small></button>
+</div>
+<div class="marrow">&darr;</div>
+<button class="mnode" onclick="go('assessment')">Application, morning slot, &euro;250 deposit<small>Application first, always. Deposit holds the slot, no shows gone.</small></button>
+<div class="marrow">&darr;</div>
+<button class="mnode mnode--dash" onclick="go('assessment')">The retainers<small>Keep It Running &euro;149. AI Concierge &euro;400. 34 businesses stay on.</small></button>
+</div>
+</div>
+</div>
+
+<footer>
+<div class="wrap">
+<p>&copy; 2027 Jack O&rsquo;Regan. Cork, Ireland.</p>
+<p class="vision">Private vision build, written from August 2027.</p>
+</div>
+</footer>
+
+<script>
+var SCREENS=["home","post","quiz","book","assessment","map","reader"];
+var bought=false;
+var pendingBookView=null;
+function go(id){if(location.hash==="#"+id){route();}else{location.hash=id;}}
+function route(){
+var h=location.hash.replace("#","");
+if(SCREENS.indexOf(h)<0)h="home";
+var i;
+var els=document.querySelectorAll(".screen");
+for(i=0;i<els.length;i++){els[i].classList.toggle("on",els[i].id==="s-"+h);}
+if(h==="book"){bookView(pendingBookView||"sales");pendingBookView=null;}
+if(h==="assessment")aView("sales");
+if(h==="quiz")qRender();
+if(h==="reader")readerRefresh();
+window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+
+/* ---------- QUIZ ---------- */
+var QUIZ=[
+{cat:"the phone",q:"Who answers the phone when you’re on the tools?",opts:[["A system answers and books them in",0],["Someone in the office gets it",120],["Me, if I can get to it",380],["It goes to voicemail",640]]},
+{cat:"quotes",q:"How fast does a quote go out after you see a job?",opts:[["Same day, it’s automatic",0],["Inside a few days",260],["Late at night when I get to it",420],["Some never go out at all",700]]},
+{cat:"pricing",q:"When did you last put your prices up?",opts:[["This year, with the costs",0],["Last year",180],["I can’t remember",450]]},
+{cat:"deposits",q:"Do customers pay a deposit to hold a booking?",opts:[["Always, no deposit no slot",0],["Sometimes, on the big jobs",190],["Never, I take the chance",380]]},
+{cat:"money owed",q:"Who chases the money you’re owed?",opts:[["It chases itself, automatic",0],["Me, evenings and weekends",210],["Nobody, it piles up",400]]},
+{cat:"old customers",q:"What happens to a customer after the job is done?",opts:[["Automatic follow up and a review ask",0],["I text a few when it’s quiet",150],["Nothing, we move on",320]]},
+{cat:"paperwork",q:"How many hours of paperwork after work in a week?",opts:[["None, it’s handled",0],["Two or three",110],["Five or more",260]]},
+{cat:"size",q:"Roughly, what does the business turn over a month?",opts:[["Under €10,000",0.6],["€10,000 to €30,000",1],["Over €30,000",1.6]]}
+];
+var qs={phase:"intro",i:0,answers:[],mult:1,name:"",email:""};
+function qReset(){qs={phase:"intro",i:0,answers:[],mult:1,name:"",email:""};qRender();}
+function euro(n){return "€"+n.toLocaleString("en-IE");}
+function qRender(){
+var box=document.getElementById("quizbox");
+var h="";
+if(qs.phase==="intro"){
+h+='<p class="label">The Leak Finder</p>';
+h+='<h2 class="tight">Where are you leaking?</h2>';
+h+='<p class="sub">Eight questions, two minutes. Answer honest, nobody sees this but you. At the end you get a number, roughly what the leaks cost you a month.</p>';
+h+='<button class="btn btn--big" onclick="qStart()">Start</button>';
+h+='<p class="hero-note">Taken 3,214 times. August 2027.</p>';
+}else if(qs.phase==="q"){
+var Q=QUIZ[qs.i];
+h+='<div class="progress"><i style="width:'+Math.round(qs.i/QUIZ.length*100)+'%"></i></div>';
+h+='<p class="qnum">Question '+(qs.i+1)+' of '+QUIZ.length+'</p>';
+h+='<p class="qtitle">'+Q.q+'</p>';
+for(var j=0;j<Q.opts.length;j++){
+h+='<button class="opt" onclick="qAns('+j+')">'+Q.opts[j][0]+'</button>';
+}
+}else if(qs.phase==="email"){
+h+='<div class="progress"><i style="width:100%"></i></div>';
+h+='<p class="label">Nearly there</p>';
+h+='<h2 class="tight">Where do I send the breakdown?</h2>';
+h+='<p class="sub">The number comes up now. The full breakdown, which leaks, what order to fix them, what each fix costs, lands in your inbox.</p>';
+h+='<div class="panel">';
+h+='<div class="field"><label>First name</label><input id="q-name" type="text" placeholder="Denis"></div>';
+h+='<div class="field"><label>Email</label><input id="q-email" type="email" placeholder="denis@murphyplumbing.ie"></div>';
+h+='<button class="btn btn--big" style="width:100%" onclick="qSubmit()">Show me the number</button>';
+h+='<p class="tiny">No spam. The breakdown, then one leak a week if you want it.</p>';
+h+='</div>';
+}else if(qs.phase==="result"){
+var sum=0,tops=[],k;
+for(k=0;k<qs.answers.length;k++){sum+=qs.answers[k].w;}
+var est=Math.round(sum*qs.mult/10)*10;
+var sorted=qs.answers.slice().sort(function(a,b){return b.w-a.w;});
+for(k=0;k<sorted.length&&tops.length<2;k++){if(sorted[k].w>0)tops.push(sorted[k].cat);}
+h+='<p class="label">Your result</p>';
+if(est<200){
+h+='<h2 class="tight">Tight ship.</h2>';
+h+='<div class="bigeuro">'+euro(est)+'</div>';
+h+='<p class="proof-line">a month, roughly, by your answers</p>';
+h+='<p class="sub" style="margin-top:14px">Rare, that. Not much leaking. The breakdown is on its way to '+qs.email+' anyway, and the book is handy for when it slips.</p>';
+h+='<div class="chips" style="margin-top:10px"><a class="btn btn--ghost" href="#book">Get the book, €29</a></div>';
+}else{
+h+='<h2 class="tight">There it is'+(qs.name?", "+qs.name:"")+'.</h2>';
+h+='<div class="bigeuro">'+euro(est)+'</div>';
+h+='<p class="proof-line">a month, roughly. About '+euro(est*12)+' a year.</p>';
+if(tops.length)h+='<p class="sub" style="margin-top:14px">Your two biggest by your answers: <b>'+tops.join("</b> and <b>")+'</b>. The full breakdown is on its way to '+qs.email+'.</p>';
+h+='<div style="margin-top:20px">';
+h+='<a class="btn btn--big" href="#assessment">Book the assessment, €999</a>';
+h+='<p style="margin:14px 0 0"><a class="btn btn--ghost" href="#book">Start with the book, €29</a></p>';
+h+='</div>';
+}
+h+='<p style="margin-top:26px"><button class="back" style="border:none;background:none;cursor:pointer;padding:0" onclick="qReset()">Start again</button></p>';
+}
+box.innerHTML=h;
+}
+function qStart(){qs.phase="q";qs.i=0;qRender();}
+function qAns(j){
+var Q=QUIZ[qs.i];
+if(Q.cat==="size"){qs.mult=Q.opts[j][1];qs.phase="email";}
+else{qs.answers[qs.i]={cat:Q.cat,w:Q.opts[j][1]};qs.i++;if(qs.i>=QUIZ.length)qs.phase="email";}
+qRender();
+window.scrollTo(0,0);
+}
+function qSubmit(){
+var n=document.getElementById("q-name"),e=document.getElementById("q-email");
+if(!e.value||e.value.indexOf("@")<0){e.classList.add("bad");return;}
+qs.name=n.value.trim();qs.email=e.value.trim();qs.phase="result";qRender();window.scrollTo(0,0);
+}
+
+/* ---------- BOOK ---------- */
+function bookView(v){
+var ids=["sales","checkout","done"],i;
+for(i=0;i<ids.length;i++){document.getElementById("b-"+ids[i]).style.display=(ids[i]===v?"block":"none");}
+window.scrollTo(0,0);
+}
+function bookPay(){
+var n=document.getElementById("b-name"),e=document.getElementById("b-email");
+if(!e.value||e.value.indexOf("@")<0){e.classList.add("bad");return;}
+var first=n.value.trim().split(" ")[0];
+document.getElementById("b-doneName").textContent=first?(", "+first):"";
+bought=true;
+bookView("done");
+}
+function buyFromReader(){pendingBookView="checkout";go("book");}
+
+/* ---------- READER ---------- */
+function val(id){var e=document.getElementById(id);return e?e.value:"";}
+function setText(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
+function parseNum(v){v=(v||"").replace(/[^0-9]/g,"");return v?parseInt(v,10):0;}
+function calcBook(){
+var aj=parseNum(val("bk-aj")),jw=parseNum(val("bk-jw"));
+var ry=aj*jw*48;
+setText("bk-ryear",ry>0?euro(ry):"€ ...");
+var ids=["l1","l2","l3","l4","l5","l6","l7","l8"],total=0,i;
+for(i=0;i<ids.length;i++){var n=parseNum(val("bk-"+ids[i]));total+=n;setText("sb-"+ids[i],n>0?euro(n):"...");}
+setText("sb-total",total>0?euro(total):"...");
+var rev=parseNum(val("bk-l9"));
+setText("sb-l9",rev>0?rev+" behind":"...");
+var cap=Math.round(ry*0.15),msg;
+if(ry>0){
+msg="Your cap, 15 percent of "+euro(ry)+", is "+euro(cap)+".";
+if(total>cap&&cap>0)msg+=" Your total is over it, so your honest working number is "+euro(cap)+". Estimates stack up flattering, the cap keeps this audit worth doing.";
+else msg+=" Your total is under it, so your total stands.";
+}else{msg="Fill your two numbers at the start of the book and the cap works itself out here.";}
+setText("bk-capmsg",msg);
+}
+function readerRefresh(){
+var els=document.querySelectorAll(".locked"),i;
+for(i=0;i<els.length;i++){els[i].style.display=bought?"block":"none";}
+var lp=document.getElementById("lockpanel");
+if(lp)lp.style.display=bought?"none":"block";
+var on=document.getElementById("ownedline");
+if(on)on.style.display=bought?"block":"none";
+calcBook();
+}
+
+/* ---------- ASSESSMENT ---------- */
+function aView(v){
+var ids=["sales","apply","slots","done"],i;
+for(i=0;i<ids.length;i++){document.getElementById("a-"+ids[i]).style.display=(ids[i]===v?"block":"none");}
+window.scrollTo(0,0);
+}
+function aApply(){
+var n=document.getElementById("a-name").value.trim();
+var first=n?n.split(" ")[0]:"";
+document.getElementById("a-slotHead").textContent=first?("Grand, "+first+". Pick your morning."):"Grand. Pick your morning.";
+aView("slots");
+}
+function aSlot(label){
+document.getElementById("a-slotText").textContent=label;
+aView("done");
+}
+
+route();
+</script>
+</body>
+</html>
