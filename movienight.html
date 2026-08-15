@@ -6,82 +6,62 @@
 <meta name="theme-color" content="#0b0b0f">
 <title>Movie Night — rate the trailers</title>
 <style>
-  :root{
-    --bg:#0b0b0f; --card:#16161d; --card2:#1e1e27; --line:#2b2b36;
-    --text:#f3f1eb; --dim:#9c9aa6; --amber:#ffc46b; --green:#5fd39a; --red:#ff0033;
-  }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;padding:0}
-  body{
-    background:radial-gradient(120% 70% at 50% 0%, #1b1b26 0%, var(--bg) 55%);
-    background-attachment:fixed;
-    color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    min-height:100vh; padding:20px 15px calc(34px + env(safe-area-inset-bottom));
-    display:flex; justify-content:center;
-  }
-  .wrap{width:100%;max-width:470px}
-  .head{text-align:center;margin-bottom:16px}
-  .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);font-weight:800}
-  h1{font-size:29px;line-height:1.08;margin:9px 0 6px;font-weight:800;letter-spacing:-.025em}
-  .sub{color:var(--dim);font-size:14px;margin:0;line-height:1.5}
-  .screen{display:none}
-  .screen.on{display:block;animation:fade .3s ease}
-  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .btn{display:block;width:100%;border:0;border-radius:14px;padding:16px;font-size:16px;
-       font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:10px}
-  .btn.primary{background:var(--amber);color:#1a1206}
-  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
-  .btn:active{transform:scale(.985)}
-  .panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px 20px;margin-bottom:12px}
-  .panel p{color:var(--dim);font-size:15px;line-height:1.6;margin:0 0 16px}
-  .steps{list-style:none;padding:0;margin:0 0 20px;text-align:left}
-  .steps li{color:var(--dim);font-size:14.5px;line-height:1.5;padding:9px 0 9px 34px;position:relative}
-  .steps li b{color:var(--text)}
-  .steps li span{position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:50%;
-    background:var(--card2);border:1px solid var(--line);color:var(--amber);
-    font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
-  .count{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:9px;font-weight:600}
-  .progress{height:5px;background:var(--card2);border-radius:99px;overflow:hidden;margin-bottom:15px}
-  .progress > i{display:block;height:100%;width:0;background:var(--amber);transition:width .3s ease}
-  .card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);
-        border-radius:22px;padding:22px 19px 19px;margin-bottom:14px}
-  .num{font-size:11px;color:var(--amber);font-weight:800;letter-spacing:.16em}
-  .title{font-size:25px;font-weight:800;line-height:1.15;margin:8px 0 10px;letter-spacing:-.02em}
-  .meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
-  .tag{font-size:11px;padding:5px 10px;border-radius:999px;background:rgba(255,196,107,.13);color:var(--amber);font-weight:700}
-  .tag.grey{background:var(--card2);color:var(--dim);border:1px solid var(--line)}
-  .desc{color:var(--dim);font-size:15px;line-height:1.6;margin:0}
-  .trailer{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;
-           padding:16px;border-radius:14px;background:var(--red);color:#fff;text-decoration:none;
-           font-weight:800;font-size:15.5px}
-  .trailer.done{background:var(--card2);color:var(--dim);border:1px solid var(--line)}
-  .trailer:active{opacity:.85}
-  .play{width:0;height:0;border-left:13px solid currentColor;border-top:8px solid transparent;border-bottom:8px solid transparent}
-  .rate-lab{text-align:center;font-size:13px;color:var(--dim);margin:0 0 10px;font-weight:600}
-  .scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px}
-  .scale button{padding:15px 0;border-radius:12px;border:1px solid var(--line);background:var(--card);
-                color:var(--text);font-size:17px;font-weight:800;font-family:inherit;cursor:pointer}
-  .scale button:active{background:var(--amber);color:#1a1206;border-color:var(--amber)}
-  .ends{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin:-4px 2px 12px}
-  .skip{background:none;border:0;color:var(--dim);font-size:14px;font-family:inherit;
-        width:100%;padding:10px;cursor:pointer;text-decoration:underline}
-  .podium{background:linear-gradient(180deg,rgba(255,196,107,.18),rgba(255,196,107,.04));
-          border:1px solid rgba(255,196,107,.35);border-radius:20px;padding:22px 20px;margin-bottom:14px}
-  .podium .lab{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);font-weight:800}
-  .podium .score{font-size:13px;color:var(--amber);font-weight:800;margin-top:4px}
-  ol.rank{list-style:none;padding:0;margin:0 0 14px}
-  ol.rank li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;
-             margin-bottom:9px;display:flex;align-items:center;gap:13px}
-  ol.rank li .pos{width:26px;height:26px;flex:0 0 26px;border-radius:50%;background:var(--card2);
-    border:1px solid var(--line);color:var(--amber);font-size:12px;font-weight:800;
-    display:flex;align-items:center;justify-content:center}
-  ol.rank li .t{flex:1;font-weight:700;font-size:15px;line-height:1.3}
-  ol.rank li .m{font-size:12px;color:var(--dim);font-weight:500;margin-top:3px}
-  ol.rank li a{color:var(--amber);font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap}
-  h3{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:22px 0 10px;font-weight:800}
-  .foot{text-align:center;color:var(--dim);font-size:12px;margin-top:20px;line-height:1.7}
-  .foot a{color:var(--amber);text-decoration:none}
+:root{--bg:#0b0b0f;--card:#16161d;--card2:#1e1e27;--line:#2b2b36;--text:#f3f1eb;--dim:#9c9aa6;--amber:#ffc46b;--red:#ff0033}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:radial-gradient(120% 70% at 50% 0%,#1b1b26 0%,var(--bg) 55%);background-attachment:fixed;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;min-height:100vh;padding:20px 15px calc(34px + env(safe-area-inset-bottom));display:flex;justify-content:center}
+.wrap{width:100%;max-width:470px}
+.head{text-align:center;margin-bottom:16px}
+.kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);font-weight:800}
+h1{font-size:29px;line-height:1.08;margin:9px 0 6px;font-weight:800;letter-spacing:-.025em}
+.sub{color:var(--dim);font-size:14px;margin:0;line-height:1.5}
+.screen{display:none}
+.screen.on{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:16px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:10px;text-align:center;text-decoration:none}
+.btn.primary{background:var(--amber);color:#1a1206}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn:active{transform:scale(.985)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px 20px;margin-bottom:12px}
+.panel p{color:var(--dim);font-size:15px;line-height:1.6;margin:0 0 16px}
+.steps{list-style:none;padding:0;margin:0 0 20px;text-align:left}
+.steps li{color:var(--dim);font-size:14.5px;line-height:1.5;padding:9px 0 9px 34px;position:relative}
+.steps li b{color:var(--text)}
+.steps li span{position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:50%;background:var(--card2);border:1px solid var(--line);color:var(--amber);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.count{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:9px;font-weight:600}
+.progress{height:5px;background:var(--card2);border-radius:99px;overflow:hidden;margin-bottom:15px}
+.progress>i{display:block;height:100%;width:0;background:var(--amber);transition:width .3s ease}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:22px;padding:22px 19px 19px;margin-bottom:14px}
+.num{font-size:11px;color:var(--amber);font-weight:800;letter-spacing:.16em}
+.title{font-size:25px;font-weight:800;line-height:1.15;margin:8px 0 10px;letter-spacing:-.02em}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
+.tag{font-size:11px;padding:5px 10px;border-radius:999px;background:rgba(255,196,107,.13);color:var(--amber);font-weight:700}
+.tag.grey{background:var(--card2);color:var(--dim);border:1px solid var(--line)}
+.desc{color:var(--dim);font-size:15px;line-height:1.6;margin:0}
+.trailer{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;padding:16px;border-radius:14px;background:var(--red);color:#fff;text-decoration:none;font-weight:800;font-size:15.5px}
+.trailer.done{background:var(--card2);color:var(--dim);border:1px solid var(--line)}
+.play{width:0;height:0;border-left:13px solid currentColor;border-top:8px solid transparent;border-bottom:8px solid transparent}
+.rate-lab{text-align:center;font-size:13px;color:var(--dim);margin:0 0 10px;font-weight:600}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px}
+.scale button{padding:15px 0;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:17px;font-weight:800;font-family:inherit;cursor:pointer}
+.scale button:active{background:var(--amber);color:#1a1206;border-color:var(--amber)}
+.ends{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin:-4px 2px 12px}
+.skip{background:none;border:0;color:var(--dim);font-size:14px;font-family:inherit;width:100%;padding:10px;cursor:pointer;text-decoration:underline}
+.podium{background:linear-gradient(180deg,rgba(255,196,107,.18),rgba(255,196,107,.04));border:1px solid rgba(255,196,107,.35);border-radius:20px;padding:22px 20px;margin-bottom:14px}
+.podium .lab{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);font-weight:800}
+.podium .score{font-size:13px;color:var(--amber);font-weight:800;margin-top:4px}
+ol.rank{list-style:none;padding:0;margin:0 0 14px}
+ol.rank li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:9px;display:flex;align-items:center;gap:11px}
+ol.rank li .pos{width:26px;height:26px;flex:0 0 26px;border-radius:50%;background:var(--card2);border:1px solid var(--line);color:var(--amber);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+ol.rank li .t{flex:1;font-weight:700;font-size:15px;line-height:1.3}
+ol.rank li .m{font-size:12px;color:var(--dim);font-weight:500;margin-top:3px}
+ol.rank li a.tr{color:var(--amber);font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap}
+ol.rank li button.bin{background:none;border:1px solid var(--line);color:var(--dim);width:30px;height:30px;flex:0 0 30px;border-radius:50%;font-size:14px;cursor:pointer;font-family:inherit}
+ol.rank li button.bin:active{background:var(--red);color:#fff;border-color:var(--red)}
+h3{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:22px 0 10px;font-weight:800}
+.note{color:var(--dim);font-size:13px;line-height:1.6;margin:0 0 14px;text-align:center}
+.foot{text-align:center;color:var(--dim);font-size:12px;margin-top:20px;line-height:1.7}
+.foot a{color:var(--amber);text-decoration:none}
 </style>
 </head>
 <body>
@@ -93,133 +73,185 @@
   </div>
   <section id="intro" class="screen on">
     <div class="panel">
-      <p>Sinead. Jack shortlisted 15 films, all funny, mystery or action. You decide.</p>
+      <p>Sinead. Sixty films shortlisted, all funny, mystery or action. You decide.</p>
       <ul class="steps">
         <li><span>1</span> Tap <b>Watch the trailer</b>, it opens YouTube</li>
         <li><span>2</span> Come back and <b>score it 1 to 10</b></li>
-        <li><span>3</span> Stop any time after 3 and it <b>ranks your picks</b></li>
+        <li><span>3</span> Anything you give <b>7 or more</b> is kept on your shortlist</li>
+        <li><span>4</span> Get <b>15 fresh films</b> any time, the shortlist stays</li>
       </ul>
-      <button class="btn primary" onclick="start()">Start</button>
-      <button class="btn ghost" onclick="shuffleStart()">Shuffle the order</button>
+      <button class="btn primary" onclick="newRound()">Start</button>
+      <button class="btn ghost" id="resumeBtn" style="display:none" onclick="results()">See my shortlist</button>
     </div>
     <button class="btn ghost" onclick="surprise()">Skip it all, just pick one for us</button>
   </section>
   <section id="deck" class="screen">
-    <div class="count"><span id="pos">1 of 15</span><span id="rated">0 rated</span></div>
+    <div class="count"><span id="pos"></span><span id="rated"></span></div>
     <div class="progress"><i id="bar"></i></div>
     <div class="card" id="card"></div>
     <p class="rate-lab">How much do you want to watch this?</p>
     <div class="scale" id="scale"></div>
     <div class="ends"><span>1 · no chance</span><span>10 · put it on now</span></div>
-    <button class="btn ghost" id="enough" style="display:none" onclick="finish()">Seen enough, rank what I have</button>
+    <button class="btn ghost" id="enough" style="display:none" onclick="results()">Seen enough, show my shortlist</button>
     <button class="skip" onclick="rate(null)">Skip this one</button>
   </section>
-  <section id="results" class="screen"></section>
+  <section id="out" class="screen"></section>
 </div>
 <script>
-const FILMS = [
- {t:"Game Night",m:100,d:"Comedy, mystery and action in equal measure. The best all round fit.",g:["Funny","Mystery","Action"],w:"",u:"https://www.youtube.com/watch?v=uYMn-gIfiec"},
- {t:"The Nice Guys",m:116,d:"Murder mystery, properly hilarious, 70s LA action. Gosling and Crowe.",g:["Funny","Mystery","Action"],w:"",u:"https://www.youtube.com/watch?v=TGic0zh8LA4"},
- {t:"Hot Fuzz",m:121,d:"Small town mystery that turns into a completely absurd shootout.",g:["Funny","Mystery","Action"],w:"",u:"https://www.youtube.com/watch?v=ayTnvVpj9t4"},
- {t:"Knives Out",m:130,d:"Sharp whodunnit, very funny, brilliant cast.",g:["Mystery","Funny"],w:"",u:"https://www.youtube.com/watch?v=F7eI2mRoApU"},
- {t:"Glass Onion",m:139,d:"The funniest of the Knives Out films. Greek island, rich idiots, a body.",g:["Mystery","Funny"],w:"Netflix",u:"https://www.youtube.com/watch?v=gj5ibYSz8C0"},
- {t:"Wake Up Dead Man",m:145,d:"The newest Knives Out. Darker, still funny, cracking mystery.",g:["Mystery","Funny"],w:"Netflix",u:"https://www.youtube.com/watch?v=0hc8yz5-d5Y"},
- {t:"See How They Run",m:98,d:"1950s London theatre murder. Dry, clever, Saoirse Ronan stealing it.",g:["Mystery","Funny"],w:"",u:"https://www.youtube.com/watch?v=Q00qh7Ab6Mk"},
- {t:"Confess, Fletch",m:98,d:"Jon Hamm being very funny in a low key art theft mystery. Underseen.",g:["Mystery","Funny"],w:"",u:"https://www.youtube.com/watch?v=pb2Pu5EjC1s"},
- {t:"Kiss Kiss Bang Bang",m:103,d:"Same writer as The Nice Guys, sharper tongue. Downey Jr at his best.",g:["Mystery","Funny","Action"],w:"",u:"https://www.youtube.com/watch?v=__PnD1HWXSo"},
- {t:"Bullet Train",m:127,d:"Brad Pitt. Chaotic, funny, a mystery running underneath the mayhem.",g:["Action","Funny"],w:"",u:"https://www.youtube.com/watch?v=0IOsk2Vlc4o"},
- {t:"Red Notice",m:118,d:"Heist, double crosses, zero effort required. Easy watch.",g:["Action","Funny"],w:"Netflix",u:"https://www.youtube.com/watch?v=Pj0wz7zu3Ms"},
- {t:"The Lost City",m:112,d:"Jungle adventure comedy with a treasure mystery. Bullock and Tatum.",g:["Funny","Action"],w:"Prime",u:"https://www.youtube.com/watch?v=nfKO9rYDmE8"},
- {t:"The Man from U.N.C.L.E.",m:116,d:"Guy Ritchie spy caper. Stylish, witty, great soundtrack.",g:["Action","Funny"],w:"",u:"https://www.youtube.com/watch?v=-x08iNZ8Mfc"},
- {t:"The Spy Who Dumped Me",m:117,d:"Broad comedy, surprisingly brutal action. Mila Kunis, Kate McKinnon.",g:["Funny","Action"],w:"",u:"https://www.youtube.com/watch?v=uIx7jsiW9cs"},
- {t:"Murder Mystery",m:97,d:"Daft, does exactly what the title says. Sandler and Aniston.",g:["Mystery","Funny"],w:"Netflix",u:"https://www.youtube.com/watch?v=wabdIOtfFOc"}
+const F=[
+["Game Night",100,"Comedy, mystery and action in equal measure. The best all round fit.","Funny,Mystery,Action","uYMn-gIfiec"],
+["The Nice Guys",116,"Murder mystery, properly hilarious, 70s LA action.","Funny,Mystery,Action","TGic0zh8LA4"],
+["Hot Fuzz",121,"Small town mystery that turns into a completely absurd shootout.","Funny,Mystery,Action","ayTnvVpj9t4"],
+["Knives Out",130,"Sharp whodunnit, very funny, brilliant cast.","Mystery,Funny","F7eI2mRoApU"],
+["Glass Onion",139,"The funniest Knives Out. Greek island, rich idiots, a body.","Mystery,Funny","gj5ibYSz8C0"],
+["Wake Up Dead Man",145,"The newest Knives Out. Darker, still funny.","Mystery,Funny","0hc8yz5-d5Y"],
+["See How They Run",98,"1950s London theatre murder. Dry and clever.","Mystery,Funny","Q00qh7Ab6Mk"],
+["Confess, Fletch",98,"Jon Hamm, low key art theft mystery. Underseen.","Mystery,Funny","pb2Pu5EjC1s"],
+["Kiss Kiss Bang Bang",103,"Same writer as The Nice Guys, sharper tongue.","Mystery,Funny,Action","__PnD1HWXSo"],
+["Bullet Train",127,"Brad Pitt. Chaotic, funny, a mystery underneath.","Action,Funny","0IOsk2Vlc4o"],
+["Red Notice",118,"Heist, double crosses, zero effort required.","Action,Funny","Pj0wz7zu3Ms"],
+["The Lost City",112,"Jungle adventure comedy with a treasure mystery.","Funny,Action","nfKO9rYDmE8"],
+["The Man from U.N.C.L.E.",116,"Guy Ritchie spy caper. Stylish and witty.","Action,Funny","-x08iNZ8Mfc"],
+["The Spy Who Dumped Me",117,"Broad comedy, surprisingly brutal action.","Funny,Action","uIx7jsiW9cs"],
+["Murder Mystery",97,"Daft, does exactly what the title says.","Mystery,Funny","wabdIOtfFOc"],
+["21 Jump Street",109,"Two idiot cops go undercover in a school. Very funny.","Funny,Action","RLoKtb4c4W0"],
+["The Other Guys",107,"Ferrell and Wahlberg, the desk cops who find a real case.","Funny,Action,Mystery","D6WOoUG1eNo"],
+["Central Intelligence",107,"The Rock and Kevin Hart, spy nonsense, easy laughs.","Funny,Action","0FKctBraQj0"],
+["Spy",120,"Melissa McCarthy sent into the field. Genuinely great.","Funny,Action","AcVPM3kscww"],
+["Tropic Thunder",107,"Actors making a war film end up in a real one.","Funny,Action","9Pl4JNnqNaE"],
+["Free Guy",115,"Ryan Reynolds as a background character in a video game.","Funny,Action","X2m-08cOAbc"],
+["The Fall Guy",126,"Gosling as a stuntman chasing a missing actor.","Funny,Action,Mystery","j7jPnwVGdZ8"],
+["The Hitman's Bodyguard",118,"Reynolds and Sam Jackson roaring across Europe.","Funny,Action","IpKmt4MpctM"],
+["Kingsman: The Secret Service",129,"Very British spy film, very violent, very funny.","Action,Funny","t7ybRKVCUxM"],
+["Nobody",92,"Quiet dad turns out to be lethal. Short and brutal.","Action","wZti8QKBWPo"],
+["Baby Driver",113,"Getaway driver, incredible soundtrack, brilliant chases.","Action","zTvJJnoWIPk"],
+["Deadpool",108,"Filthy, funny, wall to wall action.","Funny,Action","Xithigfg7dA"],
+["Thor: Ragnarok",130,"The funny Thor one. Bright, daft, great.","Funny,Action","ue80QwXMRHg"],
+["Guardians of the Galaxy",121,"Space misfits, big laughs, great tunes.","Funny,Action","2XltzyLcu0g"],
+["Men in Black",98,"Aliens, suits, Will Smith at his peak.","Funny,Action","1Q4mhYF9aQQ"],
+["Murder on the Orient Express",114,"Poirot solves a murder on a stranded train.","Mystery","Mq4m3yAoW8E"],
+["Death on the Nile",127,"Poirot on a Nile cruise, a body, a lot of suspects.","Mystery","JM1U-Whb-P0"],
+["A Haunting in Venice",103,"Poirot at a seance. Creepier than the others.","Mystery","uavUvgVO6VM"],
+["Enola Holmes",123,"Sherlock's little sister solves her own case. Charming.","Mystery,Funny","1d0Zf9sXlHk"],
+["Enola Holmes 2",129,"More of the same, bigger. Millie Bobby Brown.","Mystery,Funny","JeoWGGeaLOs"],
+["Sherlock Holmes",128,"Downey Jr and Law, scruffy Victorian action mystery.","Mystery,Action","J7nJksXDBWc"],
+["Sherlock Holmes: A Game of Shadows",129,"Moriarty turns up. Bigger and louder.","Mystery,Action","amE1MxxRUFI"],
+["The Menu",107,"Fancy island restaurant, something very wrong. Darkly funny.","Mystery,Funny","C_uTkUGcHv4"],
+["Ready or Not",95,"Bride hunted by her new in laws. Nasty and hilarious.","Funny,Action","lsGU_h_0Qiw"],
+["Bodies Bodies Bodies",94,"A storm, rich twenty somethings, a murder game gone wrong.","Mystery,Funny","DMgLMaLlK9k"],
+["Bad Times at the El Royale",141,"Strangers in a weird hotel, everyone lying. Slow burn.","Mystery","y7wzBVARwaU"],
+["Clue",94,"The board game as a farce. Endlessly quotable.","Mystery,Funny","5GfxyYgoMHY"],
+["Zootropolis",108,"Rabbit cop and a con artist fox crack a case. A proper mystery.","Funny,Mystery","XFaff7zbr7c"],
+["The Grand Budapest Hotel",99,"A stolen painting, a prison break, very funny.","Funny,Mystery","wuIAXKzfrMg"],
+["In Bruges",107,"Two hitmen hiding in Belgium. Bleak and very funny.","Funny","p-gG2qo_l_A"],
+["Now You See Me",115,"Magicians pull off heists. Silly, good fun.","Mystery,Action","kfHjkKXu0oA"],
+["Now You See Me 2",129,"More magic heists, more twists.","Mystery,Action","4I8rVcSQbic"],
+["Ocean's Eleven",116,"The best heist film. Effortless.","Action","imm6OR605UI"],
+["Catch Me If You Can",141,"True story cat and mouse. DiCaprio and Hanks.","Mystery,Funny","lN6Irv9tnYI"],
+["The Gentlemen",113,"Guy Ritchie, weed empire, brilliant dialogue.","Funny,Action","2B0RpUGss2c"],
+["Snatch",104,"Diamond, dog, Brad Pitt as a pikey. Chaos.","Funny,Action","lGCsX0aR7aU"],
+["Lock, Stock and Two Smoking Barrels",107,"Where Ritchie started. A card debt spirals.","Funny,Action","Y8MXn5No1Jc"],
+["National Treasure",131,"Nic Cage steals the Declaration of Independence.","Mystery,Action","vqUPxNT8io4"],
+["Jumanji: Welcome to the Jungle",119,"Teens trapped in a game as The Rock and Kevin Hart.","Funny,Action","2QKg5SZ_35I"],
+["Jumanji: The Next Level",123,"Same again with Danny DeVito. Daft fun.","Funny,Action","AN9iKKcvhiA"],
+["Uncharted",116,"Treasure hunt, big set pieces, Tom Holland.","Action","eHp3MbsCbMg"],
+["The Mummy",125,"Brendan Fraser, cursed tomb, perfect Saturday film.","Action,Funny","f7oKxlaUBac"],
+["Pirates of the Caribbean",143,"Depp as Jack Sparrow. Still brilliant.","Action,Funny","naQr0uTrH_s"],
+["Tag",100,"Grown men playing tag for thirty years. True story.","Funny","9rQu77pgnpg"],
+["Seven Psychopaths",110,"Writer, stolen shih tzu, gangsters. Weird and funny.","Funny,Mystery","jsHR77oQKEY"]
 ];
-let order = [], i = 0, scores = [], watched = [];
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
-  window.scrollTo(0,0);
+const KEY='movienight1';
+let S={seen:[],short:[],bin:[]};
+try{const r=localStorage.getItem(KEY); if(r) S=JSON.parse(r);}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+let deck=[],i=0,round=[],watched=[];
+function url(n){return 'https://www.youtube.com/watch?v='+F[n][4];}
+function el(id){return document.getElementById(id);}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));el(id).classList.add('on');window.scrollTo(0,0);}
+function tags(n){return F[n][3].split(',').map(g=>'<span class="tag">'+g+'</span>').join('')+'<span class="tag grey">'+F[n][1]+' min</span>';}
+function newRound(){
+  const pool=F.map((f,n)=>n).filter(n=>S.seen.indexOf(n)<0&&S.bin.indexOf(n)<0);
+  for(let k=pool.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[pool[k],pool[j]]=[pool[j],pool[k]];}
+  deck=pool.slice(0,15); i=0; round=[]; watched=[];
+  if(!deck.length){ results('You have been through every film.'); return; }
+  show('deck'); render();
 }
-function reset(shuffled){
-  order = FILMS.map((f,n)=>n);
-  if(shuffled){ for(let k=order.length-1;k>0;k--){ const j=Math.floor(Math.random()*(k+1)); [order[k],order[j]]=[order[j],order[k]]; } }
-  i = 0; scores = []; watched = [];
-}
-function start(){ reset(false); show('deck'); render(); }
-function shuffleStart(){ reset(true); show('deck'); render(); }
-function buildScale(){
-  const s = document.getElementById('scale');
-  if(s.childElementCount) return;
-  let h = '';
-  for(let n=1;n<=10;n++) h += '<button onclick="rate('+n+')">'+n+'</button>';
-  s.innerHTML = h;
-}
+function buildScale(){const s=el('scale');if(s.childElementCount)return;let h='';for(let n=1;n<=10;n++)h+='<button onclick="rate('+n+')">'+n+'</button>';s.innerHTML=h;}
 function render(){
   buildScale();
-  const f = FILMS[order[i]];
-  document.getElementById('pos').textContent = (i+1)+' of '+FILMS.length;
-  document.getElementById('rated').textContent = scores.length+' rated';
-  document.getElementById('bar').style.width = (i/FILMS.length*100)+'%';
-  document.getElementById('enough').style.display = scores.length >= 3 ? 'block' : 'none';
-  const tags = f.g.map(g=>'<span class="tag">'+g+'</span>').join('')
-    + '<span class="tag grey">'+f.m+' min</span>'
-    + (f.w ? '<span class="tag grey">'+f.w+'</span>' : '');
-  const seen = watched.indexOf(order[i]) > -1;
-  document.getElementById('card').innerHTML =
-    '<div class="num">FILM '+(i+1)+'</div>'+
-    '<div class="title">'+f.t+'</div>'+
-    '<div class="meta">'+tags+'</div>'+
-    '<p class="desc">'+f.d+'</p>'+
-    '<a class="trailer'+(seen?' done':'')+'" href="'+f.u+'" target="_blank" rel="noopener" onclick="seenIt()">'+
-      '<span class="play"></span> '+(seen?'Watch it again':'Watch the trailer')+'</a>';
+  const n=deck[i];
+  el('pos').textContent=(i+1)+' of '+deck.length;
+  el('rated').textContent=S.short.length+' on shortlist';
+  el('bar').style.width=(i/deck.length*100)+'%';
+  el('enough').style.display=(S.short.length+round.filter(r=>r.s>=7).length)>0?'block':'none';
+  const seen=watched.indexOf(n)>-1;
+  el('card').innerHTML='<div class="num">FILM '+(i+1)+'</div><div class="title">'+F[n][0]+'</div><div class="meta">'+tags(n)+'</div><p class="desc">'+F[n][2]+'</p>'+
+   '<a class="trailer'+(seen?' done':'')+'" href="'+url(n)+'" target="_blank" rel="noopener" onclick="seenIt()"><span class="play"></span> '+(seen?'Watch it again':'Watch the trailer')+'</a>';
 }
-function seenIt(){ if(watched.indexOf(order[i])<0) watched.push(order[i]); }
-function rate(n){
-  if(n !== null) scores.push({f:FILMS[order[i]], n:n});
+function seenIt(){const n=deck[i];if(watched.indexOf(n)<0)watched.push(n);}
+function rate(v){
+  const n=deck[i];
+  if(S.seen.indexOf(n)<0)S.seen.push(n);
+  if(v!==null)round.push({n:n,s:v});
   i++;
-  if(i >= FILMS.length) finish();
-  else render();
+  if(i>=deck.length){results();}else{save();render();}
+}
+function commit(){
+  round.filter(r=>r.s>=7).forEach(r=>{
+    if(S.bin.indexOf(r.n)>-1)return;
+    const ex=S.short.find(x=>x.n===r.n);
+    if(ex){ex.s=Math.max(ex.s,r.s);}else{S.short.push({n:r.n,s:r.s});}
+  });
+  S.short.sort((a,b)=>b.s-a.s);
+  save();
+}
+function binIt(n){
+  S.short=S.short.filter(x=>x.n!==n);
+  if(S.bin.indexOf(n)<0)S.bin.push(n);
+  save(); results(null,true);
 }
 function surprise(){
-  const f = FILMS[Math.floor(Math.random()*FILMS.length)];
-  paint('The film gods have spoken', [{f:f, n:null}]);
+  const pool=F.map((f,n)=>n).filter(n=>S.bin.indexOf(n)<0);
+  const n=pool[Math.floor(Math.random()*pool.length)];
+  el('out').innerHTML=podium(n,null,'The film gods have spoken')+
+    '<button class="btn primary" onclick="surprise()">Pick another</button>'+
+    '<button class="btn ghost" onclick="newRound()">Rate some trailers instead</button>'+foot();
+  show('out');
 }
-function finish(){
-  if(!scores.length){ surprise(); return; }
-  const sorted = scores.slice().sort((a,b)=> b.n - a.n);
-  paint('Your number one', sorted);
+function podium(n,s,lab){
+  return '<div class="podium"><div class="lab">'+lab+'</div><div class="title">'+F[n][0]+'</div>'+
+   (s!==null&&s!==undefined?'<div class="score">'+s+' out of 10</div>':'')+
+   '<div class="meta" style="margin-top:10px">'+tags(n)+'</div><p class="desc">'+F[n][2]+'</p>'+
+   '<a class="trailer" href="'+url(n)+'" target="_blank" rel="noopener"><span class="play"></span> Watch the trailer</a></div>';
 }
-function paint(lab, list){
-  const top = list[0];
-  const rest = list.slice(1, 5);
-  const others = list.slice(5);
-  let html = '<div class="podium">'+
-    '<div class="lab">'+lab+'</div>'+
-    '<div class="title">'+top.f.t+'</div>'+
-    (top.n!==null?'<div class="score">'+top.n+' out of 10</div>':'')+
-    '<div class="meta" style="margin-top:10px"><span class="tag">'+top.f.m+' min</span>'+
-      (top.f.w?'<span class="tag grey">'+top.f.w+'</span>':'')+'</div>'+
-    '<p class="desc">'+top.f.d+'</p>'+
-    '<a class="trailer" href="'+top.f.u+'" target="_blank" rel="noopener"><span class="play"></span> Watch the trailer</a>'+
-    '</div>';
-  if(rest.length){
-    html += '<h3>Then these</h3><ol class="rank">'+ rest.map((r,n)=>
-      '<li><span class="pos">'+(n+2)+'</span>'+
-      '<span class="t">'+r.f.t+'<div class="m">'+r.n+'/10 · '+r.f.m+' min'+(r.f.w?' · '+r.f.w:'')+'</div></span>'+
-      '<a href="'+r.f.u+'" target="_blank" rel="noopener">Trailer ›</a></li>').join('') +'</ol>';
+function foot(){return '<p class="foot">Not sure what is streaming free tonight?<br><a href="https://www.justwatch.com/ie" target="_blank" rel="noopener">Check justwatch.com/ie</a></p>';}
+function results(msg,skipCommit){
+  if(!skipCommit)commit();
+  const left=F.map((f,n)=>n).filter(n=>S.seen.indexOf(n)<0&&S.bin.indexOf(n)<0).length;
+  let h='';
+  if(S.short.length){
+    h+=podium(S.short[0].n,S.short[0].s,'Top of your shortlist');
+    const rest=S.short.slice(1);
+    if(rest.length){
+      h+='<h3>Also on the shortlist</h3><ol class="rank">'+rest.map((r,k)=>
+        '<li><span class="pos">'+(k+2)+'</span><span class="t">'+F[r.n][0]+'<div class="m">'+r.s+'/10 · '+F[r.n][1]+' min</div></span>'+
+        '<a class="tr" href="'+url(r.n)+'" target="_blank" rel="noopener">Trailer</a>'+
+        '<button class="bin" title="Bin it" onclick="binIt('+r.n+')">✕</button></li>').join('')+'</ol>';
+    }
+    h+='<p class="note">Tap ✕ to bin one for good. Anything you keep stays here through every new batch.</p>';
+  } else {
+    h+='<div class="panel"><p>'+(msg||'Nothing scored 7 or more yet. Grab a fresh 15 and keep going.')+'</p></div>';
   }
-  if(others.length){
-    html += '<h3>The rest</h3><ol class="rank">'+ others.map((r,n)=>
-      '<li><span class="pos">'+(n+6)+'</span>'+
-      '<span class="t">'+r.f.t+'<div class="m">'+r.n+'/10 · '+r.f.m+' min</div></span>'+
-      '<a href="'+r.f.u+'" target="_blank" rel="noopener">Trailer ›</a></li>').join('') +'</ol>';
+  if(left>0){
+    h+='<button class="btn primary" onclick="newRound()">Give me 15 fresh films ('+left+' left)</button>';
+  } else {
+    h+='<p class="note">That is every film in the list.</p>';
   }
-  html += '<button class="btn primary" onclick="start()">Rate them again</button>'+
-    '<p class="foot">Not sure what is streaming free tonight?<br>'+
-    '<a href="https://www.justwatch.com/ie" target="_blank" rel="noopener">Check justwatch.com/ie</a></p>';
-  document.getElementById('results').innerHTML = html;
-  show('results');
+  h+='<button class="btn ghost" onclick="wipe()">Start the whole thing over</button>'+foot();
+  el('out').innerHTML=h; show('out');
 }
+function wipe(){ S={seen:[],short:[],bin:[]}; save(); el('resumeBtn').style.display='none'; show('intro'); }
+if(S.short.length){el('resumeBtn').style.display='block';}
 </script>
 </body>
 </html>
