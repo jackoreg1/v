@@ -93,13 +93,26 @@ publishable body and writes it to `build/`:
 
 ```
 python3 scripts/build-artifact.py movienight.html
+python3 scripts/build-artifact.py vision-k7x9q2.html --banner "Vision build, written from August 2027. The figures, quotes and reviews on this page are imagined, not real yet."
 ```
 
-Then publish `build/movienight.artifact.html` with the Artifact tool. Re-run
-the script and re-publish the same path to update the same link.
+`--banner` pins one line above the page. The vision build gets one because its
+testimonials and figures read as real once the page is out of context, and an
+Artifact link can be shared on. Keep it unless Jack says to drop it.
 
-`build/` is generated. Never edit anything in it, and never treat it as the
-source of truth.
+Then publish `build/<name>.artifact.html` with the Artifact tool. Re-run the
+script and publish the same file path to update the same link:
+
+| Page | Artifact |
+| --- | --- |
+| `movienight.html` | https://claude.ai/code/artifact/a4460892-791b-4885-86f1-6658ebb4c674 |
+| `vision-k7x9q2.html` | https://claude.ai/code/artifact/1ce07a3f-9675-4864-8e56-e670ab18b631 |
+
+From a session that did not publish them, pass the URL above as `url` or a
+second, separate artifact is created instead.
+
+`build/` is gitignored and generated. Never edit anything in it, and never
+treat it as the source of truth.
 
 ## Working with Jack
 
