@@ -143,6 +143,7 @@ script and publish the same file path to update the same link:
 
 | Page | Artifact |
 | --- | --- |
+| `index.html` | https://claude.ai/code/artifact/bf754532-e7a6-4a4b-b351-223d12eced03 |
 | `movienight.html` | https://claude.ai/code/artifact/a4460892-791b-4885-86f1-6658ebb4c674 |
 | `vision-k7x9q2.html` | https://claude.ai/code/artifact/1ce07a3f-9675-4864-8e56-e670ab18b631 |
 
