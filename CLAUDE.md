@@ -114,6 +114,21 @@ second, separate artifact is created instead.
 `build/` is gitignored and generated. Never edit anything in it, and never
 treat it as the source of truth.
 
+## Git
+
+Jack reviews on a phone, so a commit that quietly contains something he did not
+expect is expensive to spot and expensive to unpick. Three rules:
+
+- **Always name the files: `git commit <paths>`.** A bare `git commit` commits
+  whatever happens to be in the index, which is not necessarily what you just
+  staged. This has already gone wrong once: a file that had been staged for an
+  earlier, abandoned commit rode along in an unrelated one.
+- **`git status --short` before committing, `git show --stat` after.** The first
+  catches a stray staged file, the second proves what actually landed.
+- **If something is refused, unstage it there and then.** A blocked file left in
+  the index is a trap for the next commit. Then tell Jack it was refused rather
+  than parking it and carrying on.
+
 ## Working with Jack
 
 - He is usually on a phone. Keep replies short, lead with what changed, and do
@@ -121,3 +136,4 @@ treat it as the source of truth.
 - Commit and push to the working branch as you go rather than saving it all up.
 - If a change is visual, build and publish the artifact so he can look at it
   instead of reading a diff.
+- Config and permission files go through the file tools, never a shell heredoc.
