@@ -12,6 +12,7 @@ Standalone, self-contained HTML pages. That is the whole repo.
 | --- | --- |
 | `index.html` | The Leak Room. Jack's real, present day offer page, modelled on a Skool plan picker. Standard EUR 39 and Premium EUR 249 a month, a Standard/Premium toggle, and an honesty section listing what he has not done yet. This is the page GitHub Pages serves at the root. |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
+| `teardown-01.html` | Teardown 01, the first Standard tier asset. Five weeks inside one anonymised coaching account, 20 July to 28 August 2026. Built from Jack's own audit files and sprint updates, not written fresh. Every figure is dated and was read live. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
 
 ## Hard rules
@@ -108,6 +109,19 @@ Two things follow from serving the whole repo root:
   it ever gets built, it does not go in this repo.
 
 Pages redeploys on every push to `main`, usually inside a minute.
+
+### `teardown-01.html` specifics
+
+- **Anonymised on purpose.** No client name, no lead names, no domain, no CRM
+  platform. It is one real account and the numbers are exact. If a name ever
+  goes back in, it does not go in this repo.
+- Sources are Jack's own files, so the voice is already his: the 20 July full
+  system audit, the 25 July inbox run, the 24 August pipeline truth, the
+  27 August 56 conversation read, and the two-hourly sprint updates in Gmail.
+- The headline is the EUR 3,997 sitting still across three stalled threads.
+  It is the sum of EUR 1,500, EUR 1,500 and EUR 997. If any of those move,
+  the table and the total both change.
+- It ends without a win because there is not one yet. Do not add one.
 
 ### `index.html` specifics
 
