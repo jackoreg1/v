@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Leak Room. Jack O'Regan.</title>
+<meta name="description" content="Every business is leaking money in the inbox, the CRM and the diary. I count it in euro, then I show you how to plug it.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:#fff;color:#111;line-height:1.45;-webkit-font-smoothing:antialiased}
+::selection{background:#0e6b45;color:#fff}
+img,svg{max-width:100%}
+.topline{height:6px;background:#0e6b45}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+a{color:inherit}
+.topbar{position:sticky;top:0;background:rgba(255,255,255,.97);backdrop-filter:blur(6px);border-bottom:1px solid #ececec;z-index:50}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:13px 0;gap:12px}
+.brand{font-weight:700;font-size:16px;letter-spacing:-.01em;text-decoration:none}
+.btn{display:inline-block;background:#0e6b45;color:#fff;text-decoration:none;font-weight:700;border-radius:4px;padding:16px 30px;font-size:17px;border:none;cursor:pointer;font-family:inherit;text-align:center}
+.btn:hover{background:#0a5636}
+.btn--sm{padding:9px 16px;font-size:14px}
+.btn--big{display:block;width:100%;padding:19px 34px;font-size:19px}
+.btn--ghost{background:#fff;color:#111;border:2px solid #111;padding:14px 28px}
+.btn--ghost:hover{background:#111;color:#fff}
+section{padding:60px 0;border-top:1px solid #ececec}
+.hero{border-top:none;padding:52px 0 48px}
+.eyebrow,.label{font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#0e6b45;margin:0 0 12px}
+h1{font-size:clamp(44px,12.5vw,92px);line-height:.95;letter-spacing:-.035em;margin:0 0 16px}
+.position{font-size:clamp(20px,5.2vw,30px);font-weight:600;line-height:1.24;letter-spacing:-.015em;max-width:640px;margin:0 0 34px}
+h2{font-size:clamp(30px,8vw,52px);line-height:1.02;letter-spacing:-.03em;margin:0 0 14px}
+.sub{color:#444;font-size:17.5px;line-height:1.55;max-width:640px;margin:0 0 26px}
+.hero-note{color:#6b6b66;font-size:14.5px;margin:14px 0 0;max-width:520px}
+.numbers{display:grid;gap:14px;grid-template-columns:1fr;margin:0 0 30px}
+.num{border-left:4px solid #0e6b45;padding:2px 0 2px 16px}
+.num b{display:block;font-size:clamp(38px,10vw,54px);font-weight:800;letter-spacing:-.04em;line-height:1;color:#0e6b45}
+.num span{display:block;font-size:16px;font-weight:600;margin-top:6px}
+.num i{display:block;font-style:normal;color:#6b6b66;font-size:14px;margin-top:3px}
+.diagram{background:#0f1115;border-radius:10px;padding:22px 16px 18px}
+.diagram p{color:#8f97a3;font-size:13.5px;margin:14px 0 0;text-align:center}
+.toggle{display:flex;background:#ececec;border-radius:999px;padding:5px;max-width:460px;margin:0 0 24px}
+.toggle button{flex:1;border:none;background:transparent;font-family:inherit;font-size:17px;font-weight:700;padding:13px 8px;border-radius:999px;cursor:pointer;color:#6b6b66}
+.toggle button.on{background:#fff;color:#111;box-shadow:0 1px 3px rgba(0,0,0,.16)}
+.plan{border:2px solid #d9d9d4;border-radius:10px;padding:32px 22px 26px;max-width:560px}
+.plan.feature{border-color:#0e6b45}
+.plan .price{font-size:clamp(46px,12vw,62px);font-weight:800;letter-spacing:-.04em;line-height:1}
+.plan .price small{font-size:20px;font-weight:700;letter-spacing:-.01em;color:#6b6b66}
+.plan h3{font-size:22px;margin:6px 0 4px;letter-spacing:-.01em}
+.plan .who{color:#6b6b66;font-size:15.5px;margin:0 0 22px}
+.feats{list-style:none;margin:0 0 26px;padding:0}
+.feats li{display:flex;gap:12px;align-items:flex-start;padding:9px 0;font-size:16.5px;line-height:1.45}
+.tick{flex:none;width:22px;height:22px;border-radius:50%;background:#0e6b45;margin-top:2px;position:relative}
+.tick:after{content:"";position:absolute;left:7px;top:4px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(43deg)}
+.feats li.lead{font-weight:700}
+.plan .fine{color:#6b6b66;font-size:13.5px;margin:12px 0 0;text-align:center}
+.steps{display:grid;gap:26px;grid-template-columns:1fr;margin-top:6px}
+.step{display:flex;gap:18px}
+.stepnum{color:#0e6b45;font-weight:800;font-size:40px;line-height:.9;min-width:48px;letter-spacing:-.03em}
+.step h3{margin:2px 0 6px;font-size:20px;letter-spacing:-.01em}
+.step p{margin:0;color:#444;font-size:16px;line-height:1.5}
+.proofs{display:grid;gap:14px;grid-template-columns:1fr}
+.pcard{border:1.5px solid #d9d9d4;border-radius:6px;padding:22px 20px}
+.pcard b{display:block;color:#0e6b45;font-size:26px;letter-spacing:-.02em}
+.pcard p{margin:8px 0 0;font-size:16px;line-height:1.5;color:#444}
+.pcard i{display:block;font-style:normal;color:#8a8a84;font-size:13.5px;margin-top:10px}
+.honest{background:#111;color:#fff;border-radius:10px;padding:34px 24px}
+.honest .label{color:#34c98e}
+.honest h2{color:#fff}
+.honest p{color:#d8d8d2;font-size:17px;line-height:1.55;max-width:640px}
+.honest ul{color:#d8d8d2;font-size:16.5px;line-height:1.55;max-width:640px;padding-left:20px}
+.honest li{margin:0 0 8px}
+.faq-list{border-bottom:1px solid #ececec}
+.faq-item{border-top:1px solid #ececec;padding:20px 0}
+.faq-q{font-weight:700;font-size:19px;margin:0;letter-spacing:-.01em}
+.faq-a{margin:8px 0 0;color:#444;font-size:16.5px;line-height:1.55;max-width:680px}
+.panel{border:2px solid #0e6b45;border-radius:8px;padding:26px 22px;max-width:560px;background:#fff}
+.panel h3{margin:0 0 8px;font-size:21px;letter-spacing:-.01em}
+.panel p{color:#444;font-size:16px;line-height:1.5;margin:0 0 16px}
+.field{margin:0 0 14px}
+.field label{display:block;font-size:13.5px;font-weight:700;margin:0 0 6px}
+input,select,textarea{width:100%;padding:13px 14px;border:1.5px solid #d9d9d4;border-radius:4px;font-family:inherit;font-size:16px;background:#fff;color:#111}
+input:focus,select:focus,textarea:focus{border-color:#0e6b45;outline:none}
+input.bad,textarea.bad{border-color:#c0392b}
+textarea{min-height:92px;resize:vertical}
+.tiny{color:#8a8a84;font-size:13px;margin:12px 0 0}
+.bigeuro{font-size:clamp(46px,12vw,72px);font-weight:800;color:#0e6b45;letter-spacing:-.045em;line-height:1;margin:4px 0 6px}
+footer{border-top:1px solid #ececec;padding:30px 0 56px;color:#8a8a84;font-size:14px}
+footer p{margin:5px 0;max-width:640px}
+@media(min-width:760px){
+.numbers{grid-template-columns:repeat(3,1fr);gap:26px}
+.proofs{grid-template-columns:repeat(3,1fr)}
+.steps{grid-template-columns:repeat(2,1fr);gap:34px}
+section{padding:76px 0}
+}
+</style>
+</head>
+<body>
+
+<div class="topline"></div>
+
+<div class="topbar">
+<div class="wrap bar">
+<a class="brand" href="#top">Jack O&rsquo;Regan</a>
+<a class="btn btn--sm" href="#plans">See the plans</a>
+</div>
+</div>
+
+<a id="top"></a>
+
+<section class="hero">
+<div class="wrap">
+<p class="eyebrow">Cork, Ireland</p>
+<h1>The Leak Room</h1>
+<p class="position">Every business is leaking money somewhere. Usually in the inbox, the CRM and the diary, and nobody has ever counted it.</p>
+<div class="numbers">
+<div class="num"><b>639</b><span>conversations read in one inbox</span><i>One run, one real account, 25 July 2026</i></div>
+<div class="num"><b>106</b><span>people who messaged in and never got a reply</span><i>Found in that same run</i></div>
+<div class="num"><b>22</b><span>appointments booked, none ever marked showed or not</span><i>March to August, same account</i></div>
+</div>
+<a class="btn btn--big" href="#plans" style="max-width:360px">See the plans</a>
+<p class="hero-note">Those are three real numbers off one real account. They are the whole pitch. Nobody had counted any of them.</p>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<p class="label">How it actually works</p>
+<h2>One system. Three places it looks.</h2>
+<p class="sub">It is the same job every time. Point the thing at the inbox, the CRM and the diary, then read back what is sitting there rotting.</p>
+<div class="diagram">
+<svg viewBox="0 0 720 360" role="img" aria-label="One system pointed at the inbox, the CRM and the diary">
+<rect width="720" height="360" fill="#0f1115"></rect>
+<rect x="20" y="140" width="184" height="80" rx="8" fill="#151a22" stroke="#2c3542" stroke-width="1.5"></rect>
+<text x="112" y="172" fill="#e8ecf2" font-family="Helvetica,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="middle">ONE SYSTEM</text>
+<text x="112" y="194" fill="#7f8b9c" font-family="Helvetica,Arial,sans-serif" font-size="12.5" text-anchor="middle">reads, scores, hands back</text>
+<path d="M204 180 H330" stroke="#3a4553" stroke-width="1.5" fill="none"></path>
+<path d="M330 65 V295" stroke="#3a4553" stroke-width="1.5" fill="none"></path>
+<path d="M330 65 H424 M330 180 H424 M330 295 H424" stroke="#3a4553" stroke-width="1.5" fill="none"></path>
+<path d="M424 59 l12 6 l-12 6 z M424 174 l12 6 l-12 6 z M424 289 l12 6 l-12 6 z" fill="#3a4553"></path>
+<rect x="440" y="22" width="260" height="86" rx="8" fill="#151a22" stroke="#2c3542" stroke-width="1.5"></rect>
+<text x="462" y="52" fill="#34c98e" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" letter-spacing="1.4">THE INBOX</text>
+<text x="462" y="76" fill="#e8ecf2" font-family="Helvetica,Arial,sans-serif" font-size="15" font-weight="bold">639 read</text>
+<text x="462" y="96" fill="#7f8b9c" font-family="Helvetica,Arial,sans-serif" font-size="13">106 never answered</text>
+<rect x="440" y="137" width="260" height="86" rx="8" fill="#151a22" stroke="#2c3542" stroke-width="1.5"></rect>
+<text x="462" y="167" fill="#34c98e" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" letter-spacing="1.4">THE CRM</text>
+<text x="462" y="191" fill="#e8ecf2" font-family="Helvetica,Arial,sans-serif" font-size="15" font-weight="bold">28 opportunities</text>
+<text x="462" y="211" fill="#7f8b9c" font-family="Helvetica,Arial,sans-serif" font-size="13">23 never moved off New Lead</text>
+<rect x="440" y="252" width="260" height="86" rx="8" fill="#151a22" stroke="#2c3542" stroke-width="1.5"></rect>
+<text x="462" y="282" fill="#34c98e" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="bold" letter-spacing="1.4">THE DIARY</text>
+<text x="462" y="306" fill="#e8ecf2" font-family="Helvetica,Arial,sans-serif" font-size="15" font-weight="bold">22 booked</text>
+<text x="462" y="326" fill="#7f8b9c" font-family="Helvetica,Arial,sans-serif" font-size="13">0 marked showed or no show</text>
+</svg>
+<p>One account, checked 2 August 2026. Every number above came off it.</p>
+</div>
+</div>
+</section>
+
+<section id="plans">
+<div class="wrap">
+<p class="label">The room</p>
+<h2>Select your plan.</h2>
+<p class="sub">Two ways in. Do it yourself with what I have already written down, or do it with me on a call with your own account open on the screen.</p>
+
+<div class="toggle" id="toggle">
+<button type="button" id="t-standard" class="on" onclick="pick('standard')">Standard</button>
+<button type="button" id="t-premium" onclick="pick('premium')">Premium</button>
+</div>
+
+<div class="plan" id="p-standard">
+<div class="price">&euro;39<small>/month</small></div>
+<h3>Standard</h3>
+<p class="who">Find it yourself.</p>
+<ul class="feats">
+<li class="lead"><span class="tick"></span><span>FIND IT YOURSELF. Everything I have written down, none of my time.</span></li>
+<li><span class="tick"></span><span>The ten leaks, with the maths to price each one in euro a month</span></li>
+<li><span class="tick"></span><span>The 4 stage DM framework, written from reading 639 real conversations, not from theory</span></li>
+<li><span class="tick"></span><span>The inbox run written out step by step so you can do it on your own account</span></li>
+<li><span class="tick"></span><span>Every build I do, written up after. The misses as well as the wins</span></li>
+<li><span class="tick"></span><span>One teardown a month. A real account, numbers on the screen, nothing hidden</span></li>
+</ul>
+<a class="btn btn--big" href="#apply" onclick="setPlan('Standard')">Start on Standard</a>
+<p class="fine">First week free. Cancel in a click, no call, no form.</p>
+</div>
+
+<div class="plan feature" id="p-premium" style="display:none">
+<div class="price">&euro;249<small>/month</small></div>
+<h3>Premium</h3>
+<p class="who">Find it with me.</p>
+<ul class="feats">
+<li class="lead"><span class="tick"></span><span>FIND IT WITH ME. Everything in Standard, plus:</span></li>
+<li><span class="tick"></span><span>One call a week with your account open on the screen, not a slide deck</span></li>
+<li><span class="tick"></span><span>DMs open, answered the same day Monday to Friday</span></li>
+<li><span class="tick"></span><span>We build your inbox system together on the call. It is yours, it stays yours</span></li>
+<li><span class="tick"></span><span>You watch me work a live client account. The bits that do not work as well</span></li>
+<li><span class="tick"></span><span>Your leaks priced in euro before you spend a cent on fixing them</span></li>
+</ul>
+<a class="btn btn--big" href="#apply" onclick="setPlan('Premium')">Start on Premium</a>
+<p class="fine">First week free. Four seats, because the calls are real.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<p class="label">What happens</p>
+<h2>Four steps. No mystery.</h2>
+<div class="steps">
+<div class="step"><div class="stepnum">1</div><div><h3>You tell me where it hurts</h3><p>Two lines is enough. The inbox, the follow up, the diary, the money that was agreed and never landed.</p></div></div>
+<div class="step"><div class="stepnum">2</div><div><h3>We count it</h3><p>Not a guess and not a vibe. How many messages, how many went unanswered, how many booked, how many showed. A number, in euro, a month.</p></div></div>
+<div class="step"><div class="stepnum">3</div><div><h3>We plug the cheapest one first</h3><p>The one that pays for itself fastest, not the one that sounds cleverest. Usually it is replying to people who already messaged you.</p></div></div>
+<div class="step"><div class="stepnum">4</div><div><h3>You keep the thing</h3><p>The system sits in your account, not mine. If you leave the room next month it still runs.</p></div></div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<p class="label">Proof</p>
+<h2>Things that actually happened.</h2>
+<p class="sub">All of this is one client, a fitness coach in Ireland. It is real work, dated, and I can walk you through any of it.</p>
+<div class="proofs">
+<div class="pcard"><b>106 leads</b><p>First full inbox run. 639 threads walked, 106 people found who had messaged in and never been replied to. Two of them warmer than anything on the official lead list.</p><i>25 July 2026</i></div>
+<div class="pcard"><b>1 close</b><p>Transcribed a real consult call and found the word for word moment a stalled lead was let go. Followed up using his own stated deadline instead of a generic check in. He closed.</p><i>July 2026</i></div>
+<div class="pcard"><b>&euro;0 billable</b><p>22 appointments over five months, every one still sitting at Confirmed. Nothing marked showed, nothing marked won, no payment provider connected. The same leak he gets paid to find in other businesses, sitting in his own.</p><i>2 August 2026</i></div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<div class="honest">
+<p class="label">Read this before you pay me</p>
+<h2>What I have not done yet.</h2>
+<p>The book I am writing argues for an honesty cap on every number you put in front of a client. Same rule applies to me, so here it is.</p>
+<ul>
+<li><b>One paying client.</b> Not ten, not fifty. One, and everything on this page came out of his account.</li>
+<li><b>Members in this room so far: zero.</b> It opened today. When that number changes I will put the real one here.</li>
+<li><b>Every euro I have earned so far traces back to my own hours.</b> Well paid manual work with better software around it. Not hands off income and I am not going to sell it as that.</li>
+<li><b>One fixed price engagement scoped, none delivered yet.</b> Thirty days of daily direction at &euro;800, agreed in August 2026. It has not started and it has not been invoiced.</li>
+</ul>
+<p>If that puts you off, grand, that is the point of writing it down. If what you want is the fella who counted 639 conversations because nobody else would, I am your man.</p>
+</div>
+</div>
+</section>
+
+<section id="apply">
+<div class="wrap">
+<p class="label">Start</p>
+<h2>Tell me what is leaking.</h2>
+<p class="sub">Two lines. I read every one myself, there is nobody else here to read them.</p>
+<div class="panel" id="applyPanel">
+<div class="field"><label for="f-name">Your name</label><input id="f-name" type="text" autocomplete="name"></div>
+<div class="field"><label for="f-biz">What the business does</label><input id="f-biz" type="text"></div>
+<div class="field"><label for="f-plan">Plan</label><select id="f-plan"><option>Standard</option><option>Premium</option></select></div>
+<div class="field"><label for="f-leak">Where do you think it is leaking</label><textarea id="f-leak" placeholder="The inbox. People message in and I get to them days later, if at all."></textarea></div>
+<button type="button" class="btn btn--big" onclick="send()">Send it</button>
+<p class="tiny" id="f-note">Nothing on this page is wired to a mailbox yet. It shows you what would be sent so you can copy it.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<p class="label">Straight answers</p>
+<h2>Asked straight, answered straight.</h2>
+<div class="faq-list">
+<div class="faq-item"><p class="faq-q">Is this another AI course?</p><p class="faq-a">No. There is no curriculum and no modules. It is counting what your business is losing and then fixing the biggest one. The software is the boring bit at the end.</p></div>
+<div class="faq-item"><p class="faq-q">Do I need to be technical?</p><p class="faq-a">No. If you can open your inbox and your CRM you have everything the first session needs.</p></div>
+<div class="faq-item"><p class="faq-q">Why is Premium six times the price?</p><p class="faq-a">Because it is my hours. Standard is things I wrote once and can hand to a hundred people. Premium is a call a week with your account open, and there are only so many mornings in a week.</p></div>
+<div class="faq-item"><p class="faq-q">What if I find nothing?</p><p class="faq-a">Then you cancel and you have lost a week that cost you nothing. I would rather that than take &euro;249 a month off a business that is already running tight.</p></div>
+<div class="faq-item"><p class="faq-q">Can I see the one client?</p><p class="faq-a">I can walk you through the work and the numbers on a call. I will not put his name and his figures on a public page without asking him, and I have not asked him.</p></div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="wrap">
+<p>Jack O&rsquo;Regan. Cork, Ireland.</p>
+<p>Every number on this page came off a real account on a real date. Nothing here is rounded up. If you find something on this page I cannot back up, tell me and I will take it down.</p>
+</div>
+</footer>
+
+<script>
+function pick(which){
+  var std=which==="standard";
+  document.getElementById("p-standard").style.display=std?"block":"none";
+  document.getElementById("p-premium").style.display=std?"none":"block";
+  document.getElementById("t-standard").className=std?"on":"";
+  document.getElementById("t-premium").className=std?"":"on";
+  document.getElementById("f-plan").value=std?"Standard":"Premium";
+}
+function setPlan(name){document.getElementById("f-plan").value=name;}
+function send(){
+  var name=document.getElementById("f-name"),leak=document.getElementById("f-leak");
+  var ok=true;
+  [name,leak].forEach(function(el){
+    if(!el.value.trim()){el.className="bad";ok=false;}else{el.className="";}
+  });
+  if(!ok)return;
+  var biz=document.getElementById("f-biz").value.trim();
+  var plan=document.getElementById("f-plan").value;
+  var body="Name: "+name.value.trim()+"\nBusiness: "+(biz||"not said")+"\nPlan: "+plan+"\nLeak: "+leak.value.trim();
+  var p=document.getElementById("applyPanel");
+  p.innerHTML='<h3>Grand, that is written down.</h3>'+
+    '<p>Here is what you said. Copy it and send it to me however suits, the page itself does not post anywhere yet.</p>'+
+    '<textarea id="f-out" readonly style="min-height:150px"></textarea>'+
+    '<button type="button" class="btn btn--big" style="margin-top:12px" onclick="copyOut()">Copy it</button>'+
+    '<p class="tiny" id="f-copied"></p>';
+  document.getElementById("f-out").value=body;
+}
+function copyOut(){
+  var t=document.getElementById("f-out");
+  t.select();t.setSelectionRange(0,99999);
+  var done=function(){document.getElementById("f-copied").textContent="Copied.";};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t.value).then(done,function(){document.execCommand("copy");done();});
+  }else{document.execCommand("copy");done();}
+}
+</script>
+
+</body>
+</html>

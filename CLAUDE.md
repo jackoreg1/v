@@ -6,10 +6,11 @@ have to answer with his thumbs.
 
 ## What this repo is
 
-Two standalone, self-contained HTML pages. That is the whole repo.
+Standalone, self-contained HTML pages. That is the whole repo.
 
 | File | What it is |
 | --- | --- |
+| `index.html` | The Leak Room. Jack's real, present day offer page, modelled on a Skool plan picker. Standard EUR 39 and Premium EUR 249 a month, a Standard/Premium toggle, and an honesty section listing what he has not done yet. This is the page GitHub Pages serves at the root. |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
 
@@ -84,6 +85,43 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
   the film on the shortlist. The shortlist survives every new round.
 - Dark theme, colours are the `:root` custom properties. `--amber` is the
   accent, `--red` is the trailer button only.
+
+## Hosting on GitHub Pages
+
+The repo is public and Pages serves it straight from `main` at the repo root,
+no workflow, no build step. Settings, Pages, Source: Deploy from a branch,
+Branch: `main`, folder `/ (root)`.
+
+| Page | Live URL |
+| --- | --- |
+| `index.html` | https://jackoreg1.github.io/v/ |
+| `movienight.html` | https://jackoreg1.github.io/v/movienight.html |
+| `vision-k7x9q2.html` | https://jackoreg1.github.io/v/vision-k7x9q2.html |
+
+Two things follow from serving the whole repo root:
+
+- **Everything committed here is publicly reachable as a live page.** The
+  vision build renders as a real looking site at a guessable URL. It is
+  `noindex,nofollow` so it stays out of search, but a shared link works.
+- **Never commit a page holding a named client's private material.**
+  `terrence30.html` in `docs/terrence-tool-spec.md` is the current example. If
+  it ever gets built, it does not go in this repo.
+
+Pages redeploys on every push to `main`, usually inside a minute.
+
+### `index.html` specifics
+
+- Prices are plain text in the markup, one spot each: search `&euro;39` and
+  `&euro;249`.
+- Every figure on it comes from the Notion Track Record page, Proven column
+  only. 639 conversations, 106 unanswered, 22 appointments, 28 opportunities
+  with 23 unmoved. If a number changes there, change it here.
+- **The apply form does not post anywhere.** It validates, then shows the
+  message and a copy button. Wire it to a real endpoint before the link goes
+  out to anyone.
+- The "What I have not done yet" section is deliberate, not filler. It is the
+  honesty cap applied to Jack's own page. Do not quietly delete it to make the
+  page sell harder.
 
 ## Previewing on a phone
 
