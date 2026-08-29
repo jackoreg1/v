@@ -6,12 +6,13 @@ have to answer with his thumbs.
 
 ## What this repo is
 
-Two standalone, self-contained HTML pages. That is the whole repo.
+Three standalone, self-contained HTML pages. That is the whole repo.
 
 | File | What it is |
 | --- | --- |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
+| `getgoing.html` | The shop. Eleven things Jack built with Claude, each written up as a post with the first half free and the file itself behind a EUR 15 buy block. Bundle at EUR 99. |
 
 ## Hard rules
 
@@ -85,6 +86,37 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
 - Dark theme, colours are the `:root` custom properties. `--amber` is the
   accent, `--red` is the trailer button only.
 
+### `getgoing.html`
+
+- **The eleven products are `P`**, an array of
+  `{id, kind, t, hook, mins, free, eg, gets}`. `free` is the half that is
+  given away, as an HTML string. `gets` is the bullet list of what is behind
+  the buy block. Adding a product means appending one entry to `P` **and**
+  adding a matching key to `BUY`. The index list, the posts and the numbering
+  all render off `P`, so nothing else needs touching.
+- **Checkout links live in one object, `BUY`, at the top of the script.** One
+  key per product id plus `bundle`. They are plain `href`s, so a Stripe
+  Payment Link, a Gumroad URL or a systeme.io URL all work the same and none
+  of them puts a third-party script on the page. An empty string renders a
+  dashed grey "checkout link not set yet" button instead of a dead link, and
+  the footer quietly counts how many are still missing. That footer line
+  disappears on its own once they are all filled in.
+- **No paid content is in this file and none ever goes in.** The locked half
+  is described, not included, because anything in the HTML can be read from
+  view source. Delivery is whatever the checkout link uses.
+- **Nothing persists.** No `localStorage`, no state, no tracking. The only JS
+  is the render loop and the smooth scroll on the top bar button.
+- **Serif for reading, system sans for anything you tap.** `--serif` is the
+  stack the phone already has, nothing is loaded over the network. The one
+  repeated device is `.lab`, the small tracked-out uppercase label used for
+  eyebrows, the contents heading, the example labels and the cut marker.
+- **The green is `#0e6b45`** again, same as the vision build.
+
+**Before any of these are actually sold, the files being delivered need
+scrubbing.** `whats-real`, `josh-daily` and `read-whatsapp-thread` name a
+client, and carry a live account id, a location id and API ids. The sales page
+itself is clean, the source files are not.
+
 ## Previewing on a phone
 
 The pages are full HTML documents, so they cannot be published as an Artifact
@@ -107,6 +139,7 @@ script and publish the same file path to update the same link:
 | --- | --- |
 | `movienight.html` | https://claude.ai/code/artifact/a4460892-791b-4885-86f1-6658ebb4c674 |
 | `vision-k7x9q2.html` | https://claude.ai/code/artifact/1ce07a3f-9675-4864-8e56-e670ab18b631 |
+| `getgoing.html` | https://claude.ai/code/artifact/427562e0-49b2-436a-bb64-0d994c743870 |
 
 From a session that did not publish them, pass the URL above as `url` or a
 second, separate artifact is created instead.
