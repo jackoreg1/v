@@ -118,9 +118,12 @@ Pages redeploys on every push to `main`, usually inside a minute.
 - Sources are Jack's own files, so the voice is already his: the 20 July full
   system audit, the 25 July inbox run, the 24 August pipeline truth, the
   27 August 56 conversation read, and the two-hourly sprint updates in Gmail.
-- The headline is the EUR 3,997 sitting still across three stalled threads.
-  It is the sum of EUR 1,500, EUR 1,500 and EUR 997. If any of those move,
-  the table and the total both change.
+- **The headline is no longer EUR 3,997.** Jack caught it on 29 August: EUR
+  1,500 is not a price Josh sells. The real offers are EUR 997 for the 16 week
+  one to one, EUR 197 for the 8 week group and EUR 250 a month rolling. Two of
+  the three stalled cards carry a CRM value that matches no product, so the
+  page now reads "EUR 997 plus two unknowns" and the mis-pricing is itself the
+  finding. Never re-add a total that sums unsourced CRM values.
 - It ends without a win because there is not one yet. Do not add one.
 
 ### `index.html` specifics
