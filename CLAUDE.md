@@ -19,6 +19,10 @@ The first two are the live field sales tools. They came into git late, recovered
 out of their published Artifacts, so treat this repo as the source of truth for
 them from now on rather than whatever copy is on the Mac.
 
+This repo is public and Jack decided on 29 Aug to keep it that way, having been
+told the 100 markets and their openers are readable by anyone. Settled, do not
+raise it again. The brain repo is the private one.
+
 ## Hard rules
 
 - **One file per page. Everything inline.** CSS in a single `<style>`, JS in a
