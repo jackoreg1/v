@@ -6,12 +6,13 @@ have to answer with his thumbs.
 
 ## What this repo is
 
-Two standalone, self-contained HTML pages. That is the whole repo.
+Standalone, self-contained HTML pages. That is the whole repo.
 
 | File | What it is |
 | --- | --- |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
+| `setter.html` | A DM tool for an online coach. Captures how they actually write, scores leads on behaviour, and drafts the next message on a seven rung ladder. Built to be sold, see `docs/setter-icp-and-pitch.md`. |
 
 ## Hard rules
 
@@ -85,6 +86,31 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
 - Dark theme, colours are the `:root` custom properties. `--amber` is the
   accent, `--red` is the trailer button only.
 
+### `setter.html`
+
+- **State persists** in `localStorage` under `setter_v1`. If the shape of a
+  lead or of `S.icp` ever changes, change the key too, or old saves load half
+  broken. Routing is the URL hash against `SCREENS`, same idea as the vision
+  build.
+- **The voice profile is the product.** `analyse()` reads pasted real DMs and
+  works out, offline and with no API, the average message length, the lower
+  case rate, whether apostrophes get used, the emoji rate and top emoji, the
+  usual opening word and the coach's own recurring words. `runAnalyse()` writes
+  that into `S.voice` and every draft then obeys it.
+- **`build(lead, stage, variant)` composes the message.** Templates live in
+  `LINES`, one array of sentences per variant. **The last sentence is always
+  the question, and a leading `~` marks a sentence as filler.** A clipped voice
+  drops only the `~` ones, never the quoted fact or the proof line. Adding a
+  variant means adding an array, nothing else.
+- **The framework is enforced in code, not written on a wall.** One question
+  per message is a hard truncate at the first `?`. Three touches moves the lead
+  to stopped. A borderline lead at bridge or book stage gets blocked with a dig
+  first. A disqualifier beats a perfect ICP score.
+- **`priority()` sorts the queue** and owed a reply always wins. That is the
+  106 of 639 finding from the Josh work, built in as the default behaviour.
+- Accent is `--acc:#c7f051`, and `--hot:#ff6b4a` is owed a reply and stop
+  warnings only. Do not use hot for anything else, it is the urgency colour.
+
 ## Previewing on a phone
 
 The pages are full HTML documents, so they cannot be published as an Artifact
@@ -107,6 +133,7 @@ script and publish the same file path to update the same link:
 | --- | --- |
 | `movienight.html` | https://claude.ai/code/artifact/a4460892-791b-4885-86f1-6658ebb4c674 |
 | `vision-k7x9q2.html` | https://claude.ai/code/artifact/1ce07a3f-9675-4864-8e56-e670ab18b631 |
+| `setter.html` | https://claude.ai/code/artifact/d36a76be-e7f8-46ac-846c-f1ef406658dd |
 
 From a session that did not publish them, pass the URL above as `url` or a
 second, separate artifact is created instead.
