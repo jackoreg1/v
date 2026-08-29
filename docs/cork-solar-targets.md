@@ -1,90 +1,122 @@
 # Cork solar, the target list
 
-Started 29 Aug 2026. **This is a candidate list, not a lead list.** Nothing here
-is qualified yet and nothing here has been verified.
+Worked 29 Aug 2026 off the Indeed connector, which came online mid session.
+Everything below is real Indeed data, not search snippets and not guesses.
 
-## What could and could not be checked
+## The one to ring
 
-A cloud session cannot reach Irish sites. `ie.indeed.com`, `glassdoor.ie` and
-every company site tried came back blocked by the network egress proxy. Web
-search works but runs off a US index, so it returns American solar jobs, not
-Cork ones.
+### The Energy Centre
 
-So **the churn signal has not been checked on a single company below.** That is
-the one thing that makes any of them a lead, and it is the one thing that needs
-Jack's own phone for two minutes.
+**Senior Sales Representative, Cork. Posted 20 July 2026.**
+[The ad](https://to.indeed.com/aak2ln4slnvt) ·
+[Company page](https://ie.indeed.com/cmp/The-Energy-Centre)
 
-**No phone numbers, rep counts or hiring histories are recorded here**, because
-they could not be verified and a made up number gets rung.
+They describe themselves as "Ireland's leading installer of solar panels and
+other renewable energy services".
 
-## The candidates
+**Their own ad hands you the whole burn map before he says a word:**
 
-Names only, from search result snippets, with what the snippet claimed. Treat
-every word of it as unconfirmed.
+| What the ad says | What it means on the map |
+| --- | --- |
+| "€36,400 to €120,000" | The gap between a middle rep and the best rep, published. That is `best` against `avg`, and it is a 3.3x spread. |
+| "Full training, no solar experience needed" | Long ramp. Every hire starts at zero. That is `ramp`. |
+| "Company vehicle, fuel card, base weekly salary" | High cost per rep per week before a sale. €36,400 base alone is €700 a week, and that is before the van and the fuel. `cost` is likely 900 to 1,100. |
+| "15 weekly, pre qualified sales appointments" | They buy or make the leads. Every rep who leaves burns that spend too. |
+| "NOT EVERYONE SHOULD APPLY. Average need not apply." | This is a man who has been let down repeatedly. Nobody writes that ad after a good year. |
 
-| Company | What the snippet said | Likely to have a sales floor? |
+**What their own employees say**, on Indeed, for the Sales Representative role
+in Ireland:
+
+- Culture and values **1 out of 5**
+- Job security and advancement **1 out of 5**
+- Management **1 out of 5**
+- Work life balance **1 out of 5**
+- Pay and benefits **1 out of 5**
+- CEO approval **39%**
+- Interview: **easy** difficulty, **poor** experience, about a week
+
+Easy interview plus every sub rating on the floor is the churn machine in one
+line. They hire fast, they do not screen, the lads leave.
+
+**Do not say a word of the review data on the call.** It is anonymous, Indeed
+disclaims it, and quoting a man his own 1 out of 5 management rating ends the
+call and probably the relationship. It is there so Jack knows he is right before
+he dials. The pay spread is different, that is their own published ad and it is
+fair game later in the call.
+
+### Bright Future Solar
+
+**Solar Sales Executive, Cork. Posted 25 Aug 2026.** €50,000 to €80,000.
+[The ad](https://to.indeed.com/aafbzw6pndjk) ·
+[Company page](https://ie.indeed.com/cmp/Bright-Future-Solar)
+
+Field based across Cork, "growing team", reports to a Sales Manager, so there is
+a floor and somebody running it. "Qualified leads and marketing support", so
+they are buying leads too.
+
+Barely any employee data, one person recommends them. Small or new. No churn
+evidence either way, so this is a call on the ad alone.
+
+**The ad carries a direct contact: `info@brightfuture.ie`.**
+
+## Ruled out, and why
+
+Worth writing down so nobody rings them next month.
+
+- **ePower, Hall Power Ltd, Little Island.** Team of 70, established 2019, Cork
+  and Dublin. Their rep ad has been up since 26 Aug 2025, which looked like the
+  churn signal. It is not. Interview experience **excellent**, CEO approval
+  **100%**, recommend a friend 1 out of 1. They look healthy. The role is also
+  inbound leads and CRM, so inside sales, not a field floor. **Not a lead.**
+- **North Cork Electrical, Mallow.** Solar PV Sales and Survey Specialist, 19
+  Aug 2026. Thirteen screening questions and they want a qualified electrician
+  who can sell. This is a company being careful, which is the opposite of the
+  signal. **Weak lead.**
+- **PV Generation** and **Q Solutions.** Both hiring, both **installer** roles,
+  no sales hiring at all. **Not a lead.**
+- **Bord Gais Energy.** Hiring Solar PV Sales Executives in Cork, but it is
+  Bord Gais. Not owner run, there is no owner to ring. **Out of ICP.**
+
+## Adjacent, same ICP, not solar
+
+Field sales floors in Cork hiring right now. Broadband and energy are on Jack's
+list already, so these are live leads, just not solar.
+
+| Company | Role | Posted |
 | --- | --- | --- |
-| PV Generation | Cork, installing since 2015, claims 4,000+ installs | Probably. That volume usually needs sellers. |
-| Solar Path | HQ in Cork, since 2022, SEAI registered, sells nationwide | Probably. Young and nationwide usually means reps. |
-| Clean Energy Solar | Cork, claims 18 years, "teams" | Maybe |
-| Solar PV Energy | Newtownshandrum, Charleville, Co Cork, 10+ years across Munster | Maybe |
-| NRG Panel | Runs a Cork solar page | Maybe, may not be Cork based |
-| Ashgrove Renewables | Cork, home energy upgrades and solar | Maybe |
-| Cronin Solar | Cork county, part of Cronin Electrical | Unlikely. Snippet showed installation roles, not sales. |
-| JK Services | Family run electrical contractor, Co Cork, 35+ years | Unlikely. A contractor of that age rarely runs a rep floor. |
+| NK Communications | Field Sales Representative | 27 Aug 2026 |
+| Kelco Communications | Vodafone Field Sales Representative | 24 Aug 2026 |
+| SFM Energy, Mallow | Field Sales Representative B2B | 21 Aug 2026 |
+| Yuno Energy | Field Sales Representative Cork | 29 May 2026 |
+| PrepayPower | Field Sales Representative Cork | 29 May 2026 |
 
-The right hand column is **my read, not a fact.** It is a guess at who has 5 to
-30 reps, from company shape alone.
+## Two things this data does not give you
 
-Two excluded on purpose: **Irish Solar** is a directory, not an installer.
-**PureVolt Solar** is Dublin and Galway, not Cork.
+1. **No phone numbers.** The Indeed connector returns the ad and the company
+   page, not the number off the listing. Open the ad on the phone and take the
+   number from there, or ring the main line.
+2. **No posting history.** It returns one date per live ad, so it cannot show
+   the same role posted four times in twelve months. **The churn signal is
+   inferred here, not counted.**
 
-## The two minutes on your phone that turns this into a lead list
+**So drop the word "again" from the opener** unless Jack has checked the repeat
+posting himself. If he opens with "hiring reps again" and the owner says they
+only advertised once, he is caught out in the first sentence and the call is
+gone. Say it straight instead:
 
-Search is US only from here, so this bit is yours. On `ie.indeed.com`:
+> "Saw you were hiring reps. How many did you take on this year, and how many
+> are still with you."
 
-1. Search **"solar sales"**, location **Cork**. Then again for **canvasser**,
-   **energy advisor**, **field sales**, **sales representative**.
-2. For each company that comes up, search the **company name on its own** and
-   sort by date.
-3. **The lead is the company that posted the same rep role more than once in
-   twelve months.** Count the postings and note the dates.
-4. Take the **phone number off the ad**. It exists so reps can ring it, so there
-   is no gatekeeper.
+## The order
 
-## What to write down per company
+1. **The Energy Centre.** Best evidenced lead by a distance.
+2. **Bright Future Solar.** Second, and there is an email in the ad.
+3. The five adjacent ones, if the first two go nowhere.
 
-Four things, nothing else:
-
-- Company name
-- **How many times the same rep role was posted, and the dates.** This is the
-  evidence and it is the only thing that makes them a lead.
-- The phone number off the ad
-- What they sell and roughly what area
-
-Hold the posting count. Do not lead with it, it sounds like surveillance. It is
-there so Jack knows he is right before he rings.
-
-## Then
-
-`field-sales-outreach` for the opener, `rep-burn-live` for the call itself, and
+Then `field-sales-outreach` for the call, `rep-burn-live` for the maths, and
 `docs/offer-field-sales.md` for the grand and the 4,500.
-
-The opener does not change for solar:
-
-> "Saw you were hiring reps again, how many did you take on this year and how
-> many are still with you."
 
 ## The measuring stick
 
-Zero strangers have ever paid Jack. **A longer list is not progress.** A number
-rung is.
-
-Sources, all US indexed search snippets, none verified against the companies
-themselves: [PV Generation](https://pvgeneration.ie/solar-panels-cork/),
-[Solar Path](https://www.solarpath.ie/),
-[Solar PV Energy](https://www.solarpvenergy.ie/),
-[Clean Energy Solar](https://cleanenergysolar.ie/),
-[Ashgrove](https://ashgrove.ie/solar-energy-solutions-in-cork/),
-[JK Services](https://www.jkservices.ie/solar-panels/),
-[NRG Panel](https://nrgpanel.ie/solar-panels-cork/).
+Zero strangers have ever paid Jack. **This list is not progress. The Energy
+Centre being rung is.**
