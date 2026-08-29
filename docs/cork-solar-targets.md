@@ -38,6 +38,25 @@ in Ireland:
 Easy interview plus every sub rating on the floor is the churn machine in one
 line. They hire fast, they do not screen, the lads leave.
 
+**They are hiring the other layer too.** A **Lead Generation Executive**,
+posted 19 Aug 2026, [the ad](https://to.indeed.com/aazlf4lfyt7c). It is a
+door to door canvasser role for Munster, and it publishes the cost per rep
+per week outright:
+
+- **EUR 650 gross a week** for 40 hours, plus 10 euro a confirmed appointment
+- **Company van, company phone, fuel card**
+- Monday to Friday, 11am to 8pm
+- "Previous experience advantageous but not essential"
+
+So `cost` is 650 before the van, the fuel and the phone. Call it 900 to 1,000
+a week per canvasser, and roughly the same again for a senior rep on a 36,400
+base with a car.
+
+**That is a two tier field sales machine**, canvassers knocking to book
+appointments and closers working 15 supplied appointments a week. It is exactly
+the shape Jack's whole model is built for, and both layers are hiring inside a
+month of each other.
+
 **Do not say a word of the review data on the call.** It is anonymous, Indeed
 disclaims it, and quoting a man his own 1 out of 5 management rating ends the
 call and probably the relationship. It is there so Jack knows he is right before
@@ -89,6 +108,39 @@ list already, so these are live leads, just not solar.
 | SFM Energy, Mallow | Field Sales Representative B2B | 21 Aug 2026 |
 | Yuno Energy | Field Sales Representative Cork | 29 May 2026 |
 | PrepayPower | Field Sales Representative Cork | 29 May 2026 |
+
+## Car sales, looked at and parked
+
+Asked on 29 Aug. Checked on Indeed rather than guessed. **The answer is no, and
+it is not close.**
+
+**Kearys Motor Group** is Cork car sales. Four sales roles live inside two
+months, Sales Executive, Junior Sales Executive, BYD Senior Sales Executive and
+Customer Retention Executive. On the posting count alone it looks like the
+churn signal. It is not:
+
+- **201 to 500 employees.** Nissan, Hyundai, Renault, BMW, MINI, Dacia, across
+  several dealerships. There is no owner to ring.
+- **Overall rating 5 out of 5.** Culture 4, job security 5, management 4, work
+  life 4, pay 4. CEO approval 63%. Average Sales Executive salary 32,496.
+- Those are the numbers of a place people stay. The opposite of The Energy
+  Centre.
+
+The only other one is **Kevin O'Leary Group** in Bandon, one Car Sales Executive
+posted 17 June 2026.
+
+**The deeper reason to park it.** A car salesman stands in a showroom and works
+walk ins and enquiries. Jack's whole model is a **field** floor: a van, a
+territory, doors, a ramp, cost burning every week before a sale. The Rep Burn
+Map asks what a rep costs you a week before they sell anything, and for a
+showroom rep the honest answer is much less. Two of the four numbers stop
+meaning what they mean.
+
+**The one thing that is genuinely broken in car sales** is the not now pile.
+People walk in, do not buy, and are never followed up. That is `nnValue` and in
+motor it is the biggest leak there is. Kearys have hired a Customer Retention
+Executive, so they already know. **It is a different product to the one Jack
+has built**, so it is a later market, not this month's.
 
 ## Two things this data does not give you
 
