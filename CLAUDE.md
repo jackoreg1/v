@@ -188,6 +188,26 @@ expect is expensive to spot and expensive to unpick. Three rules:
   the index is a trap for the next commit. Then tell Jack it was refused rather
   than parking it and carrying on.
 
+## What is not in this repo
+
+A session started from the phone runs in a cloud container. It clones the repos
+it is pointed at and can see nothing else. No `~/Desktop`, no `/Users/jack`, no
+Mac at all.
+
+So the memory index, the skills, the client folders, the Josh files and
+`assessment-business/offer-and-pricing.md` are all invisible from a phone
+session unless they are in git. Do not tell Jack to check them, you cannot,
+and do not work off a guess about what they say. Ask him or say you cannot see
+them.
+
+`docs/brain-repo-setup.md` is the ten minutes at the Mac that fixes this by
+pushing the Desktop to a private `jackoreg1/brain` repo. Once that exists, ask
+for it to be added to the session and the rest of his work is readable.
+
+Outbound network is restricted too. `unworked-hundred.vercel.app` could not be
+fetched from a session on 29 Aug, so recovering a page meant reading it back
+out of its published Artifact.
+
 ## Working with Jack
 
 - He is usually on a phone. Keep replies short, lead with what changed, and do
