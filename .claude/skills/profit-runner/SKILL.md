@@ -62,25 +62,27 @@ also how you lose a man who knows his own trade better than you do.
 
 Where a number is a guess, call it a guess in the line it appears.
 
-## What is not settled, and must not be invented
+## The prices, as Jack set them on 29 Aug 2026
 
-**The actual euro figures are not written down anywhere a phone session can
-read.** They are on the Mac, and `assessment-business/offer-and-pricing.md`
-still records trades as the lead niche from a decision on 19 July, which
-contradicts the field sales pivot of 29 Aug and has not been corrected.
+**Read `docs/offer-field-sales.md` before quoting anything.** It is the current
+offer and it supersedes `assessment-business/offer-and-pricing.md`, which still
+records trades as the lead niche from 19 July.
 
-So:
+- **EUR 1,000** for the look. He gets a PDF of what is being looked at, then 48
+  hours later a plan of action and the prompts to run it.
+- **EUR 4,500** for the six months, which is the map already built in
+  `rep-burn-map.html`.
 
-- **Do not invent a monthly figure and present it as his price.** If Jack asks
-  for the runner and the pricing is not readable, build the stages, the
-  preconditions and the kill conditions, leave the figures as blanks tied to the
-  prospect's own numbers, and tell him plainly that the price is the one thing
-  you cannot source.
-- When he names a figure, use it and remember it for the rest of the session.
+Two things about those figures are **not settled**, so ask rather than assume:
 
-Per his own rule, the newer decision wins and the older file gets corrected.
-Correcting `offer-and-pricing.md` needs the brain repo, see
-`docs/brain-repo-setup.md`.
+1. Does the grand come off the 4,500 or sit on top of it.
+2. Is 4,500 the monthly run or the upfront at 20 percent off. Both readings are
+   defensible and they are very different offers.
+
+Anything beyond those two numbers is still not written down. **Do not invent a
+figure and present it as his price.** Build the stages, the preconditions and
+the kill conditions, leave the rest tied to the prospect's own numbers, and say
+plainly what you cannot source.
 
 ## The measuring stick
 

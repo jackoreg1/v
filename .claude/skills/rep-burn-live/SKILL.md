@@ -99,12 +99,37 @@ do not suggest turning the map into a teaser.
 
 ## Saying it back to him
 
-Lead with the single biggest of the four numbers, not the total. The total
-sounds like a sales pitch, one number he recognises sounds like the truth.
+**Lead with `burn`, not the total and not the biggest number.**
+
+Run the maths on any realistic outfit and `gapReal` comes out biggest by a mile,
+every time. It is also the softest of the four, because it is the gap between
+his best rep and his middle rep and every owner has a story about why that gap
+is there.
+
+`burn` is smaller and far harder to argue with. It is lads he hired, paid and
+lost, off numbers he gave you himself two minutes ago.
+
+- **Lead with `burn`.** "That is four you paid for who never sold a thing. Five
+  weeks each at six hundred a week. Eighteen grand."
+- **Hold `gapReal` back for the paid work.** It is the biggest prize and it
+  belongs in the plan, not in a cold call where it sounds like a stretch.
+- **Never lead with the total.** A total sounds like a pitch.
 
 Then trace it: "that is your own four gone, times your own five weeks, times
 your own six hundred." Every figure traces back to something he said. If you
 cannot trace it, do not say it.
+
+## Then the ask
+
+Once `burn` is on the board and he has agreed it, and only then:
+
+> "If you want, I can look at it for a grand."
+
+The grand comes to under two percent of the problem on any realistic outfit,
+which is exactly why it is never named before the number exists. `docs/offer-field-sales.md`
+has the ladder, what the grand buys, and the one rule: **do not make the ask if
+his total lands under about 20,000**, because then the grand is dear and it
+reads that way.
 
 ## After the call
 
