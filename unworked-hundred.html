@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Unworked Hundred</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#EDEFEC;
+  --panel:#FFFFFF;
+  --panel-2:#F5F7F4;
+  --ink:#131A18;
+  --ink-2:#3D4744;
+  --ink-3:#6B7570;
+  --line:#D8DDD8;
+  --line-2:#E7EAE6;
+  --accent:#0C6B58;
+  --accent-soft:#DCEBE5;
+  --money:#0C6B58;
+  --pain:#A34B21;
+  --untouched:#3C5A8C;
+  --flag:#5F6E00;
+  --flag-soft:#EAEFC8;
+  --shadow:0 1px 2px rgba(19,26,24,.05),0 10px 24px rgba(19,26,24,.05);
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F1513;
+    --panel:#171F1D;
+    --panel-2:#1D2624;
+    --ink:#E7ECE9;
+    --ink-2:#B4BDB9;
+    --ink-3:#828C88;
+    --line:#2A3532;
+    --line-2:#222B29;
+    --accent:#3FBFA0;
+    --accent-soft:#123128;
+    --money:#3FBFA0;
+    --pain:#E08055;
+    --untouched:#7FA3DC;
+    --flag:#BFD130;
+    --flag-soft:#252B10;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 24px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F1513;
+  --panel:#171F1D;
+  --panel-2:#1D2624;
+  --ink:#E7ECE9;
+  --ink-2:#B4BDB9;
+  --ink-3:#828C88;
+  --line:#2A3532;
+  --line-2:#222B29;
+  --accent:#3FBFA0;
+  --accent-soft:#123128;
+  --money:#3FBFA0;
+  --pain:#E08055;
+  --untouched:#7FA3DC;
+  --flag:#BFD130;
+  --flag-soft:#252B10;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--body);font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:820px;margin:0 auto;padding:26px 18px 60px}
+header{margin-bottom:26px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,8vw,50px);line-height:1.02;letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance}
+.stand{font-size:17px;color:var(--ink-2);max-width:60ch;margin:0 0 18px}
+.caveat{font-size:13.5px;color:var(--ink-3);max-width:62ch;border-left:2px solid var(--line);padding-left:14px;margin:0}
+.counts{display:flex;gap:22px;flex-wrap:wrap;margin:22px 0 0;padding-top:18px;border-top:1px solid var(--line)}
+.count b{font-family:var(--display);font-size:22px;display:block;line-height:1}
+.count span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+h2{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.01em;margin:34px 0 6px}
+.sec-note{font-size:14px;color:var(--ink-3);margin:0 0 16px;max-width:60ch}
+.picks{display:grid;gap:10px}
+.pick{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow)}
+.pick-rank{font-family:var(--mono);font-size:12px;color:var(--flag);font-weight:600;padding-top:2px;flex:0 0 auto}
+.pick-name{font-family:var(--display);font-weight:600;font-size:16px;margin:0 0 3px}
+.pick p{margin:0;font-size:14.5px;color:var(--ink-2)}
+.tools{position:sticky;top:0;z-index:5;background:var(--ground);padding:14px 0 12px;margin-top:30px;border-bottom:1px solid var(--line)}
+.searchrow{display:flex;gap:8px;margin-bottom:10px}
+input[type=search]{
+  flex:1;font-family:var(--body);font-size:16px;color:var(--ink);background:var(--panel);
+  border:1px solid var(--line);border-radius:8px;padding:11px 13px;outline:none;min-width:0;
+}
+input[type=search]:focus{border-color:var(--accent)}
+select{
+  font-family:var(--mono);font-size:12px;color:var(--ink);background:var(--panel);
+  border:1px solid var(--line);border-radius:8px;padding:0 10px;outline:none;
+}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.chip{
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;white-space:nowrap;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:7px 12px;color:var(--ink-2);
+}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+.chip:focus-visible,.row:focus-visible,.star:focus-visible,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tally{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin:12px 0 4px;letter-spacing:.06em}
+.register{border-top:1px solid var(--line)}
+.row{
+  display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:start;
+  border-bottom:1px solid var(--line-2);padding:13px 2px;cursor:pointer;background:none;
+  width:100%;text-align:left;font:inherit;color:inherit;
+}
+.row:hover{background:var(--panel-2)}
+.num{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);padding-top:3px}
+.name{font-family:var(--display);font-weight:600;font-size:15.5px;line-height:1.25;margin:0 0 5px}
+.name .flagdot{color:var(--flag);font-family:var(--mono);font-size:11px;margin-left:6px;letter-spacing:.06em}
+.cat{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.meters{display:flex;gap:5px;margin-top:7px}
+.meter{height:4px;width:38px;background:var(--line);border-radius:2px;overflow:hidden}
+.meter i{display:block;height:100%}
+.m-money i{background:var(--money)}
+.m-pain i{background:var(--pain)}
+.m-un i{background:var(--untouched)}
+.score{font-family:var(--mono);font-size:13px;font-weight:600;text-align:right;padding-top:2px;font-variant-numeric:tabular-nums}
+.score small{display:block;font-size:9.5px;font-weight:400;color:var(--ink-3);letter-spacing:.08em}
+.detail{padding:2px 2px 18px 42px;border-bottom:1px solid var(--line-2);background:var(--panel-2)}
+.detail dl{margin:0;display:grid;gap:10px}
+.detail dt{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:2px}
+.detail dd{margin:0;font-size:14.5px;color:var(--ink-2);max-width:58ch}
+.detail dd.say{color:var(--ink);font-weight:500;border-left:2px solid var(--accent);padding-left:12px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.06em}
+.legend span{display:flex;align-items:center;gap:5px}
+.swatch{width:14px;height:4px;border-radius:2px;display:inline-block}
+.star{background:none;border:1px solid var(--line);border-radius:7px;color:var(--ink-3);font-family:var(--mono);font-size:11px;padding:5px 9px;cursor:pointer;margin-top:12px}
+.star[aria-pressed="true"]{background:var(--flag-soft);border-color:var(--flag);color:var(--flag)}
+.empty{font-size:15px;color:var(--ink-3);padding:26px 2px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.startbtn{background:var(--accent);border:1px solid var(--accent);border-radius:7px;color:var(--panel);font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:6px 12px;cursor:pointer}
+.startbtn[aria-pressed="true"]{background:var(--flag-soft);border-color:var(--flag);color:var(--flag);font-weight:600}
+.star{margin-top:0}
+.name .flagdot.go{color:var(--accent);font-weight:600}
+.handover{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+.handover p{margin:0 0 12px;font-size:14px;color:var(--ink-2);max-width:58ch}
+.btn-brief{background:var(--accent);color:var(--panel);border:none;border-radius:8px;font-family:var(--body);font-size:14px;font-weight:600;padding:10px 16px;cursor:pointer;margin-top:8px}
+.btn-brief:hover{opacity:.9}
+.briefbox{white-space:pre-wrap;font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ink-2);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;margin:12px 0 0;max-height:280px;overflow:auto}
+#running .pick-rank{color:var(--accent)}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+@media (max-width:520px){
+  .wrap{padding:20px 14px 50px}
+  .detail{padding-left:14px}
+  .meter{width:30px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">Ireland &nbsp;&middot;&nbsp; 100 markets &nbsp;&middot;&nbsp; 29 August 2026</div>
+  <h1>The Unworked Hundred</h1>
+  <p class="stand">A hundred Irish business types that have money, have the exact problems you fix, and almost certainly have not had an AI or systems person near them. No plumbers, no dentists, no gyms, no salons. Those lads get pitched three times a week.</p>
+  <p class="caveat">Money and pain are judged off how these businesses actually run. Untouched is my read, not a verified fact, nobody publishes who has been pitched. Treat it as a starting order, and the first five phone calls will correct it faster than any research. Every one carries the line to open with, which is a question and never a pitch, because the job is to get him saying it and not you.</p>
+  <div class="counts">
+    <div class="count"><b id="cTotal">100</b><span>markets</span></div>
+    <div class="count"><b id="cCats">15</b><span>categories</span></div>
+    <div class="count"><b>8</b><span>I would ring first</span></div>
+  </div>
+</header>
+
+<h2>The eight I would actually chase</h2>
+<p class="sec-note">Picked for money on the table, a problem they already complain about, and a way in from Cork that does not need you to cold call a stranger.</p>
+<div class="picks" id="picks"></div>
+
+<div id="running" style="display:none"></div>
+
+<div class="tools">
+  <div class="searchrow">
+    <input type="search" id="q" placeholder="Search the hundred" aria-label="Search the hundred">
+    <select id="sort" aria-label="Sort by">
+      <option value="total">Best overall</option>
+      <option value="money">Most money</option>
+      <option value="pain">Most pain</option>
+      <option value="untouched">Least touched</option>
+      <option value="az">A to Z</option>
+    </select>
+  </div>
+  <div class="chips" id="chips"></div>
+</div>
+
+<div class="tally" id="tally"></div>
+<div class="register" id="register"></div>
+<div class="legend">
+  <span><i class="swatch" style="background:var(--money)"></i> Money</span>
+  <span><i class="swatch" style="background:var(--pain)"></i> Pain you fix</span>
+  <span><i class="swatch" style="background:var(--untouched)"></i> Untouched</span>
+  <span>Tap a row for the detail, the opener, and to start one</span>
+</div>
+
+<footer>Built for Jack O'Regan, 29 August 2026. Scores are judgement, not data. Starred rows save on this device only.</footer>
+</div>
+
+<script>
+"use strict";
+/* name, category, money, pain, untouched, why the money is there, what you fix, the warm way in, top pick rank (0 = not a pick) */
+var D = [
+["Agricultural contractors","Agri",4,5,5,"Six figure seasons off silage, slurry and reseeding, with machinery money moving through the yard.","Six weeks a year the phone never stops, jobs live in a notebook, and invoices go out in November for work done in June.","Every farm road in Munster. One contractor knows twenty more and they all drink in the same places.",1],
+["Livestock hauliers","Agri",3,5,5,"Paid per journey, licence and fleet heavy, volume makes the money.","Bookings by phone at all hours, journey logs written twice, and empty return legs nobody plans out.","Marts. Stand in Bandon or Corrin on a sale day and they are all there.",0],
+["Farm relief services","Agri",3,5,5,"Charged per operator per day across dozens of farms, steady contract income.","Rostering lads across farms by text, and cover falling apart the morning one rings in sick.","Co op noticeboards and the local relief branch office.",0],
+["Milking parlour sales and service","Agri",4,4,5,"Installs run to tens of thousands and every parlour carries a service contract after it.","Emergency callouts at five in the morning mixed with planned services, and no record of what was done last time.","Dairy suppliers and the co op. One dealer often covers a whole county.",0],
+["Breeding and AI technicians","Agri",3,5,5,"Paid per straw and per call across hundreds of farms, and spring is relentless.","Timing is the entire job and it runs on phone calls. A missed window costs the farmer a full cycle.","Munster Bovine and the co ops. Also the best line in the pitch, they are already in AI.",0],
+["Agri feed and fertiliser merchants","Agri",4,4,4,"Big ticket orders, seasonal spikes, and real credit exposure on farmer accounts.","Orders taken on the phone and written on a docket, then chasing money off neighbours they cannot fall out with.","Local merchants. Every farmer you know deals with one.",0],
+["Farm machinery dealers and mobile mechanics","Agri",4,4,4,"Parts, warranty and breakdown work on machines worth six figures.","Breakdown calls in the middle of harvest, parts chased by phone, warranty claims filed late or not at all.","Dealer yards, and the mechanic vans are at every silage pit in July.",0],
+["Slurry and lime spreading contractors","Agri",3,4,5,"Legal spreading windows mean a year of money gets billed in a few frantic weeks.","The whole year depends on those weeks and the diary is in his head.","The same rooms as the silage contractors, usually the same lads.",0],
+["Marts and livestock auctioneers","Agri",4,4,4,"Commission on every animal through the ring, with thousands of buyers and sellers on file.","A buyer list worth a fortune sitting in a ledger, and nobody contacted between sales.","Walk in on a sale day. It is the most sociable business in Ireland.",0],
+["Farm grant and TAMS consultants","Agri",3,5,4,"A fee on applications for grants worth tens of thousands to the farmer.","Deadline driven paperwork, chasing documents off farmers, and answering the same five questions all day.","Ag colleges, the Teagasc adviser network, and accountants who do farm accounts.",0],
+
+["Stud farms and bloodstock","Equine",5,4,4,"Nomination and keep fees run to serious money, with wealthy owners on the books.","Owner reporting, keep billing and covering schedules run on spreadsheets and phone calls.","Kildare and Tipperary, and every bloodstock sale.",0],
+["Racing yards and trainers","Equine",4,5,4,"Training fees per horse per week plus prize percentages, and an owner base with money.","Owners want updates and never get them. Entries and fees are a weekly scramble.","Point to points and the sales. Owners talk more than trainers.",0],
+["Equine transport and export","Equine",3,5,5,"Paid per horse per journey, and international work is high value.","Bookings, passports and export paperwork all by phone. One missing document stops a flight.","Studs and the sales companies who book them.",0],
+["Farriers on a multi yard round","Equine",2,5,5,"Per horse pricing, and a full round is solid weekly money with almost no overhead.","Scheduling a round across yards, no shows, and getting paid by text weeks later.","Yards and pony clubs. A farrier is in ten yards a week.",0],
+
+["Oyster and mussel farms","Marine",3,4,5,"Export prices from French and Asian buyers, and a good season is real money.","Harvest windows, buyer orders and traceability records kept on paper in a wet shed.","West Cork. The seafood development people and the co ops know everyone.",0],
+["Seafood processors and exporters","Marine",5,4,4,"Export volumes with big buyers, on margins tight enough that any saving lands.","Orders, traceability and haulage co ordination across time zones, all by email.","Castletownbere, Union Hall, Dunmore East. Cork is the seafood county.",0],
+["Boatyards and marine engineers","Marine",3,4,5,"Winter storage, lift outs and engine work on boats worth six figures.","Storage bookings and service history live in a diary, and quotes take weeks to go out.","The marinas at Crosshaven and Kinsale, on your doorstep.",0],
+["Marine surveyors","Marine",3,4,5,"A fee per survey, driven by insurance and purchases, with high value reports.","Report turnaround is the whole business and every one is built from scratch.","Brokers, insurers and the yards.",0],
+["Commercial diving and underwater inspection","Marine",4,3,5,"Day rates on harbour, wind and aquaculture infrastructure.","Job records, certs and dive logs scattered, and tenders written from nothing every time.","Harbour authorities and marine contractors.",0],
+
+["Forestry harvesting contractors","Forestry",4,4,5,"Machine heavy, paid per tonne, and timber prices are strong.","Site scheduling, haulage co ordination and dockets, all on paper in a cab.","Coillte contractor lists and the sawmills.",0],
+["Timber haulage","Forestry",3,4,5,"Paid per load, with constant work while the forests are being cut.","Load scheduling, weighbridge dockets and driver hours, all manual.","The sawmills book them, start there.",0],
+["Forestry and afforestation consultants","Forestry",3,5,5,"Fees on grant applications and felling licences worth thousands each.","Licence backlogs, chasing landowner documents, and one deadline after another.","Teagasc forestry advisers and the timber sector groups.",0],
+["Commercial tree surgery and arborists","Forestry",3,4,4,"Council and utility contracts plus insurance work at high day rates.","Quotes done in the evening after a full day up a tree, and certs chased.","Councils, ESB contractors and estate managers.",0],
+["Land drainage and reclamation contractors","Forestry",3,4,5,"Machine work paid by the day or the acre, funded by farm improvement money.","Quoting off a walk of the land, then nothing written down anywhere.","The same network as the silage contractors.",0],
+
+["Small quantity surveying practices","Construction",4,5,4,"Fees on every project at professional rates, with a full pipeline while building is busy.","Tender deadlines, valuations and variations living in spreadsheets and email chains.","Engineers, architects and main contractors. One referral opens the whole sector.",0],
+["Scaffolding hire and erection","Construction",4,5,5,"Weekly hire on every site, with kit worth hundreds of thousands out on rent.","Nobody logs the off hire, so gear sits on finished sites for free and never gets billed.","Site managers and main contractors. The off hire leak sells the job by itself.",2],
+["Crane and plant hire","Construction",5,4,4,"Day rates in the hundreds to thousands, where utilisation is the whole business.","Off hire, damage claims and idle machines that nobody is tracking.","Builders providers and the sites themselves.",0],
+["Ground investigation and site surveys","Construction",3,4,5,"A fee per site, driven by planning and development.","Report turnaround, rig scheduling and lab results chased by email.","Engineers and planning consultants.",0],
+["Licensed asbestos removal contractors","Construction",4,5,5,"Licensed work with few competitors and prices that reflect the risk.","Notifications, air clearance certs and waste dockets. It is a paperwork business with a van attached.","Demolition contractors and safety consultants.",0],
+["Radon testing and mitigation","Construction",2,4,5,"Ireland has some of the worst radon in Europe and every remediation is a job.","Test kits go out, results come back, and the follow up never happens, so the sale dies.","Estate agents, BER assessors and schools.",0],
+["BER assessors and energy raters","Construction",2,5,4,"Volume business. Every sale and letting needs one, with grant work on top.","Bookings, site visits, software entry and chasing paperwork, all for a small fee each.","Auctioneers and retrofit contractors.",0],
+["Air tightness and thermal imaging testers","Construction",3,4,5,"Required on new builds and retrofits, specialist kit, very few doing it.","Scheduling around builders who move dates, then writing up reports at night.","Timber frame builders and retrofit contractors.",0],
+["Small structural engineering practices","Construction",4,4,4,"Certs, inspections and design fees at professional rates.","Cert requests arrive by email and sit there until the client rings to chase.","Architects, auctioneers and builders.",0],
+["Steel fabricators and metalwork shops","Construction",4,5,5,"Job values from a few thousand to six figures, with construction and agri both buying.","Quoting is the business and it is done by hand off a drawing, slowly, in the evening.","Industrial estates. Every county has a dozen.",0],
+["Precast concrete and blockmakers","Construction",4,3,5,"Heavy plant, big orders and haulage margin on top.","Order taking, haulage scheduling and delivery dockets, all manual.","Builders providers and main contractors.",0],
+["Formwork and groundworks subcontractors","Construction",4,4,5,"Big site packages, labour heavy, real money per contract.","Labour allocation and day works lost, so extra work goes unbilled at the end of the month.","Main contractors and QS firms.",0],
+["Timber frame and modular manufacturers","Construction",4,4,4,"Factory output growing fast with housing demand.","Order to production scheduling, delivery slots and snag lists on spreadsheets.","Builders and the self build shows.",0],
+["Quarries and aggregate suppliers","Construction",5,3,5,"Volume business with weighbridge income all day and serious plant behind it.","Dockets, haulier co ordination, and account customers chasing statements.","They supply everyone, so any builder will name three.",0],
+
+["Health and safety consultants","Compliance",3,5,4,"Retainers and per project fees on work that is legally required on every site.","Site inspections written up twice and safety files rebuilt from scratch for every project.","Main contractors and the safety officer networks.",0],
+["Fire safety certificate consultants","Compliance",3,4,5,"Every commercial project needs one, and the fees follow planning.","Drawings, submissions and council queries chased by email for months.","Architects and fire officers.",0],
+["Fire extinguisher and alarm servicing","Compliance",3,5,4,"Hundreds of sites on annual contracts, recurring because the law says so.","Service due dates in a spreadsheet, renewals missed, and contracts quietly lapsing.","Every commercial building has one. Ask who services yours.",0],
+["Sprinkler and suppression servicing","Compliance",4,4,5,"High value systems, mandatory servicing, very few contractors.","Planned maintenance across sites and certs issued late.","Facilities managers and insurers.",0],
+["Legionella and water hygiene testing","Compliance",3,5,5,"Recurring testing on every hotel, hospital, nursing home and plant.","Sampling schedules, lab results and certs. The whole job is chasing dates.","Nursing homes, hotels and facilities companies.",5],
+["Occupational health providers","Compliance",3,4,4,"Per employee fees from large employers on contracts that renew annually.","Appointment logistics across sites and reports back to employers, all manual.","HR managers and safety consultants.",0],
+["Environmental consultants","Compliance",4,4,5,"Planning driven reports worth thousands each, and more are required every year.","Survey seasons, specialist subcontractors and report assembly under deadline.","Planning consultants and engineers.",0],
+["Ecologists and protected species surveyors","Compliance",3,4,5,"Bat, bird and habitat surveys are legally required and seasonally constrained.","A season of surveys crammed into months, then reports written all winter.","Environmental consultancies and wind developers.",0],
+["Archaeological consultancies","Compliance",3,4,5,"Planning conditions mean digs and monitoring, funded by developers.","Site teams, licences and reports to the state, every one on a deadline.","Planning consultants and developers.",0],
+["Waste licensing and EPA compliance consultants","Compliance",3,5,5,"Licence applications and annual returns, mandatory, and high stakes if missed.","Annual environmental reports and returns with every client on a different deadline.","Waste operators and quarries.",0],
+["Calibration labs and test houses","Compliance",3,5,5,"Every instrument in every factory needs annual calibration, which makes it sticky recurring work.","Recall dates, certs and equipment tracking. The business is a reminder system with a lab attached.","Manufacturers and the pharma sites. Cork has plenty.",7],
+
+["Septic tank desludging and percolation testing","Waste and water",2,5,5,"Every rural house has a tank and there are grants now funding upgrades.","Callouts by phone, no service history, and no reminder when the tank is due again.","Rural Cork. Everyone you know has a tank.",0],
+["Drain jetting and CCTV survey companies","Waste and water",3,5,5,"Emergency callouts at premium rates plus council and commercial contracts.","Emergency calls missed, and survey footage and reports sent days late.","Facilities managers, councils, and plumbers who subcontract it out.",0],
+["Industrial and tank cleaning contractors","Waste and water",4,4,5,"Shutdown work at plants, day rates with specialist kit and permits.","Permits, method statements and shift planning rebuilt for every single job.","The pharma and food plants around Cork harbour.",0],
+["Skip hire and construction waste","Waste and water",4,4,4,"Volume business. Every site needs skips, with haulage and landfill margin.","Order taking by phone, driver routing and dockets, all manual.","Sites and builders providers.",0],
+["Commercial laundry and linen services","Waste and water",4,4,5,"Route contracts with hotels, nursing homes and restaurants, all recurring.","Route sheets, stock counts and missing linen disputes settled on paper.","Hotels and nursing homes.",0],
+["Washroom and hygiene services","Waste and water",3,4,5,"Small monthly contracts across hundreds of sites, and very sticky once in.","Route scheduling, service records and renewals nobody is tracking.","Facilities managers and office blocks.",0],
+["Industrial water treatment and filtration","Waste and water",4,4,5,"Plant contracts with chemicals and servicing, technical and high value.","Service schedules, dosing records and compliance reports.","Food and pharma plants.",0],
+
+["Refrigerated haulage","Transport",4,4,5,"Food and pharma freight at premium rates on an expensive fleet.","Load planning, temperature records and driver paperwork, all manual.","Food processors and cold stores.",0],
+["Abnormal load and heavy haulage","Transport",4,4,5,"Permits and escorts mean high value per job with few operators able to do it.","Route permits and notifications rebuilt for every single load.","Plant hire and precast suppliers.",0],
+["Coach and bus operators","Transport",4,5,4,"School contracts, private hire and tours, on buses worth hundreds of thousands.","Bookings by phone, driver rosters, and a school run that can never fail.","Schools, clubs and wedding venues.",0],
+["Vehicle recovery and roadside assistance","Transport",3,5,5,"Insurance and motor club work at all hours with callout premiums.","Calls missed at night, then job records and insurer invoicing done days later.","Garages and insurers.",0],
+["Commercial vehicle repair and CVRT prep","Transport",4,4,5,"Fleet contracts and test prep, where downtime is so expensive they pay for speed.","Booking tests, chasing fleet managers, and service history in a paper file.","Hauliers and bus operators.",0],
+["Mobile tyre fitting for fleets","Transport",3,4,5,"Fleet contracts and roadside premiums on high volume work.","Dispatch by phone and no record of what went on which vehicle.","Hauliers and plant hire yards.",0],
+["Tachograph analysis and fleet compliance","Transport",3,5,5,"Legally required analysis for every haulier, billed monthly.","Chasing driver cards, infringement letters and reports. It is pure admin.","Hauliers and the transport associations.",0],
+["HGV, bus and CPC training schools","Transport",3,4,4,"Course fees on renewals that are mandatory every five years.","Course bookings and licence expiry dates that nobody is tracking.","Hauliers and coach operators.",0],
+
+["Craft distilleries","Food and drink",4,4,4,"Serious capital behind them, export ambitions, and visitor centre income.","Trade orders, allocations and visitor bookings spread across three different systems.","Food festivals and the drinks trade bodies. Cork has several.",0],
+["Craft breweries","Food and drink",3,4,4,"Keg and can volume into hundreds of accounts with dray routes.","Account ordering by WhatsApp, keg tracking, and dead accounts nobody notices dying.","Publicans and off licences.",0],
+["Artisan cheese and dairy producers","Food and drink",3,4,5,"Premium pricing, export and market income. West Cork is known for it worldwide.","Wholesale orders, market stock and traceability, all on paper.","The West Cork food producer network.",0],
+["Wholesale bakeries","Food and drink",3,5,5,"Standing daily orders into shops and hotels, volume on thin margins.","Order changes by text at midnight and van sales reconciled by hand.","Shops, hotels and delis.",0],
+["Food co packers and contract manufacturers","Food and drink",4,4,5,"Production runs for other people's brands, at factory scale, in a growing sector.","Production scheduling, specs and customer approvals living in email.","Food hubs and the state food agency networks.",0],
+["Contract catering and canteens","Food and drink",4,4,5,"Site contracts with employers, billed monthly.","Staff rosters, ordering and allergen records across multiple sites.","Factories and offices around Cork.",0],
+["Wholesale meat processors and butchers","Food and drink",4,4,5,"Volume trade into shops and restaurants with real turnover.","Orders by phone at six in the morning, cut sheets and invoicing done by hand.","Restaurants and shops.",0],
+["Food safety and HACCP consultants","Food and drink",2,5,5,"Every food business needs audits and training, and it recurs.","Audit reports, corrective actions and renewal dates chased manually.","Food producers and restaurants.",0],
+
+["Home care agencies","Care",4,5,4,"State funded hours plus private clients, billed by the hour at scale.","Rostering carers across visits, no shows, and timesheets turned into invoices by hand.","Tenders, nursing homes, and everyone knows somebody working in it.",3],
+["Private nursing homes","Care",5,4,4,"High fixed revenue per bed under state funding, and mostly family owned.","Staff rosters, family communication and compliance paperwork nobody has time for.","Owners are local business people and often known socially.",0],
+["Disability and residential service providers","Care",4,4,4,"State funded contracts with large staff teams and stable income.","Rostering, incident reporting and compliance records across multiple houses.","The funded organisations and their managers.",0],
+["Independent audiologists","Care",3,4,4,"Hearing aids at four figures a pair, plus aftercare and retest cycles.","Recall dates for retests never run, so the repeat sale is missed entirely.","GPs and pharmacies.",0],
+["Dental laboratories","Care",3,5,5,"They supply the dentists that every other AI seller is chasing, and nobody is chasing them.","Case tracking between surgery and lab, remakes, and chasing dentists for approvals.","Any dentist will name their lab if you ask one question.",4],
+["Veterinary referral and specialist practices","Care",4,4,4,"Referral surgery at four figures a case, with pet owners and farms paying.","Referral intake from other vets, case notes and follow up calls.","The local vets who refer into them.",0],
+["Occupational therapy and ABA providers","Care",3,4,4,"Private fees where the state waiting list runs to years, so demand is enormous.","Waiting lists, session scheduling and reports for schools and funders.","Parent networks and schools.",0],
+["Private psychiatry and psychology practices","Care",4,4,4,"Session fees at professional rates with permanent demand and no marketing needed.","Referrals, scheduling and reports, usually with no admin support at all.","GPs and other therapists.",0],
+
+["Insolvency practitioners and liquidators","Professional",4,4,5,"Statutory fees on every case, and they are busy in any economy.","Statutory deadlines, creditor communications and document assembly.","Accountants and solicitors.",0],
+["Planning consultants","Professional",4,5,4,"Fees per application, driven by development, busy while building is busy.","Submission deadlines, council queries and co ordinating other consultants.","Architects, developers and engineers.",0],
+["Agricultural land valuers and auctioneers","Professional",4,4,5,"Commission on land that sells for hundreds of thousands a lot.","Buyer lists on paper and no follow up after a viewing.","Marts, solicitors and farm families.",0],
+["Tender and public procurement writers","Professional",3,5,5,"Fees or success percentages on public contracts worth six and seven figures.","Every tender rebuilt from scratch under a hard deadline, with past answers lost in old folders.","Contractors, and anyone who has just lost a tender.",8],
+["Patent and trademark attorneys","Professional",4,3,5,"Professional fees with renewals every year on every mark, so it recurs by nature.","Renewal deadlines and client reminders, and missing one is catastrophic.","Tech and manufacturing firms.",0],
+["Credit unions","Professional",5,4,4,"Large member bases and loan books in the millions, trusted in the community.","Members never contacted between transactions, and loans promoted by a poster in the window.","Local branches and boards, community connected.",0],
+
+["Block and OMC management agents","Property",4,5,5,"Annual fees per unit across hundreds of apartments, and very hard to displace once in.","Owner queries, service charge arrears and maintenance jobs, all run out of one inbox.","Developers, apartment owners and accountants.",6],
+["Commercial grounds maintenance","Property",3,4,5,"Annual contracts with estates, councils and business parks.","Route scheduling, seasonal works and contract renewals on a spreadsheet.","Facilities managers and OMC agents.",0],
+["High level and commercial window cleaning","Property",3,4,5,"Contract work on office blocks and factories, with access equipment behind it.","Rounds, access permits and invoicing after the job, all manual.","Facilities managers and office blocks.",0],
+
+["Solar PV and battery installers","Energy",4,5,4,"Grant funded work with job values in the thousands and demand outstripping supply.","Quotes go out and are never followed up, and grant paperwork eats the office.","Retrofit contractors and electrical wholesalers.",0],
+["Heat pump installers","Energy",4,5,4,"Grant driven retrofits at five figures a house.","Grant applications, survey scheduling and quote follow up, all on the owner's phone.","Retrofit one stop shops and BER assessors.",0],
+["Commercial EV charger installers","Energy",3,4,4,"Business and fleet installs with grants behind them and a growing market.","Site surveys, grant paperwork and quotes chased between jobs.","Fleet operators and property managers.",0],
+["Wind farm operations and maintenance","Energy",5,3,5,"Long term contracts on assets worth millions, with penalties for downtime.","Maintenance scheduling, technician reports and compliance records.","Developers and asset managers.",0],
+["Anaerobic digestion and biogas operators","Energy",4,3,5,"Long term energy contracts and feedstock deals, capital heavy.","Feedstock scheduling, compliance reporting and supplier records.","Farm networks and energy developers.",0],
+
+["Marquee and event structure hire","Events",3,5,5,"Weddings and corporate events at thousands per booking, in a short season.","Enquiries in the evening, site visits, and quotes that go out too late to win.","Wedding venues and event planners.",0],
+["Wedding venues, barns and estates","Events",4,5,4,"Bookings at five figures each, booked out a year or more ahead.","Enquiry follow up, viewings and the hundred questions before every wedding.","Photographers, planners and caterers.",0],
+["AV, staging and event production","Events",4,4,5,"Corporate and festival contracts with expensive kit and crew.","Quoting, crew rostering and kit allocation across overlapping events.","Venues, conference organisers and hotels.",0],
+["Portable toilet and welfare unit hire","Events",3,4,5,"Site hire on construction and events, billed weekly, and it recurs.","Delivery and service routes, off hire never logged, and units left on dead sites.","Sites, festivals and event organisers.",0],
+
+["Safe Pass and manual handling trainers","Training",2,5,5,"Mandatory cards that expire, so the same people must come back every few years.","Course bookings, card expiry dates and reminders that nobody sends.","Contractors and safety consultants.",0],
+["Apprenticeship and CPD training providers","Training",3,4,4,"Course fees plus employer contracts, on training people are required to do.","Enrolments, attendance records and certification paperwork.","Employers and trade bodies.",0]
+];
+
+
+/* what you actually say first, and when to catch them.
+   openers are questions on purpose. never hand him the problem,
+   ask the thing that makes him say it himself. */
+var EXTRA = {
+"Agricultural contractors":["What are the six weeks of silage like on you, between the phone and the paperwork?","January and February. Do not go near him from May to August, he is living in a pit."],
+"Livestock hauliers":["How do the bookings come at you, is it all phone?","Marts are busiest in the autumn. Midsummer is his quiet spell."],
+"Farm relief services":["What happens on a morning when one of the lads rings in sick?",""],
+"Milking parlour sales and service":["How do you know what was done on a parlour the last time you were out?","Not February to April, spring calving is bedlam."],
+"Breeding and AI technicians":["How do the farmers get you on the day, do they ring you direct?","Autumn. Spring is the breeding season and he has not a second."],
+"Agri feed and fertiliser merchants":["How do the orders come in, and who does the chasing for the money?",""],
+"Farm machinery dealers and mobile mechanics":["When a machine goes down in the middle of harvest, how does that call reach you?","Winter. Harvest runs July to October."],
+"Slurry and lime spreading contractors":["How much of the year's money comes in during those few weeks?","The closed spreading season, roughly October to January, is when he can talk."],
+"Marts and livestock auctioneers":["What happens to the buyers' details after a sale day?","Go on a sale day. He is there and he is talking anyway."],
+"Farm grant and TAMS consultants":["How do you chase the documents off a farmer before a deadline?","Between scheme deadlines. Ask him when his next one lands."],
+"Stud farms and bloodstock":["How do the owners get an update on their horse?","Not the covering season, February to June."],
+"Racing yards and trainers":["What do you do when an owner rings looking for an update?",""],
+"Equine transport and export":["How does a booking come in, and what has to be right before a horse travels?",""],
+"Farriers on a multi yard round":["How do you set up a week's round across the yards?",""],
+"Oyster and mussel farms":["How do you keep track of what went to which buyer?","Autumn into spring is the selling season. Summer is quieter."],
+"Seafood processors and exporters":["How do the orders and the haulage line up on a bad weather week?",""],
+"Boatyards and marine engineers":["How do you handle the winter storage bookings?","Ask in spring, and book the work for the autumn lay up."],
+"Marine surveyors":["How long does a report take you after you leave the boat?",""],
+"Commercial diving and underwater inspection":["How do you put a tender together for a harbour job?",""],
+"Forestry harvesting contractors":["How do the loads and the haulage get lined up on a site?","Winter is the cutting season, so go at him in late spring."],
+"Timber haulage":["What do you do with the dockets at the end of a week?",""],
+"Forestry and afforestation consultants":["How do you keep on top of licences that are sitting with the department?",""],
+"Commercial tree surgery and arborists":["When do the quotes get written, is it at night?","Autumn, before the winter cutting season starts."],
+"Land drainage and reclamation contractors":["How do you price a job after walking the land?",""],
+"Small quantity surveying practices":["How do the numbers from the last tender make it into the next one?",""],
+"Scaffolding hire and erection":["How do you know when a job is finished with your gear?",""],
+"Crane and plant hire":["How do you know what is sitting idle in a yard this week?",""],
+"Ground investigation and site surveys":["How long between the rig leaving site and the report going out?",""],
+"Licensed asbestos removal contractors":["How much of that job is paperwork, honestly?",""],
+"Radon testing and mitigation":["What happens after a test comes back high, who goes back to them?",""],
+"BER assessors and energy raters":["How many do you have to do in a week for it to be worth doing?",""],
+"Air tightness and thermal imaging testers":["What happens when a builder moves the date on you?",""],
+"Small structural engineering practices":["How do the cert requests come in, and where do they sit?",""],
+"Steel fabricators and metalwork shops":["How long does it take you to price a drawing?","Mornings. In the afternoon he is out in the shop."],
+"Precast concrete and blockmakers":["How do the deliveries get scheduled against the orders?",""],
+"Formwork and groundworks subcontractors":["How do the day works get captured so they end up on the bill?",""],
+"Timber frame and modular manufacturers":["How do the site delivery slots line up with what the factory is doing?",""],
+"Quarries and aggregate suppliers":["What happens to a docket between the weighbridge and the invoice?",""],
+"Health and safety consultants":["How much of the same safety file are you rebuilding on every project?",""],
+"Fire safety certificate consultants":["How long do the council queries sit before somebody answers them?",""],
+"Fire extinguisher and alarm servicing":["How do you know what is due next month?",""],
+"Sprinkler and suppression servicing":["How do the certs get out after a service?",""],
+"Legionella and water hygiene testing":["How do you keep track of what sampling is due where?",""],
+"Occupational health providers":["How do the appointments get organised across the sites?",""],
+"Environmental consultants":["How do you pull a report together when three specialists are feeding into it?","Winter. The surveying all happens in summer."],
+"Ecologists and protected species surveyors":["How much of the year's surveying has to happen in those few months?","October to February. He is writing up then, and he will talk."],
+"Archaeological consultancies":["How do the reports to the state get pulled together after a dig?",""],
+"Waste licensing and EPA compliance consultants":["How do you stop every client's annual return landing on the same week?",""],
+"Calibration labs and test houses":["How does a customer know their kit is due back in?",""],
+"Septic tank desludging and percolation testing":["Do you ever go back to the same house, or is it always a fresh call?",""],
+"Drain jetting and CCTV survey companies":["What happens to an emergency call at eleven at night?",""],
+"Industrial and tank cleaning contractors":["How much of a shutdown job is permits before you ever start?",""],
+"Skip hire and construction waste":["How do the orders and the drivers get matched up in a morning?",""],
+"Commercial laundry and linen services":["How do you settle it when a hotel says linen is missing?",""],
+"Washroom and hygiene services":["How do you know a site was actually serviced?",""],
+"Industrial water treatment and filtration":["How do the dosing records get back to the plant?",""],
+"Refrigerated haulage":["How do the temperature records get filed after a run?",""],
+"Abnormal load and heavy haulage":["How long does the permit side of a load take you?",""],
+"Coach and bus operators":["How do the bookings and the driver roster come together for a week?","November to February. Summer is tours and he is gone."],
+"Vehicle recovery and roadside assistance":["What happens to a call that comes in at three in the morning?",""],
+"Commercial vehicle repair and CVRT prep":["How do you book a fleet in without the truck sitting idle?",""],
+"Mobile tyre fitting for fleets":["How do you know what went on which vehicle?",""],
+"Tachograph analysis and fleet compliance":["How do you chase the driver cards off the hauliers?",""],
+"HGV, bus and CPC training schools":["How do you know whose licence is coming up for renewal?",""],
+"Craft distilleries":["How do the trade orders and the visitor side sit together?","Not the run up to Christmas."],
+"Craft breweries":["How do the accounts order off you, is it WhatsApp?",""],
+"Artisan cheese and dairy producers":["How do the wholesale orders come in against the market stock?",""],
+"Wholesale bakeries":["What time of the night do the order changes come at you?","Afternoons. Mornings they are baking and out delivering."],
+"Food co packers and contract manufacturers":["How do the customer approvals move on a production run?",""],
+"Contract catering and canteens":["How do the rosters and the ordering work across the sites?",""],
+"Wholesale meat processors and butchers":["How do the orders come at you at six in the morning?",""],
+"Food safety and HACCP consultants":["How do you keep track of every client's audit dates?",""],
+"Home care agencies":["What does a Monday look like when a carer rings in sick?",""],
+"Private nursing homes":["How do the families get an update, is it whoever answers the phone?",""],
+"Disability and residential service providers":["How do the incident reports get back to you from the houses?",""],
+"Independent audiologists":["How does somebody know they are due back in for a retest?",""],
+"Dental laboratories":["How does a case come in from the surgery, and how does the approval come back?",""],
+"Veterinary referral and specialist practices":["How does a referral arrive from another vet?",""],
+"Occupational therapy and ABA providers":["How do you manage a waiting list that long?",""],
+"Private psychiatry and psychology practices":["Who does the scheduling and the reports, is it yourself?",""],
+"Insolvency practitioners and liquidators":["How do the statutory dates get tracked across cases?",""],
+"Planning consultants":["How do you keep on top of council queries across live applications?",""],
+"Agricultural land valuers and auctioneers":["What happens to the people who came to a viewing and did not bid?",""],
+"Tender and public procurement writers":["Where do the answers from the last tender live?",""],
+"Patent and trademark attorneys":["How do the renewal dates get tracked?",""],
+"Credit unions":["How does a member hear from you between transactions?",""],
+"Block and OMC management agents":["How many owner emails land in a week, and who answers them?",""],
+"Commercial grounds maintenance":["How do the seasonal works get scheduled across the contracts?",""],
+"High level and commercial window cleaning":["How does the invoicing happen after a round?",""],
+"Solar PV and battery installers":["What happens to a quote that goes out and hears nothing back?","Just before grant announcements and budget time, that is when the rush starts."],
+"Heat pump installers":["How much of the office week goes on grant paperwork?",""],
+"Commercial EV charger installers":["How do the site surveys and the quotes keep up with each other?",""],
+"Wind farm operations and maintenance":["How do the technician reports come back off site?",""],
+"Anaerobic digestion and biogas operators":["How is the feedstock scheduled against what the plant needs?",""],
+"Marquee and event structure hire":["When do the enquiries come at you, is it evenings?","November to February. In summer he is up a ladder putting up marquees."],
+"Wedding venues, barns and estates":["How many questions does one couple ask between the booking and the day?","January and February is the only time they will sit down with you."],
+"AV, staging and event production":["How do you crew two events on the same weekend?",""],
+"Portable toilet and welfare unit hire":["How do you know a unit is finished on a site?",""],
+"Safe Pass and manual handling trainers":["How does somebody know their card is about to expire?",""],
+"Apprenticeship and CPD training providers":["How do the enrolments and the certification paperwork get handled?",""]
+};
+
+var TOP_NOTES = {
+ 1:"Biggest market, warmest route, and the pain is at its worst exactly when the money is biggest. One contractor introduces you to twenty.",
+ 2:"The off hire leak is a euro number you can prove in an afternoon with his own dockets. Best demo in the hundred.",
+ 3:"Rostering pain is severe, the hours are billable, and the sector is growing whether the economy is or not.",
+ 4:"Everybody is pitching the dentist. Nobody is pitching the lab behind him, and the lab is one question away.",
+ 5:"The entire business is dates and certs. That is the easiest thing in the world to fix and the hardest to live without.",
+ 6:"Sticky annual fees, hundreds of units, and one inbox holding the whole thing together. Cork is full of new apartments.",
+ 7:"Recall reminders are the business. Cork pharma and manufacturing means the customers are on your doorstep.",
+ 8:"High value work where the same answers get rewritten from scratch every time. Fixing that is worth a percentage of a seven figure contract."
+};
+
+var ROWS = D.map(function (a, i) {
+  return { i:i+1, n:a[0], c:a[1], m:a[2], p:a[3], u:a[4], w:a[5], f:a[6], r:a[7], top:a[8],
+           t:a[2]+a[3]+a[4] };
+});
+var CATS = [];
+ROWS.forEach(function (r) { if (CATS.indexOf(r.c) < 0) CATS.push(r.c); });
+function row(name) { return ROWS.filter(function (r) { return r.n === name; })[0]; }
+
+/* marks: name -> "star" (maybe) or "start" (doing it). saves on this device only.
+   the old version stored a plain array of starred names, so that gets carried over. */
+var STORE = "unworked-hundred-marks-v2", OLD = "unworked-hundred-stars";
+function readMarks() {
+  try {
+    var v = JSON.parse(localStorage.getItem(STORE) || "null");
+    if (v && typeof v === "object" && !Array.isArray(v)) return v;
+    var old = JSON.parse(localStorage.getItem(OLD) || "[]");
+    var out = {};
+    if (Array.isArray(old)) old.forEach(function (nm) { out[nm] = "star"; });
+    return out;
+  } catch (e) { return {}; }
+}
+function writeMarks(o) { try { localStorage.setItem(STORE, JSON.stringify(o)); } catch (e) {} }
+var marks = readMarks();
+function markOf(nm) { return marks[nm] || ""; }
+function setMark(nm, v) { if (v) marks[nm] = v; else delete marks[nm]; writeMarks(marks); }
+function countMark(v) { var c = 0; for (var k in marks) if (marks[k] === v) c++; return c; }
+
+var state = { q:"", cat:"All", sort:"total", open:null, copied:null };
+
+function esc(s) {
+  return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+function meter(cls, v) { return '<span class="meter ' + cls + '"><i style="width:' + (v * 20) + '%"></i></span>'; }
+
+/* the handover. the page cannot think, so it writes the brief and hands it over. */
+function brief(r) {
+  var x = EXTRA[r.n] || ["", ""];
+  var L = [];
+  L.push("BUSINESS BRAIN, START A MARKET");
+  L.push("");
+  L.push("Market: " + r.n);
+  L.push("Category: " + r.c);
+  L.push("Scores out of 5: money " + r.m + ", pain I fix " + r.p + ", untouched " + r.u);
+  if (r.top) L.push("This was one of my eight picks, ranked " + r.top + ".");
+  L.push("");
+  L.push("Why they have money: " + r.w);
+  L.push("What I fix: " + r.f);
+  L.push("The way in: " + r.r);
+  if (x[0]) L.push("What I open with: " + x[0]);
+  if (x[1]) L.push("When to catch him: " + x[1]);
+  L.push("");
+  L.push("What I need off you, in this order.");
+  L.push("1. Put this market through Carver's five criteria and tell me straight if it fails one.");
+  L.push("2. The offer for this market specifically, priced two ways, a monthly recurring figure and the whole thing paid upfront at 20 percent off.");
+  L.push("3. A 0 to 15k profit runner. Stages, what has to be true before each stage starts, and what kills it.");
+  L.push("4. Where the first five of these are in Cork or Munster, and the exact first message or call.");
+  L.push("5. What you would not do here, and what would make you tell me to drop it.");
+  L.push("");
+  L.push("Rules. Named and sourced off my own library, never invent a framework a book did not contain. Say when a call is yours and not the bench's. One action at the end, not three.");
+  return L.join("\n");
+}
+function copyText(txt, done) {
+  function fallback() {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = txt; ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.top = "-1000px";
+      document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); document.body.removeChild(ta); done(true);
+    } catch (e) { done(false); }
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(function () { done(true); }, fallback);
+  } else fallback();
+}
+
+document.getElementById("cTotal").textContent = ROWS.length;
+document.getElementById("cCats").textContent = CATS.length;
+
+document.getElementById("picks").innerHTML = ROWS
+  .filter(function (r) { return r.top; })
+  .sort(function (a, b) { return a.top - b.top; })
+  .map(function (r) {
+    return '<div class="pick"><div class="pick-rank">' + (r.top < 10 ? "0" : "") + r.top + "</div>" +
+      '<div><div class="pick-name">' + esc(r.n) + "</div><p>" + esc(TOP_NOTES[r.top] || "") + "</p></div></div>";
+  }).join("");
+
+var chips = document.getElementById("chips");
+chips.innerHTML = ["All"].concat(CATS).concat(["Starred", "Started"]).map(function (c) {
+  return '<button class="chip" data-cat="' + esc(c) + '" aria-pressed="' + (c === "All" ? "true" : "false") + '">' +
+    esc(c) + "</button>";
+}).join("");
+
+function visible() {
+  var q = state.q.toLowerCase().trim();
+  var out = ROWS.filter(function (r) {
+    if (state.cat === "Starred") { if (markOf(r.n) !== "star") return false; }
+    else if (state.cat === "Started") { if (markOf(r.n) !== "start") return false; }
+    else if (state.cat !== "All" && r.c !== state.cat) return false;
+    if (!q) return true;
+    return (r.n + " " + r.c + " " + r.w + " " + r.f + " " + r.r).toLowerCase().indexOf(q) > -1;
+  });
+  var s = state.sort;
+  out.sort(function (a, b) {
+    if (s === "az") return a.n.localeCompare(b.n);
+    if (s === "money") return b.m - a.m || b.t - a.t;
+    if (s === "pain") return b.p - a.p || b.t - a.t;
+    if (s === "untouched") return b.u - a.u || b.t - a.t;
+    return b.t - a.t || b.m - a.m;
+  });
+  return out;
+}
+
+function renderRunning() {
+  var box = document.getElementById("running");
+  var going = ROWS.filter(function (r) { return markOf(r.n) === "start"; });
+  if (!going.length) { box.innerHTML = ""; box.style.display = "none"; return; }
+  box.style.display = "";
+  box.innerHTML = '<h2>Running now</h2><p class="sec-note">Markets you have started. Open one and copy the brief into the brain to get the plan.</p>' +
+    going.map(function (r) {
+      return '<div class="pick"><div class="pick-rank">GO</div><div><div class="pick-name">' + esc(r.n) +
+        '</div><p>' + esc((EXTRA[r.n] || ["", ""])[0]) + '</p>' +
+        '<button class="btn-brief" data-brief="' + esc(r.n) + '">' +
+        (state.copied === r.n ? "Brief copied" : "Copy the brief") + "</button></div></div>";
+    }).join("");
+}
+
+function render() {
+  var rows = visible();
+  renderRunning();
+  var bits = [rows.length + (rows.length === 1 ? " market" : " markets")];
+  if (state.cat !== "All" && state.cat !== "Starred" && state.cat !== "Started") bits.push(state.cat.toLowerCase());
+  if (countMark("start")) bits.push(countMark("start") + " started");
+  if (countMark("star")) bits.push(countMark("star") + " starred");
+  document.getElementById("tally").textContent = bits.join(", ");
+
+  document.getElementById("register").innerHTML = rows.length ? rows.map(function (r) {
+    var isOpen = state.open === r.n;
+    var mk = markOf(r.n);
+    var html =
+      '<button class="row" data-open="' + esc(r.n) + '" aria-expanded="' + (isOpen ? "true" : "false") + '">' +
+        '<span class="num">' + (r.i < 10 ? "0" : "") + r.i + "</span>" +
+        "<span><span class=\"name\">" + esc(r.n) +
+          (r.top ? '<span class="flagdot">PICK ' + (r.top < 10 ? "0" : "") + r.top + "</span>" : "") +
+          (mk === "start" ? '<span class="flagdot go">STARTED</span>' : "") +
+          (mk === "star" ? '<span class="flagdot">STARRED</span>' : "") +
+        "</span>" +
+        '<span class="cat">' + esc(r.c) + "</span>" +
+        '<span class="meters">' + meter("m-money", r.m) + meter("m-pain", r.p) + meter("m-un", r.u) + "</span>" +
+        "</span>" +
+        '<span class="score">' + r.t + "<small>OF 15</small></span>" +
+      "</button>";
+    if (isOpen) {
+      var x = EXTRA[r.n] || ["", ""];
+      html += '<div class="detail"><dl>' +
+        "<div><dt>Why they have money</dt><dd>" + esc(r.w) + "</dd></div>" +
+        "<div><dt>What you fix</dt><dd>" + esc(r.f) + "</dd></div>" +
+        "<div><dt>The way in</dt><dd>" + esc(r.r) + "</dd></div>" +
+        (x[0] ? "<div><dt>What you say first</dt><dd class=\"say\">" + esc(x[0]) + "</dd></div>" : "") +
+        (x[1] ? "<div><dt>When to catch him</dt><dd>" + esc(x[1]) + "</dd></div>" : "") +
+        "</dl>" +
+        '<div class="acts">' +
+        '<button class="star" data-star="' + esc(r.n) + '" aria-pressed="' + (mk === "star" ? "true" : "false") + '">' +
+          (mk === "star" ? "Starred" : "Star it, maybe") + "</button>" +
+        '<button class="startbtn" data-start="' + esc(r.n) + '" aria-pressed="' + (mk === "start" ? "true" : "false") + '">' +
+          (mk === "start" ? "Started" : "Start this one") + "</button>" +
+        "</div>";
+      if (mk === "start") {
+        html += '<div class="handover"><p><b>The brief is ready.</b> Copy it, open Claude, run the brain skill and paste it in. ' +
+          "The page cannot write the plan, it hands you everything it knows and the brain writes it off your own library.</p>" +
+          '<button class="btn-brief" data-brief="' + esc(r.n) + '">' +
+          (state.copied === r.n ? "Brief copied" : "Copy the brief") + "</button>" +
+          '<pre class="briefbox">' + esc(brief(r)) + "</pre></div>";
+      }
+      html += "</div>";
+    }
+    return html;
+  }).join("") : '<p class="empty">Nothing matches that. Clear the search or pick another category.</p>';
+}
+
+document.addEventListener("click", function (e) {
+  var b = e.target.closest("[data-brief]");
+  if (b) {
+    var nm = b.getAttribute("data-brief");
+    copyText(brief(row(nm)), function (ok) {
+      state.copied = ok ? nm : null;
+      render();
+      if (ok) setTimeout(function () { if (state.copied === nm) { state.copied = null; render(); } }, 2500);
+    });
+    return;
+  }
+  var st = e.target.closest("[data-start]");
+  if (st) {
+    var sn = st.getAttribute("data-start");
+    setMark(sn, markOf(sn) === "start" ? "" : "start");
+    render();
+    return;
+  }
+  var sb = e.target.closest("[data-star]");
+  if (sb) {
+    var s2 = sb.getAttribute("data-star");
+    setMark(s2, markOf(s2) === "star" ? "" : "star");
+    render();
+    return;
+  }
+  var cc = e.target.closest("[data-cat]");
+  if (cc) {
+    state.cat = cc.getAttribute("data-cat");
+    chips.querySelectorAll("[data-cat]").forEach(function (o) {
+      o.setAttribute("aria-pressed", o.getAttribute("data-cat") === state.cat ? "true" : "false");
+    });
+    render();
+    return;
+  }
+  var rw = e.target.closest("[data-open]");
+  if (rw) {
+    var nm2 = rw.getAttribute("data-open");
+    state.open = state.open === nm2 ? null : nm2;
+    render();
+  }
+});
+
+document.getElementById("q").addEventListener("input", function (e) { state.q = e.target.value; render(); });
+document.getElementById("sort").addEventListener("change", function (e) { state.sort = e.target.value; render(); });
+
+render();
+</script>
+</body>
+</html>

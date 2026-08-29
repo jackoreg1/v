@@ -6,18 +6,29 @@ have to answer with his thumbs.
 
 ## What this repo is
 
-Two standalone, self-contained HTML pages. That is the whole repo.
+Standalone, self-contained HTML pages. One file each, no build.
 
 | File | What it is |
 | --- | --- |
+| `unworked-hundred.html` | 100 Irish markets that have money, have the problems Jack fixes, and have had no AI or systems person near them. Scored, filterable, and each one carries the way in and an opening question. Star it or Start it. |
+| `rep-burn-map.html` | Ten questions to a field sales owner, then what rep churn cost him last year and a six month map out of it. Six months, 18 moves, in full detail. |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
+
+The first two are the live field sales tools. They came into git late, recovered
+out of their published Artifacts, so treat this repo as the source of truth for
+them from now on rather than whatever copy is on the Mac.
 
 ## Hard rules
 
 - **One file per page. Everything inline.** CSS in a single `<style>`, JS in a
   single `<script>`, no imports, no bundler, no framework, no external assets.
   A page must work by double-tapping the file with no network.
+  Two exceptions, both known and both in the field sales pages. They pull their
+  fonts from Google Fonts over the network, and `rep-burn-map.html` splits its
+  JS into two `<script>` blocks, data then logic. With no network they fall back
+  to the system stack and still work, so it is a look problem, not a broken page.
+  Do not fix either one without asking Jack, the fix changes how they look.
 - **No dependencies and no build step.** Do not add npm, a package.json, a
   config file, or a toolchain. If a change seems to need one, the change is
   wrong.
@@ -44,6 +55,47 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
   0.1 multiplier. Copy that goes the other way is off-voice.
 
 ## How each page actually works
+
+### `unworked-hundred.html`
+
+- **The list is `D`**, one row per market:
+  `[name, category, money, pain, untouched, why the money is there, what you fix,
+  the warm way in, top pick rank]`. The three scores are 1 to 5 and the total is
+  their sum, computed in `ROWS`, never stored. `top` is 0 for everything except
+  the eight picks, which are ranked 1 to 8. Adding a market means appending one
+  row, categories come out of the data itself via `CATS`.
+- **`EXTRA` is keyed by the market name, not the index**, and holds
+  `[opening question, timing note]`. The timing note is empty on the ones where
+  season does not matter, which is why only 22 of them show timing. `TOP_NOTES`
+  is keyed by top pick rank, 1 to 8, and is the line about why that one is a pick.
+  Rename a market and you have to rename its `EXTRA` key too, nothing warns you.
+- **Marks persist** in `localStorage` under `unworked-hundred-marks-v2`, shaped
+  `{ "market name": "star" | "start" }`. The older key
+  `unworked-hundred-stars` was a plain array of starred names and is still read
+  once and carried over, so do not delete that fallback.
+- **Start this one is the point of the page.** It produces the brief Jack copies
+  into the business brain, which is where the actual plan gets written. Star is
+  only a maybe. There is no AI in the page and there cannot be one, so never
+  build towards an in-page answer.
+
+### `rep-burn-map.html`
+
+- **`Q` is the questions**, each `{id, tag, title, hint, fields}` with each field
+  `{k, t, l}` where `t` is `text` or `num`. The first entry, `id:"start"`, is the
+  intro screen carrying three fields, so `Q` is 11 entries for 10 questions.
+  `k` is the answer key and it is load-bearing, the maths reads answers by `k`.
+- **`MAP` is the six months**, each `{n, t, tag, val, why, moves}` with three
+  `{h, p, how}` moves under each, 18 in total. They ship in full detail. That is
+  deliberate and Jack decided it against the advice, the fixes are not held back
+  here. Do not "correct" it back to a teaser.
+- **State persists** in `localStorage` under `rep-burn-map-v1`, holding the
+  answers, which months are open, and where he was. Every read and write is in a
+  try/catch already, keep it that way.
+- **Two `<script>` blocks on purpose**, data first then logic. See the note in
+  Hard rules.
+- Colours are the `:root` custom properties. `--burn` is the cost of the churn,
+  `--climb` is the way out. Light and dark are both defined properly, do not
+  add a colour that only exists inside one of the media blocks.
 
 ### `vision-k7x9q2.html`
 
@@ -105,8 +157,15 @@ script and publish the same file path to update the same link:
 
 | Page | Artifact |
 | --- | --- |
+| `unworked-hundred.html` | https://claude.ai/code/artifact/a989592d-d9bc-481b-b938-117bdf21c749 |
+| `rep-burn-map.html` | https://claude.ai/code/artifact/e152290f-485a-4be7-bec2-9f24d7fb9c93 |
 | `movienight.html` | https://claude.ai/code/artifact/a4460892-791b-4885-86f1-6658ebb4c674 |
 | `vision-k7x9q2.html` | https://claude.ai/code/artifact/1ce07a3f-9675-4864-8e56-e670ab18b631 |
+
+`unworked-hundred.html` is also deployed at https://unworked-hundred.vercel.app.
+That deployment is a temporary one, it was pushed without a login. To make it
+permanently Jack's: `vercel login`, then `vercel deploy --prod` from the page's
+own folder.
 
 From a session that did not publish them, pass the URL above as `url` or a
 second, separate artifact is created instead.

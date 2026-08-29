@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Rep Burn Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Chivo:wght@400;500;700&family=Chivo+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#F3F5F6;
+  --panel:#FFFFFF;
+  --panel-2:#EAEDEF;
+  --ink:#15181C;
+  --ink-2:#454C54;
+  --ink-3:#767E87;
+  --line:#D9DEE1;
+  --line-2:#E8ECEE;
+  --burn:#AE2E1B;
+  --burn-bg:#9E2818;
+  --burn-soft:#F7E6E2;
+  --climb:#0B6B45;
+  --climb-soft:#DFEEE7;
+  --locked:#9AA3AB;
+  --display:"Anton","Arial Narrow",Impact,sans-serif;
+  --body:"Chivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"Chivo Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1013;
+    --panel:#171A1F;
+    --panel-2:#1E2228;
+    --ink:#E9ECEF;
+    --ink-2:#B0B7BF;
+    --ink-3:#7E868F;
+    --line:#2A2F37;
+    --line-2:#22262D;
+    --burn:#FF7355;
+    --burn-bg:#7C2415;
+    --burn-soft:#2C1712;
+    --climb:#3FCB8B;
+    --climb-soft:#10281F;
+    --locked:#5A626B;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1013;
+  --panel:#171A1F;
+  --panel-2:#1E2228;
+  --ink:#E9ECEF;
+  --ink-2:#B0B7BF;
+  --ink-3:#7E868F;
+  --line:#2A2F37;
+  --line-2:#22262D;
+  --burn:#FF7355;
+  --burn-bg:#7C2415;
+  --burn-soft:#2C1712;
+  --climb:#3FCB8B;
+  --climb-soft:#10281F;
+  --locked:#5A626B;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:22px 16px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:22px}
+.brand{font-family:var(--display);font-size:19px;letter-spacing:.03em;text-transform:uppercase}
+.brand span{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.1em;margin-left:8px;text-transform:none}
+.prog{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.09em}
+.bar{height:4px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;background:var(--ink);transition:width .3s ease}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px 24px}
+h1{font-family:var(--display);font-size:clamp(28px,7.5vw,42px);line-height:1.04;letter-spacing:.01em;margin:0 0 14px;text-transform:uppercase;text-wrap:balance}
+h2{font-family:var(--display);font-size:24px;text-transform:uppercase;letter-spacing:.02em;margin:0 0 10px}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px}
+.lede{color:var(--ink-2);font-size:16.5px;margin:0 0 24px;max-width:56ch}
+.hint{color:var(--ink-3);font-size:14.5px;margin:0 0 22px;max-width:56ch}
+label.f{display:block;font-size:14px;color:var(--ink-2);margin-bottom:8px;font-weight:500}
+.field{margin-bottom:20px}
+input[type=text]{width:100%;font-family:var(--body);font-size:19px;color:var(--ink);background:var(--panel-2);border:1.5px solid var(--line);border-radius:9px;padding:14px;outline:none}
+input[type=text]:focus{border-color:var(--ink)}
+.pre{position:relative}
+.pre .sym{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink-3);font-size:18px}
+.pre input{padding-left:34px}
+.suf{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-top:6px;display:block;letter-spacing:.06em}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{font-family:var(--body);font-size:16px;text-align:left;cursor:pointer;background:var(--panel-2);border:1.5px solid var(--line);border-radius:9px;padding:14px 16px;color:var(--ink);min-height:52px}
+.opt:hover{border-color:var(--ink-3)}
+.opt[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--panel)}
+.nav{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
+.btn{font-family:var(--body);font-weight:700;font-size:16px;cursor:pointer;border-radius:9px;padding:14px 24px;border:1.5px solid transparent;min-height:52px}
+.btn-go{background:var(--ink);color:var(--panel)}
+.btn-ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+.btn-quiet{background:none;border:none;color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;padding:14px 6px;cursor:pointer;font-family:var(--body);font-size:15px}
+.key{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:14px;letter-spacing:.05em}
+/* burn */
+.burnbox{background:var(--burn-bg);color:#fff;border-radius:12px;padding:26px 24px;margin-bottom:12px}
+.burnbox .cap{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:10px}
+.burnbox .big{font-family:var(--display);font-size:clamp(44px,13vw,72px);line-height:.92;letter-spacing:.01em}
+.burnbox .sub{font-size:15px;opacity:.9;margin-top:12px;max-width:46ch}
+.splits{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:22px}
+.split{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+.split b{font-family:var(--display);font-size:26px;display:block;line-height:1;color:var(--burn)}
+.split span{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:block;margin-top:7px}
+.split p{margin:8px 0 0;font-size:13.5px;color:var(--ink-2)}
+.workings{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);background:var(--panel-2);border-radius:8px;padding:12px 14px;margin-top:10px;line-height:1.6;overflow-x:auto}
+/* map */
+.month{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--panel);overflow:hidden}
+.mhead{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:none;font:inherit;color:inherit;padding:16px 18px;cursor:pointer}
+.mhead:hover{background:var(--panel-2)}
+.mnum{font-family:var(--display);font-size:30px;line-height:.9;color:var(--line);transition:color .2s}
+.month.done .mnum{color:var(--climb)}
+.month.active .mnum{color:var(--ink)}
+.mtitle{font-family:var(--display);font-size:18px;text-transform:uppercase;letter-spacing:.02em;line-height:1.1}
+.mtag{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.07em;margin-top:4px;display:block}
+.mval{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--climb);text-align:right;font-variant-numeric:tabular-nums}
+.mval small{display:block;font-size:9.5px;color:var(--ink-3);letter-spacing:.08em}
+.mbody{padding:2px 18px 20px;border-top:1px solid var(--line-2)}
+.mwhy{font-size:15px;color:var(--ink-2);margin:14px 0 16px;max-width:56ch}
+.move{border-left:2px solid var(--line);padding:0 0 0 14px;margin-bottom:16px}
+.move h4{font-family:var(--body);font-weight:700;font-size:15.5px;margin:0 0 5px}
+.move p{margin:0 0 8px;font-size:14.5px;color:var(--ink-2);max-width:56ch}
+.move .how{font-size:14px;color:var(--ink-2);background:var(--panel-2);border-radius:8px;padding:12px 14px;margin:0}
+.move .how b{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:6px}
+.tick{display:flex;align-items:center;gap:10px;margin-top:14px;background:none;border:1.5px solid var(--line);border-radius:9px;padding:11px 14px;cursor:pointer;font:inherit;color:var(--ink-2);width:100%;text-align:left}
+.tick[aria-pressed="true"]{border-color:var(--climb);background:var(--climb-soft);color:var(--climb);font-weight:700}
+.box{width:16px;height:16px;border:1.5px solid currentColor;border-radius:4px;flex:0 0 auto}
+.tick[aria-pressed="true"] .box{background:currentColor}
+.compare{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin:24px 0}
+.cline{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-top:1px solid var(--line-2)}
+.cline:first-of-type{border-top:none}
+.cline span{font-size:15px;color:var(--ink-2)}
+.cline b{font-family:var(--mono);font-size:16px;font-variant-numeric:tabular-nums}
+.cline.bad b{color:var(--burn)}
+.cline.good b{color:var(--climb)}
+.honest{border:1px dashed var(--line);border-radius:10px;padding:16px 18px;margin-top:22px}
+.honest p{margin:0 0 9px;font-size:14px;color:var(--ink-2);max-width:58ch}
+.honest p:last-child{margin:0}
+footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.06em;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.linkish{background:none;border:none;color:var(--ink-3);text-decoration:underline;cursor:pointer;font:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (max-width:520px){
+  .card{padding:22px 17px}
+  .mhead{grid-template-columns:40px 1fr;padding:14px}
+  .mval{grid-column:2;text-align:left;margin-top:6px}
+  .mbody{padding:2px 14px 18px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">Rep Burn<span>by Jack O'Regan</span></div>
+    <div class="prog" id="prog"></div>
+  </div>
+  <div class="bar"><i id="barfill" style="width:0%"></i></div>
+  <main id="app"></main>
+  <footer>
+    <span>Your own numbers. Nothing leaves this device.</span>
+    <button class="linkish" id="reset">Start again</button>
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+var STORE = "rep-burn-map-v1";
+
+var Q = [
+ { id:"start", title:"What is a rep costing you before they ever sell anything?",
+   lede:"Ten questions about your sales floor. Then a six month map with the moves in full, and what each month is worth on your own numbers.",
+   hint:"Guesses are fine. Nothing is sent anywhere.",
+   fields:[
+    {k:"biz",t:"text",l:"Business name"},
+    {k:"sell",t:"text",l:"What do the reps sell?"},
+    {k:"reps",t:"num",l:"How many reps do you have right now?"}
+   ]},
+ { id:"q1", tag:"Churn", title:"How many reps did you take on in the last twelve months?",
+   hint:"Everyone who started, including the ones who lasted a fortnight.",
+   fields:[{k:"hired",t:"num",l:"Reps taken on"}]},
+ { id:"q2", tag:"Churn", title:"How many of those were gone inside three months?",
+   fields:[{k:"gone",t:"num",l:"Gone inside three months"}]},
+ { id:"q3", tag:"Ramp", title:"How many weeks before a new rep makes their first sale?",
+   hint:"From their first day to money on the board.",
+   fields:[{k:"ramp",t:"num",l:"Weeks",s:"weeks"}]},
+ { id:"q4", tag:"Ramp", title:"What does one rep cost you a week before they sell anything?",
+   hint:"Draw or basic, van, fuel, phone, kit, leads, and the hours somebody spends on them.",
+   fields:[{k:"cost",t:"eur",l:"Per rep, per week"}]},
+ { id:"q5", tag:"Money", title:"What does one sale put in the business?",
+   hint:"Gross profit, not the price the customer pays.",
+   fields:[{k:"gp",t:"eur",l:"Gross profit per sale"}]},
+ { id:"q6", tag:"Money", title:"Your best rep against a middle one.",
+   hint:"Sales a month, in a normal month.",
+   fields:[
+    {k:"best",t:"num",l:"Your best rep does"},
+    {k:"avg",t:"num",l:"A middle rep does"}
+   ]},
+ { id:"q7", tag:"Ramp", title:"Who actually trains a new rep?",
+   fields:[{k:"train",t:"radio",l:"",o:["I do it myself","A manager does it","They shadow whoever is free","Nobody really, they learn on the doors"]}]},
+ { id:"q8", tag:"Control", title:"Do you see every rep's numbers every week?",
+   fields:[{k:"track",t:"radio",l:"",o:["Yes, one page, every Friday","I could work it out if I sat down","No, I know it by feel"]}]},
+ { id:"q9", tag:"Leads", title:"What happens to somebody who says not now?",
+   fields:[
+    {k:"notnow",t:"radio",l:"",o:["A system brings them back on a date","The rep keeps it in his own head","Nothing, we move on"]},
+    {k:"nncount",t:"num",l:"Roughly how many not nows does the team create in a month?"}
+   ]},
+ { id:"q10", tag:"Leads", title:"Where do the reps' leads come from?",
+   fields:[{k:"leads",t:"radio",l:"",o:["They knock and generate it all themselves","We supply the leads","A mix of both"]}]}
+];
+
+function n(v){ if(v===undefined||v===null) return null; var s=String(v).replace(/[^0-9.]/g,""); if(!s) return null; var x=parseFloat(s); return isNaN(x)?null:x; }
+function nz(v){ var x=n(v); return x===null?0:x; }
+function eur(x){ var v=Math.round(x||0); return "\u20AC"+v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,","); }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+
+/* ---- the maths. every figure traces back to an answer above ---- */
+function model(a){
+  var reps=nz(a.reps), hired=nz(a.hired), gone=Math.min(nz(a.gone),nz(a.hired)),
+      stayed=Math.max(0,hired-gone),
+      ramp=nz(a.ramp), cost=nz(a.cost), gp=nz(a.gp),
+      best=nz(a.best), avg=nz(a.avg), nn=nz(a.nncount);
+
+  var m={};
+  m.have = (hired>0 && ramp>0 && cost>0) || (reps>0 && gp>0 && best>avg);
+
+  /* 1. reps who never got past the ramp. money spent, nothing back. */
+  m.burn = gone*ramp*cost;
+
+  /* 2. the half of the ramp you could have skipped on the ones who stayed */
+  m.slow = stayed*(ramp/2)*cost;
+
+  /* 3. the gap to your best rep. shown in full, counted at one extra sale
+        a month per rep, and never more than a third of the full gap. */
+  m.gapFull = reps*Math.max(0,best-avg)*gp*12;
+  m.gapReal = m.gapFull>0 ? Math.min(reps*gp*12, m.gapFull/3) : 0;
+
+  /* 4. the not now pile, at five in a hundred coming good */
+  m.nnValue = (a.notnow==="A system brings them back on a date") ? 0 : nn*12*0.05*gp;
+
+  m.total = m.burn + m.slow + m.gapReal + m.nnValue;
+
+  /* what each month of the map puts back, per year. every one is a slice
+     of a number above, so the map can never put back more than was lost. */
+  m.mRamp  = m.slow;
+  m.mWords = m.gapReal;
+  m.mNotNow= m.nnValue;
+  m.mHire  = m.burn/2;
+  m.recovered = m.mRamp+m.mWords+m.mNotNow+m.mHire;
+
+  m.repsWord = reps ? reps+(reps===1?" rep":" reps") : "the team";
+  m.gone=gone; m.stayed=stayed;
+  return m;
+}
+
+var MAP = [
+ { n:1, t:"Put a scoreboard up", tag:"Weeks 1 to 4", val:"buys the numbers",
+   why:"You cannot fix a floor you are running on feel. This month costs you nothing and earns you nothing. It gives you the four numbers every other month depends on.",
+   moves:[
+    {h:"One page, every rep, every Friday",
+     p:"Names down the side. Five columns across: doors or calls, conversations, demos or quotes, sales, and money.",
+     how:"The rep fills it in, not you. Five minutes before they finish on Friday. A shared spreadsheet on the phone is plenty, do not buy software for this. The point is that every rep can see every other rep's line."},
+    {h:"Start the ramp clock",
+     p:"Write down the day each rep started and the day of their first sale. Do it for the last ten hires too, off the payroll.",
+     how:"Two columns. That gives you the real ramp number instead of the one you feel. It is almost always longer than the owner thinks, and that gap is the whole pitch to yourself."},
+    {h:"Keep a leaver log",
+     p:"Name, start date, leave date, and what they actually said on the way out.",
+     how:"Text them a week after they go: what would have made you stay. They answer honestly once they are gone and have nothing to lose. Three of those texts will tell you more than any consultant."}
+   ]},
+ { n:2, t:"Fix the first fourteen days", tag:"Month 2", key:"mRamp",
+   why:"Every week a rep spends not selling is money you have already spent. Cut the ramp in half and you get that back on every hire from here on.",
+   moves:[
+    {h:"A sale in week one, even a small one",
+     p:"Day one to three they sell one thing to one person with you or the best rep standing beside them.",
+     how:"Pick the easiest product and the warmest lead you have. This is not about the money on that sale. A rep who has sold once behaves completely differently from a rep who has not, and the ones who never get an early win are the ones who leave in week six."},
+    {h:"Hand them the kit on day one",
+     p:"One page: what we sell, the price list, the five questions that qualify somebody, and the eight objections with the answers.",
+     how:"If your reps are writing their own script in a car park, you are paying each of them to reinvent the same job badly. One page, laminated, in the van. It comes out of month three's work, so build it rough now and sharpen it later."},
+    {h:"Ride along, then reverse ride along",
+     p:"Two days watching your best rep. Then two days where the best rep watches them and says nothing until after.",
+     how:"Watch, then be watched, then let go. Most floors do the first half and skip the second, which is the half that actually catches the bad habits before they set."}
+   ]},
+ { n:3, t:"Take your best rep's words", tag:"Month 3", key:"mWords",
+   why:"Your best rep and your middle rep are selling the same product at the same price in the same town. The only difference is what comes out of their mouth. That is copyable.",
+   moves:[
+    {h:"Record the best rep for a week",
+     p:"Phone in the shirt pocket, with his say so, and a cut of the extra money for his trouble.",
+     how:"You are after the first fifteen seconds at the door, the question he asks that gets him inside, and what he says when they reach for the excuse. Type the good bits out. That transcript is worth more than any training course you could buy."},
+    {h:"Build the objection bank from real objections",
+     p:"The eight you actually hear, word for word, with an answer under each that came from a rep who has beaten it.",
+     how:"Not the ones you imagine. Sit in the van with three reps for an hour and write down what people say at the door. Then get the best rep's answer to each one. One page, and it goes in the day one kit."},
+    {h:"Twelve minutes of role play a week",
+     p:"Monday morning, standing up, one objection, two lads at a time, everybody watches.",
+     how:"Twelve minutes, not an hour. It is uncomfortable for a fortnight and then it is normal. This is the single cheapest thing on this whole map and it is the one most floors refuse to do."}
+   ]},
+ { n:4, t:"Work the not now pile", tag:"Month 4", key:"mNotNow",
+   why:"Most people who say no are saying not today. If nobody writes down when to come back, you have paid to create a lead and then thrown it in a ditch.",
+   moves:[
+    {h:"Every not now gets a date",
+     p:"Name, address, what they said, and the date to go back. On the same sheet as the scoreboard.",
+     how:"The rep writes it at the door, not at the end of the day when he has forgotten. If a rep cannot tell you why he is going back on that date, it is not a real not now, it is a no."},
+    {h:"The ninety day return",
+     p:"Somebody actually goes back on the date. Knock or ring, whichever fits.",
+     how:"Open with what they said last time, in their words. Not a new pitch. You are the only one who came back, which is most of the reason it works."},
+    {h:"One message a quarter to everyone who ever said no",
+     p:"Plain text, no offer, just what has changed or what you are doing in the area this month.",
+     how:"No gimmick and no discount. A list of old nos that nobody has spoken to in a year is the cheapest lead source you will ever have, and it costs an hour to send."}
+   ]},
+ { n:5, t:"Stop hiring people who cannot sell", tag:"Month 5", key:"mHire",
+   why:"You are not short of applicants, you are short of a filter. Everything before this month makes each rep better. This month stops you paying for the ones who were never going to work out.",
+   moves:[
+    {h:"Hire on the day, not the interview",
+     p:"A paid half day out with a rep before anybody gets an offer.",
+     how:"Plenty of people interview well and cannot knock a door at four in the afternoon in the rain. Half a day tells you what a fortnight of interviews will not, and the ones who are wrong for it usually take themselves out."},
+    {h:"Two questions that actually predict it",
+     p:"What did you sell before, and tell me about a month it went badly.",
+     how:"You are listening for whether they own it or whether it was the leads, the price, the manager and the weather. The ones who blame the conditions will blame yours too, in about five weeks."},
+    {h:"Week one is the filter, and everybody knows the number",
+     p:"A clear standard by day five, said out loud on day one.",
+     how:"Doors knocked, conversations had, not sales. Nobody should be surprised. This is kinder than the alternative, which is letting somebody drift for two months on your money before you both admit it."}
+   ]},
+ { n:6, t:"Make it hold without you", tag:"Month 6", val:"protects the rest",
+   why:"Everything above falls apart in a busy month unless somebody owns it. This month does not add a new number, it stops the other five sliding back.",
+   moves:[
+    {h:"Fifteen minutes with each rep, same day every week",
+     p:"Their line off the scoreboard in front of both of you. One thing to fix, one thing they did well.",
+     how:"Same day, same time, never cancelled. The week you cancel it is the week they learn it does not matter. Fifteen minutes each, so six reps is an hour and a half of your week."},
+    {h:"Twelve minute stand up on Monday",
+     p:"Last week's board on the wall, this week's number, one objection role played.",
+     how:"Standing up so it stays short. The board goes on the wall whether it is good or bad, because a board only works if it is always there."},
+    {h:"Pay your best rep to manage two hours a week",
+     p:"He runs the role play and the ride alongs, and he gets paid for the hours he is not selling.",
+     how:"This is the move that takes you out of the middle of it. Pay him properly for the two hours or he will quietly stop doing it, and do not give him the whole floor at once."}
+   ]}
+];
+</script>
+<script>
+"use strict";
+var app=document.getElementById("app"), prog=document.getElementById("prog"), barfill=document.getElementById("barfill");
+var S={ view:"q", i:0, a:{}, open:1, done:{} };
+
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify({a:S.a,done:S.done,view:S.view,i:S.i})); }catch(e){} }
+function load(){ try{ var d=JSON.parse(localStorage.getItem(STORE)||"null"); if(d&&d.a){S.a=d.a;S.done=d.done||{};S.view=d.view||"q";S.i=d.i||0;} }catch(e){} }
+
+function field(f){
+  var v=S.a[f.k], lab=f.l?'<label class="f" for="x'+f.k+'">'+esc(f.l)+"</label>":"";
+  var inner="";
+  if(f.t==="text") inner='<input type="text" id="x'+f.k+'" data-k="'+f.k+'" value="'+esc(v||"")+'" autocomplete="off">';
+  else if(f.t==="num") inner='<input type="text" inputmode="decimal" id="x'+f.k+'" data-k="'+f.k+'" value="'+esc(v||"")+'" placeholder="0" autocomplete="off">'+(f.s?'<span class="suf">'+esc(f.s)+"</span>":"");
+  else if(f.t==="eur") inner='<div class="pre"><span class="sym">&euro;</span><input type="text" inputmode="decimal" id="x'+f.k+'" data-k="'+f.k+'" value="'+esc(v||"")+'" placeholder="0" autocomplete="off"></div>';
+  else if(f.t==="radio") inner='<div class="opts">'+f.o.map(function(o){
+      return '<button type="button" class="opt" data-r="'+f.k+'" data-v="'+esc(o)+'" aria-pressed="'+(v===o?"true":"false")+'">'+esc(o)+"</button>";
+    }).join("")+"</div>";
+  return '<div class="field">'+lab+inner+"</div>";
+}
+
+function renderQ(){
+  var q=Q[S.i], first=S.i===0, last=S.i===Q.length-1;
+  prog.textContent = first ? "10 questions" : ("Question "+S.i+" of "+(Q.length-1));
+  barfill.style.width = Math.round((S.i/(Q.length-1))*100)+"%";
+  var h='<div class="card">';
+  if(q.tag) h+='<div class="eyebrow">'+esc(q.tag)+"</div>";
+  h+="<h1>"+esc(q.title)+"</h1>";
+  if(q.lede) h+='<p class="lede">'+esc(q.lede)+"</p>";
+  if(q.hint) h+='<p class="hint">'+esc(q.hint)+"</p>";
+  h+=q.fields.map(field).join("");
+  h+='<div class="nav">';
+  if(!first) h+='<button class="btn btn-ghost" id="back">Back</button>';
+  h+='<button class="btn btn-go" id="next">'+(first?"Start":(last?"See the map":"Next"))+"</button>";
+  if(!first&&!last) h+='<button class="btn-quiet" id="skip">Skip</button>';
+  h+='</div><div class="key">Press enter to move on. Nothing is compulsory.</div></div>';
+  app.innerHTML=h;
+
+  q.fields.forEach(function(f){
+    var el=document.getElementById("x"+f.k);
+    if(el) el.addEventListener("input",function(){ S.a[f.k]=el.value; save(); });
+  });
+  app.querySelectorAll("[data-r]").forEach(function(b){
+    b.addEventListener("click",function(){
+      var k=b.getAttribute("data-r"), v=b.getAttribute("data-v");
+      S.a[k]=S.a[k]===v?"":v;
+      app.querySelectorAll('[data-r="'+k+'"]').forEach(function(o){
+        o.setAttribute("aria-pressed", o.getAttribute("data-v")===S.a[k]?"true":"false");
+      });
+      save();
+    });
+  });
+  var b=document.getElementById("back"); if(b) b.addEventListener("click",prev);
+  document.getElementById("next").addEventListener("click",nextQ);
+  var s=document.getElementById("skip"); if(s) s.addEventListener("click",nextQ);
+  var fo=app.querySelector("input"); if(fo&&window.innerWidth>620) fo.focus();
+}
+
+function nextQ(){ if(S.i<Q.length-1){S.i++;} else {S.view="map";} save(); render(); window.scrollTo(0,0); }
+function prev(){ if(S.view==="map"){S.view="q";S.i=Q.length-1;} else if(S.i>0){S.i--;} save(); render(); window.scrollTo(0,0); }
+document.addEventListener("keydown",function(e){
+  if(e.key!=="Enter"||S.view!=="q"||e.shiftKey||e.metaKey||e.ctrlKey) return;
+  e.preventDefault(); nextQ();
+});
+
+function monthValue(m,M){
+  if(m.val) return '<span class="mval" style="color:var(--ink-3)">'+esc(m.val)+"<small>NO FIGURE</small></span>";
+  var v=M[m.key]||0;
+  return '<span class="mval">'+eur(v)+"<small>A YEAR</small></span>";
+}
+
+function renderMap(){
+  var a=S.a, M=model(a);
+  prog.textContent="The map";
+  var doneCount=0; MAP.forEach(function(m){ if(S.done[m.n]) doneCount++; });
+  barfill.style.width=Math.round((doneCount/MAP.length)*100)+"%";
+
+  var who=a.biz||"Your floor";
+  var h='<div class="card">';
+  h+='<div class="eyebrow">'+esc(who)+(a.reps?" &nbsp;&middot;&nbsp; "+esc(a.reps)+" reps":"")+(a.sell?" &nbsp;&middot;&nbsp; "+esc(a.sell):"")+"</div>";
+
+  if(M.total>0){
+    h+='<div class="burnbox"><div class="cap">What last year cost you</div>'+
+       '<div class="big">'+eur(M.total)+"</div>"+
+       '<div class="sub">Reps who left before they sold, the slow start on the ones who stayed, one more sale a month from each rep, and the not nows nobody went back to. All of it off the numbers you just gave me.</div></div>';
+    h+='<div class="splits">';
+    if(M.burn>0) h+='<div class="split"><b>'+eur(M.burn)+"</b><span>Gone before they sold</span><p>"+M.gone+" reps left inside three months, each one carried "+nz(a.ramp)+" weeks at "+eur(nz(a.cost))+" a week.</p></div>";
+    if(M.slow>0) h+='<div class="split"><b>'+eur(M.slow)+"</b><span>Slow to get going</span><p>The "+M.stayed+" who stayed took "+nz(a.ramp)+" weeks to a first sale. This is the half of that you could have skipped.</p></div>";
+    if(M.gapReal>0) h+='<div class="split"><b>'+eur(M.gapReal)+"</b><span>One more sale a rep</span><p>Your best does "+nz(a.best)+" a month, a middle one does "+nz(a.avg)+". The full gap across "+esc(M.repsWord)+" is "+eur(M.gapFull)+" a year. This is only what one extra sale a month each would be worth.</p></div>";
+    if(M.nnValue>0) h+='<div class="split"><b>'+eur(M.nnValue)+"</b><span>The not now pile</span><p>"+nz(a.nncount)+" a month that nobody goes back to, at five in a hundred coming good on "+eur(nz(a.gp))+" a sale.</p></div>";
+    h+="</div>";
+    h+='<div class="workings">'+
+       (M.burn>0?"gone early = "+M.gone+" reps x "+nz(a.ramp)+" weeks x "+eur(nz(a.cost))+" = "+eur(M.burn)+"<br>":"")+
+       (M.slow>0?"slow start = "+M.stayed+" reps x "+(nz(a.ramp)/2)+" weeks x "+eur(nz(a.cost))+" = "+eur(M.slow)+"<br>":"")+
+       (M.gapReal>0?"one more sale = "+nz(a.reps)+" reps x 1 sale x "+eur(nz(a.gp))+" x 12 months = "+eur(M.gapReal)+"<br>":"")+
+       (M.nnValue>0?"not now = "+nz(a.nncount)+" x 12 months x 5 in 100 x "+eur(nz(a.gp))+" = "+eur(M.nnValue):"")+
+       "</div>";
+  } else {
+    h+='<div class="burnbox"><div class="cap">Not enough numbers yet</div><div class="big">No figure</div>'+
+       '<div class="sub">Go back and give me the hires, the ramp weeks and what a rep costs you a week. Without those there is no number worth printing. The map below still stands.</div></div>';
+  }
+
+  h+='<h2 style="margin-top:30px">The next six months</h2>';
+  h+='<p class="hint">In order, because each one needs the one before it. Tick a month when it is done. It saves on this device.</p>';
+
+  h+=MAP.map(function(m){
+    var open=S.open===m.n, done=!!S.done[m.n];
+    var cls="month"+(done?" done":"")+(open?" active":"");
+    var s='<div class="'+cls+'">'+
+      '<button class="mhead" data-m="'+m.n+'" aria-expanded="'+(open?"true":"false")+'">'+
+        '<span class="mnum">'+m.n+"</span>"+
+        '<span><span class="mtitle">'+esc(m.t)+"</span><span class=\"mtag\">"+esc(m.tag)+"</span></span>"+
+        monthValue(m,M)+
+      "</button>";
+    if(open){
+      s+='<div class="mbody"><p class="mwhy">'+esc(m.why)+"</p>";
+      s+=m.moves.map(function(mv){
+        return '<div class="move"><h4>'+esc(mv.h)+"</h4><p>"+esc(mv.p)+"</p>"+
+               '<p class="how"><b>How you actually do it</b>'+esc(mv.how)+"</p></div>";
+      }).join("");
+      s+='<button class="tick" data-t="'+m.n+'" aria-pressed="'+(done?"true":"false")+'"><span class="box"></span>'+
+         (done?"Month "+m.n+" done":"Mark month "+m.n+" done")+"</button></div>";
+    }
+    return s+"</div>";
+  }).join("");
+
+  if(M.total>0){
+    h+='<div class="compare"><div class="cline bad"><span>Next twelve months if nothing changes</span><b>'+eur(M.total)+" gone</b></div>"+
+       '<div class="cline good"><span>What the six months above puts back</span><b>'+eur(M.recovered)+"</b></div>"+
+       '<div class="cline"><span>Months one and six carry no figure of their own. One buys the numbers, the other stops the rest sliding back.</span><b></b></div></div>';
+  }
+
+  h+='<div class="honest"><p><b>Where these figures come from.</b> Your answers, nothing else. No industry averages, no benchmarks, no survey.</p>'+
+     "<p>Three assumptions are mine and you can argue with all of them. Five in a hundred not nows come good when somebody goes back. One extra sale a month per rep is what better words are worth, not the full gap to your best man, because some of that gap is him and not the system. And a proper first fortnight halves the weeks to a first sale.</p>"+
+     "<p>The ramp saving assumes you hire about the same number next year as last year, and that fourteen days of proper induction halves the weeks to a first sale.</p></div>";
+
+  h+='<div class="nav"><button class="btn btn-ghost" id="back">Back to the questions</button><button class="btn btn-go" id="print">Save as PDF</button></div>';
+  h+="</div>";
+  app.innerHTML=h;
+
+  app.querySelectorAll("[data-m]").forEach(function(b){
+    b.addEventListener("click",function(){
+      var k=parseInt(b.getAttribute("data-m"),10);
+      S.open=S.open===k?0:k; save(); renderMap();
+    });
+  });
+  app.querySelectorAll("[data-t]").forEach(function(b){
+    b.addEventListener("click",function(e){
+      e.stopPropagation();
+      var k=b.getAttribute("data-t");
+      S.done[k]=!S.done[k]; save(); renderMap();
+    });
+  });
+  document.getElementById("back").addEventListener("click",prev);
+  document.getElementById("print").addEventListener("click",function(){ window.print(); });
+}
+
+function render(){ if(S.view==="map") renderMap(); else renderQ(); }
+document.getElementById("reset").addEventListener("click",function(){
+  if(!confirm("Clear the answers and start again?")) return;
+  S={view:"q",i:0,a:{},open:1,done:{}}; save(); render(); window.scrollTo(0,0);
+});
+load(); render();
+</script>
+</body>
+</html>
