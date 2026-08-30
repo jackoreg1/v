@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>The Inbox Run</title>
+<style>
+:root{--ink:#14181a;--dim:#5c6670;--line:#e2e7e4;--soft:#f4f6f5;--green:#0e6b45;--greend:#0a5636;--greent:rgba(14,107,69,.08);--amber:#8a5a06;--ambert:#fdf3dd;--amberline:#eed9a8;--bg:#ffffff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;min-height:100vh;padding:0 0 calc(30px + env(safe-area-inset-bottom));display:flex;justify-content:center}
+.wrap{width:100%;max-width:470px;padding:0 15px}
+header{padding:18px 0 4px}
+.wordmark{font-size:13px;letter-spacing:.22em;font-weight:800;color:var(--green);text-transform:uppercase;cursor:pointer;user-select:none}
+.screen{display:none}
+.screen.on{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+h1{font-size:27px;line-height:1.1;margin:6px 0 8px;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
+h2{font-size:22px;line-height:1.15;margin:14px 0 8px;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
+.sub{color:var(--dim);font-size:14.5px;line-height:1.55;margin:0 0 12px}
+.notice{background:var(--ambert);border:1px solid var(--amberline);color:var(--amber);font-size:12.5px;font-weight:700;line-height:1.45;border-radius:10px;padding:9px 12px;margin:0 0 12px}
+.btn{display:block;width:100%;border:0;border-radius:13px;padding:15px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;margin:10px 0;text-align:center;min-height:48px}
+.btn.primary{background:var(--green);color:#fff}
+.btn.primary:active{background:var(--greend)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.55}
+.back{background:none;border:0;padding:8px 0;color:var(--dim);font-size:14px;font-family:inherit;cursor:pointer;text-decoration:underline;min-height:44px}
+.tally{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 2px;font-size:13px;line-height:1.5;color:var(--ink);display:none}
+.tally b{color:var(--green)}
+.tally.show{display:block}
+.inboxlist{list-style:none;margin:0 0 4px;padding:0 0 6px}
+.row{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:12px 2px;font-family:inherit;color:var(--ink);cursor:pointer;min-height:48px;border-left:3px solid transparent}
+.row .top{display:flex;align-items:center;gap:8px}
+.row .handle{font-weight:700;font-size:14.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .days{font-size:12px;color:var(--dim);white-space:nowrap}
+.row .dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:var(--green)}
+.row .snip{color:var(--dim);font-size:13.5px;line-height:1.4;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .flags{display:flex;gap:6px;margin-top:6px;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .3s ease}
+.row.triaged .flags{max-height:30px;opacity:1}
+.chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--ambert);border:1px solid var(--amberline);color:var(--amber);white-space:nowrap}
+.badge{font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--soft);border:1px solid var(--line);color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.badge.act{background:var(--green);border-color:var(--green);color:#fff}
+.row.isact{border-left-color:var(--green)}
+.runwrap{position:sticky;bottom:10px;z-index:6;padding-top:6px}
+.legend{display:none;margin:14px 0 4px}
+.legend.show{display:block}
+.legend h3{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:0 0 8px;font-weight:800}
+.legend ul{list-style:none;margin:0;padding:0}
+.legend li{font-size:13px;color:var(--dim);line-height:1.5;padding:3px 0}
+.legend li b{color:var(--ink);text-transform:uppercase;font-size:11.5px;letter-spacing:.06em}
+.tapline{display:none;font-size:13.5px;color:var(--green);font-weight:700;margin:10px 0 2px}
+.tapline.show{display:block}
+.samplechip{font-size:10.5px;font-weight:800;letter-spacing:.1em;padding:3px 8px;border-radius:999px;background:var(--ambert);border:1px solid var(--amberline);color:var(--amber)}
+.leadhead{display:flex;align-items:center;gap:9px;margin:10px 0 4px}
+.leadhead .h{font-size:17px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.leadchip{display:none;font-size:12.5px;font-weight:800;color:var(--amber);background:var(--ambert);border:1px solid var(--amberline);border-radius:10px;padding:7px 11px;margin:8px 0}
+.thread{margin:12px 0;display:flex;flex-direction:column;gap:7px}
+.bub{max-width:82%;padding:9px 13px;border-radius:16px;font-size:14.5px;line-height:1.45}
+.bub.them{align-self:flex-start;background:var(--soft);border:1px solid var(--line);border-bottom-left-radius:5px}
+.bub.coach{align-self:flex-end;background:var(--greent);border:1px solid var(--green);border-bottom-right-radius:5px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin:10px 0}
+.card .lab{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:800;margin-bottom:6px}
+.card p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink)}
+.card p.dim{color:var(--dim);font-size:13.5px;margin-top:8px}
+.draftbub{background:var(--greent);border:1.5px solid var(--green);border-radius:14px;border-bottom-right-radius:5px;padding:10px 13px;font-size:15px;line-height:1.5;margin:8px 0}
+.tierline{display:inline-block;margin:2px 0 8px}
+.nav2{display:flex;gap:10px}
+.nav2 .btn{flex:1}
+.stat{border:1px solid var(--line);border-radius:16px;padding:16px 16px 14px;margin:10px 0;background:#fff}
+.stat .fig{font-size:44px;font-weight:800;letter-spacing:-.03em;color:var(--green);line-height:1;font-variant-numeric:tabular-nums}
+.stat p{margin:7px 0 0;font-size:14px;color:var(--dim);line-height:1.5}
+.datelab{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:800;margin:20px 0 2px}
+.finefoot{font-size:13px;color:var(--dim);line-height:1.6;border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
+.stage{border:1px solid var(--line);border-radius:16px;padding:15px;margin:10px 0}
+.stage .n{font-size:11px;color:var(--green);font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.stage h4{font-size:17px;margin:5px 0 6px;font-weight:800}
+.stage p{margin:0 0 7px;font-size:14px;line-height:1.55;color:var(--dim)}
+.stage p b{color:var(--ink)}
+.stage .exit{font-size:12.5px;color:var(--dim);margin:7px 0 0}
+.stage .exit b{color:var(--green)}
+.rules{background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:15px;margin:14px 0}
+.rules h3{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:0 0 8px;font-weight:800}
+.rules ul{list-style:none;margin:0;padding:0}
+.rules li{font-size:13.5px;line-height:1.5;color:var(--ink);padding:5px 0 5px 16px;position:relative}
+.rules li:before{content:"";position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;background:var(--green)}
+.greenline{background:var(--greent);border:1px solid var(--green);color:var(--greend);border-radius:12px;padding:11px 13px;font-size:14.5px;font-weight:800;margin:12px 0}
+.fine{font-size:12.5px;color:var(--dim);line-height:1.55;margin:12px 0}
+.cols h3{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;margin:16px 0 6px;color:var(--green)}
+.cols h3.no{color:var(--amber)}
+.cols ul{list-style:none;margin:0;padding:0}
+.cols li{font-size:14px;line-height:1.55;color:var(--ink);padding:6px 0 6px 18px;position:relative;border-bottom:1px solid var(--line)}
+.cols li:last-child{border-bottom:0}
+.cols li:before{content:"";position:absolute;left:0;top:14px;width:7px;height:7px;border-radius:2px;background:var(--green)}
+.cols .no li:before{background:var(--amberline)}
+.bold{font-size:14.5px;font-weight:800;line-height:1.5;margin:14px 0}
+.offercard{border:1.5px solid var(--green);border-radius:16px;padding:16px;margin:12px 0}
+.offercard.plain{border-color:var(--line)}
+.offercard h4{margin:0 0 8px;font-size:16px;font-weight:800}
+.offercard p{margin:0 0 9px;font-size:14.5px;line-height:1.55;color:var(--ink)}
+.offercard p:last-child{margin-bottom:0}
+.offercard .price{font-size:17px;font-weight:800;color:var(--green)}
+.offercard p.dim{color:var(--dim);font-size:13px}
+.ask{text-align:center;padding:40px 0 10px}
+.ask p{font-size:16px;line-height:1.6;margin:0 0 16px}
+.reveal{background:var(--greent);border:1px solid var(--green);border-radius:14px;padding:15px;margin:12px 0;font-size:15.5px;line-height:1.55;text-align:left}
+.todo{display:block;margin-top:9px;background:var(--ambert);border:1px dashed var(--amber);border-radius:9px;padding:8px 10px;font-size:13px;font-weight:800;color:var(--amber)}
+.foot{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-height:1.7}
+button:focus-visible,.row:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="wordmark" onclick="go('inbox')">The Inbox Run</div></header>
+
+<section class="screen" id="s-inbox">
+  <h1>Watch an inbox get worked</h1>
+  <p class="sub">Twelve sample leads below, every one made up. The method is the one that found 106 real people waiting on a reply in one coach&rsquo;s inbox on 25 July.</p>
+  <div class="notice">Samples. These leads are fictional. The numbers on the receipts screen are not.</div>
+  <div class="tally" id="tally"></div>
+  <ul class="inboxlist" id="inboxlist"></ul>
+  <p class="tapline" id="tapline">Tap any lead to see the next message.</p>
+  <div class="legend" id="legend">
+    <h3>The tiers</h3>
+    <ul>
+      <li><b>act</b>, ready now, message today.</li>
+      <li><b>warm</b>, interested but not ripe.</li>
+      <li><b>hold</b>, parked with an unlock date.</li>
+      <li><b>reply</b>, owed a human reply, no pitch.</li>
+      <li><b>first</b>, brand new, opener goes out light.</li>
+      <li><b>mate</b>, never pitched.</li>
+      <li><b>peer</b>, another coach, never pitched.</li>
+      <li><b>stop</b>, they said leave it, it is left.</li>
+      <li><b>dead</b>, gone cold for good.</li>
+    </ul>
+  </div>
+  <div class="runwrap"><button class="btn primary" id="runbtn" onclick="runTap()">Run the inbox</button></div>
+  <button class="btn ghost" id="receiptsbtn" style="display:none" onclick="go('receipts')">Now the real numbers</button>
+</section>
+
+<section class="screen" id="s-lead">
+  <div class="leadhead"><div class="h" id="l-handle"></div><span class="samplechip">SAMPLE</span></div>
+  <div class="leadchip" id="l-chip"></div>
+  <div class="thread" id="l-thread"></div>
+  <div class="card"><div class="lab">Tier</div><p><span class="badge tierline" id="l-tier"></span></p><p id="l-why"></p></div>
+  <div class="card" id="l-draftcard"><div class="lab">Next message. Drafted here, the coach sends it.</div><div class="draftbub" id="l-draft"></div><p class="dim" id="l-draftwhy"></p></div>
+  <div class="card" id="l-guardcard"><div class="lab">The move</div><p id="l-guard"></p></div>
+  <div class="nav2"><button class="btn ghost" onclick="go('inbox')">Back to the inbox</button><button class="btn primary" onclick="nextLead()">Next lead</button></div>
+</section>
+
+<section class="screen" id="s-receipts">
+  <h2>The receipts</h2>
+  <p class="sub">Everything above is made up and labelled. Everything below happened, and every line carries its date.</p>
+  <div class="datelab">25 July 2026, first full run</div>
+  <div class="stat"><div class="fig">639</div><p>conversations read, every one, first message to last.</p></div>
+  <div class="stat"><div class="fig">106</div><p>people had messaged in and never got a reply.</p></div>
+  <div class="stat"><div class="fig">2</div><p>of them warmer than anyone on the official lead list.</p></div>
+  <div class="datelab">2 August 2026, the calendar check</div>
+  <div class="stat"><div class="fig">22</div><p>real appointments March to August, every one still sitting at Confirmed. Not one marked Showed or No Show.</p></div>
+  <div class="stat"><div class="fig">0</div><p>opportunities moved to Won, so commission could not even be calculated. The data was the leak.</p></div>
+  <div class="stat"><div class="fig">1</div><p>stalled lead diagnosed off a consult call recording. The follow-up used his own stated deadline. He later closed. One case, not ten, that is the honest count.</p></div>
+  <p class="finefoot">That is the whole track record. No testimonials here because there are none yet. No revenue claims because there is no invoiced revenue on this offer yet. The numbers happened, they carry their dates, and they are enough to be going on with.</p>
+  <button class="btn primary" onclick="go('method')">How the drafting works</button>
+  <button class="back" onclick="go('inbox')">Back to the inbox</button>
+</section>
+
+<section class="screen" id="s-method">
+  <h2>The four moves</h2>
+  <p class="sub">Every draft in the demo came out of the same four moves.</p>
+  <div class="stage"><div class="n">Stage 1</div><h4>Pick it back up</h4>
+    <p>Get a dead thread breathing again. No pitch, just a human answering the message they left hanging.</p>
+    <p><b>Start where the lead spoke last and never got a reply. That filter is where the 106 came from.</b></p>
+    <div class="draftbub">Ah sorry, only seeing this now. How&rsquo;s the training been going since?</div>
+    <p class="exit"><b>Done when:</b> the lead replies.</p></div>
+  <div class="stage"><div class="n">Stage 2</div><h4>Ask about the training</h4>
+    <p>Find out if they fit on behaviour, not demographics.</p>
+    <p><b>One behaviour question per message, never two. Days trained, lifts moving, mirror moving. Is a dad predicts nothing.</b></p>
+    <div class="draftbub">Fair play, four days a week is no joke. Are the lifts going up but the mirror&rsquo;s not showing it?</div>
+    <p class="exit"><b>Done when:</b> they confirm the pattern themselves.</p></div>
+  <div class="stage"><div class="n">Stage 3</div><h4>Let them say it</h4>
+    <p>The lead names the problem and the cost in their own words.</p>
+    <p><b>Reflect back exactly what they told you, then ask what they have tried. Their stated reason, their stated deadline. That move has closed a lead before.</b></p>
+    <div class="draftbub">So the week is grand and the weekend undoes it. What have you tried to sort that side of it?</div>
+    <p class="exit"><b>Done when:</b> they show intent.</p></div>
+  <div class="stage"><div class="n">Stage 4</div><h4>Put a time on it</h4>
+    <p>A booked call. Nothing else gets decided in the DMs.</p>
+    <p><b>Offer the call and only the call. No price, no programme detail, all of that gets sized on the call in their own numbers.</b></p>
+    <div class="draftbub">Honestly this is easier talked than typed. What day this week suits you for a quick call?</div>
+    <p class="exit"><b>Done when:</b> a day and time is in the calendar.</p></div>
+  <div class="rules">
+    <h3>The lines that never get crossed</h3>
+    <ul>
+      <li>The whole thread gets read before a word gets drafted, first message to last.</li>
+      <li>One question per message, never two.</li>
+      <li>Max one emoji, and none is grand.</li>
+      <li>No price and no programme detail in the DMs. That is the call&rsquo;s job.</li>
+      <li>Qualify on behaviour, not demographics. Is a dad predicts nothing.</li>
+      <li>A hold stays held until its unlock date.</li>
+      <li>A mate, a peer or a stop never gets pitched. A reply is owed a human reply with nothing riding along.</li>
+    </ul>
+  </div>
+  <div class="greenline">I draft, you read, you send. Nothing goes out on its own.</div>
+  <p class="fine">These stage names and example messages are drafted from the working rules, not lifted from the framework doc. The real wording gets swapped in per client.</p>
+  <button class="btn primary" onclick="go('whofor')">Who this is for</button>
+  <button class="back" onclick="go('inbox')">Back to the inbox</button>
+</section>
+
+<section class="screen" id="s-whofor">
+  <h2>Who this is for</h2>
+  <p class="sub">Same rule as the leads. Behaviour, not job title.</p>
+  <div class="cols">
+    <h3>For you if</h3>
+    <ul>
+      <li>You sell online coaching at 500 euro plus a client, so one saved lead pays for the whole pilot.</li>
+      <li>Your DMs actually back up. The inbox on the receipts screen held 639.</li>
+      <li>You or your VA answer the DMs, so there is a live inbox to work.</li>
+      <li>You book consults out of the DMs. The inbox is the pipeline.</li>
+      <li>You have said out loud that the DMs eat your evenings. That complaint is the buying signal.</li>
+    </ul>
+    <h3 class="no">Not for</h3>
+    <ul class="no">
+      <li>Gym floor only, no online offer. There is nothing to set appointments for.</li>
+      <li>An inbox with a few enquiries a week. No backlog means no job to do.</li>
+      <li>Agencies and lead-gen shops.</li>
+    </ul>
+  </div>
+  <p class="bold">Anyone who wants a bot blasting the inbox or the sending done for them. The drafts get written, you read them, you send them. That is the model and it is not for sale any other way.</p>
+  <p class="sub">If the For column reads like your week, keep going.</p>
+  <button class="btn primary" onclick="go('offer')">The pilot</button>
+  <button class="back" onclick="go('inbox')">Back to the inbox</button>
+</section>
+
+<section class="screen" id="s-offer">
+  <h2>The pilot</h2>
+  <div class="offercard">
+    <h4>The full inbox run</h4>
+    <p>Same as the one you just watched. Every thread read first message to last. Every lead tiered. The spoke-last pile pulled out. Then drafts in your voice every day, you read and send. And the calendar check, so booked calls get marked Showed and moved Won instead of rotting at Confirmed.</p>
+    <p class="price">Pilots start at 800 euro. Half up front through a Stripe link.</p>
+    <p>The exact number gets sized on a 15 minute call, in your own figures. Your inbox, your client price, your show rate. That is also why no DM from this ever carries a price.</p>
+    <p class="dim">You sell coaching at 500 plus. One saved lead pays for the whole thing.</p>
+  </div>
+  <div class="offercard plain">
+    <h4>After the pilot</h4>
+    <p>A care plan at 300 a month. It never goes below 149. Under that the work gets skimped and nobody wins.</p>
+  </div>
+  <p class="bold">No bot. No blasting. I never send a message myself. I draft, you read, you send, it stays your voice.</p>
+  <p class="fine">Straight about it, this offer is new. Behind it is one full run that found 106 people, one stalled lead closed off his own deadline, and a CRM check that found 22 appointments nobody had marked. All of it dated, none of it invented.</p>
+  <button class="btn primary" onclick="go('ask')">One last thing</button>
+  <button class="back" onclick="go('inbox')">Back to the inbox</button>
+</section>
+
+<section class="screen" id="s-ask">
+  <div class="ask">
+    <p>That was the walkthrough. The same run happens on a real inbox.</p>
+    <p>First step is 15 minutes on a call. We put your own numbers on it. No price before that, and no pitch if it is not a fit.</p>
+    <button class="btn primary" onclick="document.getElementById('askreveal').hidden=false;this.hidden=true">Grand, let&rsquo;s talk</button>
+    <div class="reveal" id="askreveal" hidden>Sound. Fifteen minutes this week, what day suits you?<span class="todo">JACK, put your WhatsApp number here before this page goes to anyone.</span></div>
+    <button class="back" onclick="resetDemo();go('inbox')">Run the demo again</button>
+    <p class="fine">No analytics on this page. Nothing you tapped was recorded. The sample leads are made up, the dated numbers are real.</p>
+  </div>
+</section>
+
+<div class="foot">Samples made up and labelled. Numbers dated. Nothing tracked.</div>
+</div>
+
+<script>
+var SCREENS=["inbox","lead","receipts","method","whofor","offer","ask"];
+var TIERS={act:0,warm:1,hold:2,reply:3,first:4,mate:5,peer:6,stop:7,dead:8};
+/* who:"t" is the lead, "c" is the coach */
+var LEADS=[
+{name:"Dara",handle:"@dara.lifts.sample",days:6,them:true,tier:"act",
+ why:"Asked a real question six days ago and got silence. He spoke last.",
+ thread:[["t","Been following the page a while, some of the client results are class 💪"],["c","Appreciate that Dara. How's your own training going?"],["t","Not bad, in the gym 4 days a week the last year or so"],["c","Fair play, that's consistency anyway."],["t","Still on about the coaching, what would I need to get started?"]],
+ draft:"Ah sorry, this one slipped past me. How did the training go this week?",
+ draftWhy:"Owns the miss in five words, one question, replying costs him nothing."},
+{name:"Niamh",handle:"@niamh.trains.sample",days:3,them:true,tier:"act",
+ why:"Straight price question, still warm.",
+ thread:[["t","Saw the transformation you posted this morning, fair play"],["c","Thanks Niamh. Are you training yourself at the minute?"],["t","Yeah, 4 mornings a week before work"],["t","How much is the coaching?"]],
+ draft:"Honest answer, it depends on what you actually need, so I would only be guessing here. Have you 15 minutes this week for a quick call?",
+ draftWhy:"No number in the DM, the price gets sized on the call in her own situation."},
+{name:"Tomás",handle:"@tomo.gymlog.sample",days:5,them:true,tier:"act",
+ why:"Trains 4 days, lifts going up, mirror not moving, and he named the weekend himself. That is the whole ICP in one message.",
+ thread:[["t","That reel about weekend calories was aimed at me I'd say 😂"],["c","Ha, you're far from the only one. What way do your weekends usually go?"],["t","Grand Monday to Friday, then it all falls apart"],["t","4 sessions a week and the lifts keep going up but I look the same. I know the weekends are the problem."]],
+ draft:"So the week is grand and the weekend undoes it. What have you tried to sort that side of it?",
+ draftWhy:"His own words back at him, then one question about what he has tried."},
+{name:"Conor",handle:"@conor.tries.sample",days:14,them:true,tier:"warm",
+ why:"Went quiet two weeks ago, but he gave his reason and his deadline earlier in the thread.",
+ thread:[["t","Getting married in October, want to feel strong for it"],["c","Fair play Conor, that's a real deadline. What's training looking like now?"],["t","3 or 4 days a week when work allows"],["c","That's a solid base. Would a quick call some evening suit to see where you're at?"],["t","I'll have a think about it."]],
+ draft:"No pressure on the coaching at all. You said you wanted to feel strong for the wedding in October, how has training been since?",
+ draftWhy:"His own deadline, not fake urgency. That exact move already closed one stalled lead."},
+{name:"Eoin",handle:"@eoin.5aside.sample",days:0,them:true,tier:"first",
+ why:"Brand new, a story reply is a conversation, not a lead form.",
+ thread:[["t","That session looks savage 😂"]],
+ draft:"Haha good man. What are you training for at the minute?",
+ draftWhy:"Matches his energy, keeps him talking, pitching in message one kills it dead."},
+{name:"Roisin",handle:"@roisin.runs.sample",days:2,them:true,tier:"reply",
+ why:"Owed a human reply, nothing riding along with it.",
+ thread:[["t","Hiya, a friend of mine shared one of your posts"],["c","Ah nice, you're very welcome aboard."],["t","Is it all online or do you do in person?"]],
+ draft:"All online, no in person at the minute. Whereabouts are you based?",
+ draftWhy:"A plain answer to a plain question, no pitch attached."},
+{name:"Sinead",handle:"@sinead.hols.sample",days:10,them:true,tier:"hold",
+ why:"She picked mid September herself.",
+ thread:[["t","Thinking of finally doing a block of coaching in the autumn"],["c","Sound. When would suit you to have a proper chat about it?"],["t","Back from holidays mid September, give me a shout then!"]],
+ draft:null,guard:"Held until 15 September. She picked the date herself. Messaging sooner burns it."},
+{name:"Podge",handle:"@podge.mate.sample",days:1,them:false,tier:"mate",
+ why:"One of the coach's own mates.",
+ thread:[["t","Did you see Keano's deadlift video, the state of it 😂"],["c","Hahaha stop"]],
+ draft:null,guard:"Nothing. A mate never gets pitched. He gets a normal reply from the coach, not a setter."},
+{name:"Paudie",handle:"@coach.paudie.sample",days:4,them:false,tier:"peer",
+ why:"Another coach in the same game.",
+ thread:[["t","Class post on protein timing man, robbing that for my clients"],["c","Cheers man 🙌"]],
+ draft:null,guard:"Another coach. Be sound, never pitch a peer."},
+{name:"Liam",handle:"@liam.thinking.sample",days:8,them:false,tier:"warm",
+ why:"He set his own pace and the coach matched it.",
+ thread:[["t","Might look at the coaching properly after the summer"],["c","No bother, shout when you're ready."]],
+ draft:null,guard:"Coach spoke last, nothing owed today. Stays warm, the chat stays alive."},
+{name:"Aoife",handle:"@aoife.no.sample",days:30,them:false,tier:"stop",
+ why:"She asked to be left alone.",
+ thread:[["t","Not interested, please stop messaging"],["c","No problem at all."]],
+ draft:null,guard:"She said leave it, so it is left. No more messages, full stop."},
+{name:"Ger",handle:"@gerfromwork.sample",days:60,them:false,tier:"dead",
+ why:"Sixty days of silence after the last nudge.",
+ thread:[["c","Well Ger, long time no see. How's the gym treating you?"]],
+ draft:null,guard:"Gone cold and gone for good. Closed off, no message coming and none going."}
+];
+var ran=false,running=false,openIdx=null,sorted=[];
+
+function daysLabel(d){return d===0?"today":d+"d";}
+function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e;}
+
+function buildInbox(){
+var list=document.getElementById("inboxlist");
+for(var i=0;i<LEADS.length;i++){
+var d=LEADS[i];
+var row=el("button","row");row.setAttribute("data-i",i);
+(function(idx){row.onclick=function(){openLead(idx);};})(i);
+var top=el("div","top");
+if(d.them)top.appendChild(el("span","dot"));
+top.appendChild(el("span","handle",d.handle));
+top.appendChild(el("span","days",daysLabel(d.days)));
+row.appendChild(top);
+var last=d.thread[d.thread.length-1];
+row.appendChild(el("div","snip",(last[0]==="c"?"You: ":"")+last[1]));
+var flags=el("div","flags");
+if(d.them)flags.appendChild(el("span","chip","spoke last · "+daysLabel(d.days)));
+flags.appendChild(el("span","badge "+d.tier,d.tier));
+row.appendChild(flags);
+list.appendChild(row);
+}
+}
+
+function runTap(){
+if(running)return;
+if(ran){resetDemo();setTimeout(startRun,400);}
+else startRun();
+}
+function startRun(){
+running=true;
+var btn=document.getElementById("runbtn");btn.disabled=true;
+var rows=document.querySelectorAll("#inboxlist .row");
+var tally=document.getElementById("tally");tally.classList.add("show");
+var found=0,i=0;
+function step(){
+if(i>=LEADS.length){finish();return;}
+rows[i].classList.add("triaged");
+if(LEADS[i].tier==="act")rows[i].classList.add("isact");
+if(LEADS[i].them)found++;
+tally.textContent="Reading thread "+(i+1)+" of 12. "+found+" spoke last and got nothing back.";
+i++;setTimeout(step,350);
+}
+function finish(){
+ran=true;running=false;
+tally.textContent="";
+var b=el("b",null,found+" of the 12 spoke last and got nothing back.");
+tally.appendChild(b);
+tally.appendChild(document.createTextNode(" In the real inbox on 25 July it was 106 of 639, about one in six. The demo ratio is only the demo being small."));
+var list=document.getElementById("inboxlist");
+sorted=[];for(var k=0;k<LEADS.length;k++)sorted.push(k);
+sorted.sort(function(a,b2){return (TIERS[LEADS[a].tier]-TIERS[LEADS[b2].tier])||(a-b2);});
+for(var s=0;s<sorted.length;s++){list.appendChild(list.querySelector('[data-i="'+sorted[s]+'"]'));}
+document.getElementById("legend").classList.add("show");
+document.getElementById("tapline").classList.add("show");
+document.getElementById("receiptsbtn").style.display="block";
+btn.textContent="Run it again";btn.disabled=false;
+}
+step();
+}
+
+function resetDemo(){
+var list=document.getElementById("inboxlist");
+var rows=[].slice.call(list.querySelectorAll(".row"));
+rows.sort(function(a,b){return a.getAttribute("data-i")-b.getAttribute("data-i");});
+for(var i=0;i<rows.length;i++){rows[i].classList.remove("triaged","isact");list.appendChild(rows[i]);}
+var tally=document.getElementById("tally");tally.textContent="";tally.classList.remove("show");
+document.getElementById("legend").classList.remove("show");
+document.getElementById("tapline").classList.remove("show");
+document.getElementById("receiptsbtn").style.display="none";
+var btn=document.getElementById("runbtn");btn.textContent="Run the inbox";btn.disabled=false;
+ran=false;running=false;openIdx=null;
+}
+
+function openLead(i){
+if(!ran)return;
+var d=LEADS[i];openIdx=i;
+document.getElementById("l-handle").textContent=d.handle;
+var chip=document.getElementById("l-chip");
+if(d.them){chip.style.display="inline-block";chip.textContent="They spoke last, "+(d.days===0?"today":d.days+" days ago")+", nothing went back.";}
+else chip.style.display="none";
+var th=document.getElementById("l-thread");th.textContent="";
+for(var b=0;b<d.thread.length;b++){th.appendChild(el("div","bub "+(d.thread[b][0]==="t"?"them":"coach"),d.thread[b][1]));}
+var tb=document.getElementById("l-tier");tb.textContent=d.tier;tb.className="badge tierline "+d.tier;
+document.getElementById("l-why").textContent=d.why;
+var dc=document.getElementById("l-draftcard"),gc=document.getElementById("l-guardcard");
+if(d.draft){dc.style.display="block";gc.style.display="none";
+document.getElementById("l-draft").textContent=d.draft;
+document.getElementById("l-draftwhy").textContent="Why this one: "+d.draftWhy;}
+else{dc.style.display="none";gc.style.display="block";
+document.getElementById("l-guard").textContent=d.guard;}
+go("lead");
+}
+function nextLead(){
+if(openIdx===null)return;
+var p=sorted.indexOf(openIdx);
+openLead(sorted[(p+1)%sorted.length]);
+}
+
+function go(id){if(location.hash==="#"+id){route();}else{location.hash=id;}}
+function route(){
+var h=location.hash.replace("#","");
+if(SCREENS.indexOf(h)<0)h="inbox";
+if(h==="lead"&&openIdx===null)h="inbox";
+var els=document.querySelectorAll(".screen");
+for(var i=0;i<els.length;i++){els[i].classList.toggle("on",els[i].id==="s-"+h);}
+window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+buildInbox();
+route();
+</script>
+</body>
+</html>
