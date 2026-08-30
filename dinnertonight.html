@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6f0">
+<title>Dinner Tonight</title>
+<style>
+:root{
+  --bg:#faf6f0; --card:#fffdfa; --ink:#241d18; --dim:#6a5c50; --faint:#9b8d80;
+  --line:#e6ddd1; --hair:#d5c9ba;
+  --red:#b8442a; --redh:#9c3721; --wash:#f6ebe4; --gold:#8a6a1f; --green:#3f6b45;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.5;-webkit-text-size-adjust:100%;
+  padding:0 0 calc(40px + env(safe-area-inset-bottom));
+}
+.wrap{width:100%;max-width:600px;margin:0 auto;padding:0 16px}
+button{font-family:inherit;font-size:16px;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.lab{font-size:10.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+
+.screen{display:none}
+.screen.on{display:block}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topin{display:flex;align-items:center;gap:10px;min-height:52px}
+.logo{font-weight:800;letter-spacing:-.02em;font-size:17px;flex:1}
+.logo em{font-style:normal;color:var(--red)}
+.tally{font-size:12.5px;color:var(--faint);font-variant-numeric:tabular-nums}
+
+/* intro */
+.intro{padding:34px 0 0}
+h1{font-size:40px;line-height:1.02;letter-spacing:-.03em;margin:0 0 12px;font-weight:850}
+.intro p{margin:0 0 14px;color:var(--dim)}
+.intro p.lede{font-size:19px;color:var(--ink)}
+.howto{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 16px;margin:22px 0}
+.howto li{margin:12px 0;color:var(--dim)}
+.howto b{color:var(--ink)}
+
+/* buttons */
+.btn{
+  display:block;width:100%;text-align:center;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);border-radius:11px;
+  padding:14px 16px;font-weight:700;margin:0 0 10px;
+}
+.btn:active{background:var(--wash)}
+.btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+.btn.primary:active{background:var(--redh)}
+.btn.ghost{background:none;border-color:transparent;color:var(--dim);font-weight:600}
+
+/* deck */
+.deckhead{display:flex;align-items:baseline;gap:10px;padding:16px 0 8px}
+.deckhead .pos{color:var(--faint);font-variant-numeric:tabular-nums}
+.deckhead .kept{margin-left:auto;color:var(--green);font-weight:700;font-size:13.5px}
+.bar{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin:0 0 16px}
+.bar i{display:block;height:100%;background:var(--red);width:0;transition:width .18s ease}
+
+.dish{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px}
+.dish .num{color:var(--faint)}
+.dish h2{font-size:28px;line-height:1.1;letter-spacing:-.025em;margin:6px 0 10px;font-weight:850;text-wrap:balance}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.chip{background:var(--wash);color:var(--dim);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:650}
+.chip.time{background:none;border:1px solid var(--hair)}
+.blurb{margin:0 0 14px;color:var(--dim)}
+.reveal{
+  width:100%;background:none;border:1px dashed var(--hair);border-radius:10px;
+  padding:11px;color:var(--red);font-weight:700;font-size:14.5px;
+}
+.reveal:active{background:var(--wash)}
+
+.recipe{margin:14px 0 0;border-top:1px solid var(--line);padding-top:14px}
+.recipe h3{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin:0 0 8px}
+.recipe ul{margin:0 0 16px;padding:0;list-style:none}
+.recipe ul li{padding:5px 0 5px 16px;position:relative;border-bottom:1px solid var(--line);font-size:15.5px}
+.recipe ul li:last-child{border-bottom:0}
+.recipe ul li:before{content:"";position:absolute;left:2px;top:14px;width:6px;height:1px;background:var(--red)}
+.recipe ol{margin:0;padding:0;list-style:none;counter-reset:step}
+.recipe ol li{
+  counter-increment:step;position:relative;padding:0 0 14px 32px;font-size:16px;line-height:1.5;
+}
+.recipe ol li:before{
+  content:counter(step);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:50%;
+  background:var(--wash);color:var(--red);font-size:12px;font-weight:800;display:grid;place-items:center;
+}
+.serves{color:var(--faint);font-size:13px;margin:0 0 14px}
+
+/* scoring */
+.scoreq{text-align:center;color:var(--dim);margin:20px 0 10px;font-size:15px}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.scale button{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:14px 0;font-weight:750;font-size:17px;font-variant-numeric:tabular-nums;
+}
+.scale button:active{background:var(--wash)}
+.scale button.hi{border-color:#cbdcc9;color:var(--green)}
+.legend{display:flex;justify-content:space-between;color:var(--faint);font-size:12px;padding:8px 2px 0}
+.skip{width:100%;background:none;border:0;color:var(--faint);padding:16px 0 4px;font-size:14.5px}
+
+/* results */
+.podium{background:var(--card);border:1px solid var(--hair);border-radius:14px;padding:18px 16px;margin:0 0 18px}
+.podium .lab{color:var(--red);margin-bottom:8px}
+.podium h2{font-size:30px;line-height:1.06;letter-spacing:-.028em;margin:0 0 8px;font-weight:850}
+.podium .score{color:var(--gold);font-weight:750;font-size:14px;margin:0 0 10px}
+h3.sec{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin:24px 0 10px}
+.rank{list-style:none;margin:0 0 6px;padding:0}
+.rank li{display:flex;align-items:center;gap:11px;padding:12px 2px;border-bottom:1px solid var(--line)}
+.rank .p{color:var(--faint);font-size:13px;font-weight:750;width:18px;flex:none;font-variant-numeric:tabular-nums}
+.rank .t{flex:1;min-width:0;font-weight:700;letter-spacing:-.01em}
+.rank .t .m{font-weight:500;color:var(--faint);font-size:12.5px;margin-top:1px}
+.rank .cook{background:var(--wash);border:0;border-radius:8px;padding:8px 11px;font-size:13px;font-weight:750;color:var(--red);flex:none}
+.rank .bin{background:none;border:0;color:var(--faint);font-size:15px;padding:6px;flex:none}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 16px;color:var(--dim)}
+.note{color:var(--faint);font-size:13px;margin:10px 0 20px}
+
+/* cook mode */
+.cookhead{padding:18px 0 0}
+.cookhead h2{font-size:30px;line-height:1.08;letter-spacing:-.028em;margin:6px 0 8px;font-weight:850}
+.steps{list-style:none;margin:0;padding:0;counter-reset:cstep}
+.steps li{
+  counter-increment:cstep;position:relative;padding:14px 0 14px 40px;border-bottom:1px solid var(--line);
+  font-size:17.5px;line-height:1.48;cursor:pointer;
+}
+.steps li:before{
+  content:counter(cstep);position:absolute;left:0;top:14px;width:26px;height:26px;border-radius:50%;
+  border:1px solid var(--hair);color:var(--dim);font-size:13px;font-weight:800;display:grid;place-items:center;
+  background:var(--card);
+}
+.steps li.done{color:var(--faint);text-decoration:line-through;text-decoration-color:var(--hair)}
+.steps li.done:before{content:"\2713";background:var(--green);border-color:var(--green);color:#fff}
+.shop{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 16px;margin:0 0 22px}
+.shop li{padding:9px 0;border-bottom:1px solid var(--line);font-size:16px;list-style:none}
+.shop li:last-child{border-bottom:0}
+.shop ul{margin:0;padding:0}
+
+footer{margin:30px 0 0;padding-top:16px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="wrap topin">
+  <div class="logo">Dinner <em>Tonight</em></div>
+  <span class="tally" id="tally"></span>
+</div></div>
+
+<div class="wrap">
+
+  <section class="screen on" id="s-intro">
+    <div class="intro">
+      <h1>What are we having?</h1>
+      <p class="lede">Forty five dinners. Score them out of ten, anything you give a seven or more goes on your shortlist and stays there.</p>
+      <p>The full method is in here for every one of them. No signal needed, no adverts, and nobody's holiday story before the ingredients.</p>
+      <ol class="howto">
+        <li><b>Fifteen at a time.</b> Read it, peek at the recipe if you want, give it a score.</li>
+        <li><b>Seven or more keeps it.</b> The shortlist survives every new batch and every refresh.</li>
+        <li><b>Bin the ones you will never cook.</b> They never come back.</li>
+        <li><b>Then hit Cook it</b> and you get the method in big text with tickable steps.</li>
+      </ol>
+      <button class="btn primary" onclick="newRound()">Start scoring</button>
+      <button class="btn" id="resumeBtn" style="display:none" onclick="results()">Back to my shortlist</button>
+      <button class="btn ghost" onclick="surprise()">Just pick one for me</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-deck">
+    <div class="deckhead">
+      <span class="pos" id="pos"></span>
+      <span class="kept" id="kept"></span>
+    </div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="dish" id="dish"></div>
+    <p class="scoreq">Would you eat that this week?</p>
+    <div class="scale" id="scale"></div>
+    <div class="legend"><span>1, never</span><span>7+, keeps it</span><span>10, tonight</span></div>
+    <button class="skip" onclick="rate(null)">Skip this one</button>
+  </section>
+
+  <section class="screen" id="s-out"></section>
+
+  <section class="screen" id="s-cook"></section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+/* ------------------------------------------------------------------
+   Dinner Tonight. One file, works with the wifi off.
+   Rows are [name, minutes, blurb, tags, ingredients, steps].
+   Ingredients are written for two. Adding a dinner means appending one
+   entry to D and nothing else. Reordering D invalidates saved state,
+   so if the order ever has to change, change KEY too.
+------------------------------------------------------------------ */
+const D = [
+{n:"Chicken fajita tray bake",m:35,b:"Everything on one tray, nothing to wash up. Hard to get wrong.",g:"One pan,Quick",
+ i:["4 chicken thighs, boneless","2 peppers, sliced","1 red onion, sliced","2 tsp smoked paprika","1 tsp cumin","Juice of a lime","Tortillas, sour cream, to serve"],
+ s:["Oven to 200C. Throw the chicken, peppers and onion in a roasting tin.","Toss with oil, the paprika, the cumin and plenty of salt.","Roast 30 minutes, giving it a shake halfway.","Squeeze the lime over it straight out of the oven.","Pile into warm tortillas with sour cream."]},
+
+{n:"Spaghetti carbonara",m:20,b:"Four ingredients and no cream anywhere near it. Ten minutes flat.",g:"Quick",
+ i:["200g spaghetti","100g pancetta or streaky bacon, diced","2 whole eggs plus 1 yolk","50g pecorino or parmesan, grated","Lots of black pepper"],
+ s:["Get the pasta on in well salted water.","Fry the pancetta slowly until the fat runs and it crisps.","Beat the eggs with the cheese and a load of pepper.","Save a mug of pasta water, then drain.","Off the heat, toss the pasta through the pancetta, then the egg, loosening with the water until it is glossy. Heat off, or it scrambles."]},
+
+{n:"Chilli con carne",m:50,b:"Makes far more than two. That is the point, it is better the next day.",g:"Batch,Freezer,Comfort",
+ i:["500g beef mince","1 onion, 2 cloves garlic, chopped","2 tbsp chilli powder, 1 tbsp cumin","1 tin chopped tomatoes","1 tin kidney beans, drained","1 square dark chocolate","Rice, to serve"],
+ s:["Brown the mince hard in a big pot. Do not stir it too soon, let it colour.","Add the onion and garlic, soften for 5 minutes.","Stir in the spices, cook a minute until they smell.","Tomatoes, beans, a splash of water. Simmer 30 minutes.","Chocolate in at the end, salt properly, serve on rice."]},
+
+{n:"Thai green curry",m:30,b:"Bought paste is grand. Nobody will know and nobody will care.",g:"Quick",
+ i:["3 tbsp green curry paste","1 tin coconut milk","300g chicken, sliced, or a block of tofu","1 aubergine or a handful of green beans","1 tbsp fish sauce, 1 tsp sugar","Basil and lime, to finish","Jasmine rice"],
+ s:["Fry the paste in a splash of oil for 2 minutes until it goes fragrant.","Add half the coconut milk, bubble until it splits and goes oily.","Chicken in, cook 5 minutes, then the rest of the coconut milk and the veg.","Simmer 12 minutes. Fish sauce and sugar, then taste it.","Basil and a squeeze of lime off the heat."]},
+
+{n:"Sausage and bean casserole",m:40,b:"Cheap, filling, and the smell does half the work.",g:"One pan,Cheap,Comfort",
+ i:["6 good sausages","1 onion, sliced","2 cloves garlic","1 tin butter beans, drained","1 tin chopped tomatoes","1 tsp smoked paprika","Crusty bread"],
+ s:["Brown the sausages all over in a casserole, then lift them out.","Soften the onion and garlic in the sausage fat.","Paprika in for a minute, then tomatoes and beans.","Sausages back in, simmer 25 minutes with the lid off.","Salt, pepper, bread to mop it."]},
+
+{n:"Salmon with lemon orzo",m:25,b:"Looks like effort. Is not.",g:"Quick",
+ i:["2 salmon fillets","200g orzo","Zest and juice of a lemon","A big handful of spinach","2 tbsp creme fraiche","Dill, if you have it"],
+ s:["Oven to 200C, salmon on a tray with oil and salt, 12 to 14 minutes.","Boil the orzo like pasta, 8 minutes.","Drain, back in the pot with the creme fraiche, lemon and spinach. It wilts in the heat.","Season hard, it needs it.","Salmon on top, dill over."]},
+
+{n:"Beef and black bean stir fry",m:20,b:"Faster than the takeaway arriving.",g:"Quick",
+ i:["300g beef strips","1 tbsp cornflour","3 tbsp black bean sauce","1 pepper, 1 onion, sliced","2 cloves garlic, thumb of ginger","Noodles or rice"],
+ s:["Toss the beef in the cornflour and a pinch of salt.","Screaming hot pan, tiny bit of oil. Beef in one layer, 90 seconds, out.","Veg in, 3 minutes, keep it moving. Garlic and ginger last 30 seconds.","Beef back, black bean sauce, a splash of water.","One minute to coat, straight onto noodles."]},
+
+{n:"Mushroom risotto",m:35,b:"Stirring is the whole recipe. Put the radio on.",g:"Veggie,Comfort",
+ i:["200g risotto rice","300g mushrooms, sliced","1 onion, finely chopped","1 litre hot stock","A glass of white wine","50g parmesan, a knob of butter"],
+ s:["Fry the mushrooms hard in batches until properly brown. Set aside.","Soften the onion, add the rice, stir 2 minutes until it looks glassy.","Wine in, let it disappear.","Stock a ladle at a time, stirring, roughly 18 minutes. Taste it rather than timing it.","Mushrooms, butter and parmesan beaten in at the end. Rest 2 minutes."]},
+
+{n:"Lamb kofta with flatbread",m:30,b:"Mince, spices, hands. Kids can help make them.",g:"Quick",
+ i:["400g lamb mince","1 tsp each cumin, coriander, cinnamon","1 grated onion, squeezed dry","Handful chopped parsley","Flatbreads, yoghurt, cucumber"],
+ s:["Mix the mince, spices, onion and parsley with a good pinch of salt.","Shape into 8 sausages around your fingers. Chill 10 minutes if you have time.","Hot griddle or frying pan, 8 minutes, turning, until charred and firm.","Warm the flatbreads in the same pan.","Yoghurt, cucumber, done."]},
+
+{n:"Fish pie",m:60,b:"The one people are always surprised you made.",g:"Comfort",
+ i:["400g mixed fish, cubed","500g potatoes, for mash","400ml milk, a bay leaf","30g butter, 30g flour","Handful of frozen peas","Grated cheddar"],
+ s:["Potatoes on to boil. Warm the milk with the bay leaf and the raw fish for 4 minutes, then lift the fish out.","Butter and flour in a pan, cook 2 minutes, then whisk in the warm milk until thick.","Fish and peas into a dish, sauce over, stir gently.","Mash the spuds with butter, spread on top, fork the surface, cheese over.","200C for 25 minutes until it is bubbling at the edges."]},
+
+{n:"Shepherd's pie",m:70,b:"Lamb, not beef. Beef makes it a cottage pie and that is further down.",g:"Batch,Comfort",
+ i:["500g lamb mince","1 onion, 2 carrots, diced","2 tbsp tomato puree","1 tbsp Worcestershire sauce","300ml stock","700g potatoes, butter, milk"],
+ s:["Brown the mince, drain most of the fat off.","Onion and carrot in, 8 minutes until soft.","Puree, Worcestershire, stock. Simmer 25 minutes until thick, not soupy.","Mash the potatoes properly, plenty of butter.","Spread over, rough the top up with a fork, 200C for 25 minutes."]},
+
+{n:"Katsu chicken curry",m:45,b:"The sauce freezes. Make double and thank yourself later.",g:"Comfort",
+ i:["2 chicken breasts, flattened","Flour, 1 egg, panko breadcrumbs","1 onion, 1 carrot, 2 cloves garlic","1 tbsp curry powder, 1 tsp turmeric","400ml stock, 1 tsp honey, splash soy","Rice"],
+ s:["Sauce first. Soften onion, carrot and garlic 10 minutes, add the spices, then the stock.","Simmer 20 minutes, then blitz smooth. Honey and soy to taste.","Flour, egg, panko the chicken, pressing the crumbs on.","Shallow fry 4 minutes a side, or oven 200C for 20 minutes.","Slice, over rice, sauce poured across."]},
+
+{n:"Tomato and mascarpone pasta",m:20,b:"Store cupboard, fifteen minutes, tastes like more.",g:"Quick,Veggie,Cheap",
+ i:["200g pasta","1 tin chopped tomatoes","2 cloves garlic","3 tbsp mascarpone or cream cheese","Basil","Parmesan"],
+ s:["Pasta on.","Gently fry the garlic in oil, do not let it colour.","Tomatoes in, simmer hard 10 minutes until it darkens and thickens.","Mascarpone stirred through, season properly.","Toss with the drained pasta, basil and parmesan."]},
+
+{n:"Sweet potato and chickpea curry",m:35,b:"Costs about two euro a head and does not taste like it.",g:"Veggie,Cheap,Freezer",
+ i:["2 sweet potatoes, cubed","1 tin chickpeas, drained","1 tin coconut milk","1 onion, garlic, ginger","2 tbsp curry powder","Handful of spinach, lime"],
+ s:["Soften the onion, then garlic and ginger for a minute.","Curry powder in, 30 seconds, until it smells.","Sweet potato, chickpeas, coconut milk and a splash of water.","Simmer 20 minutes until the potato gives to a knife.","Spinach through at the end, lime over, salt hard."]},
+
+{n:"Bacon and cabbage with parsley sauce",m:45,b:"Do not knock it. Done right it is a lovely dinner.",g:"Comfort,Cheap",
+ i:["500g bacon loin or collar","Half a head of cabbage, shredded","500ml milk","30g butter, 30g flour","Big handful of parsley, chopped","Spuds"],
+ s:["Bacon in a pot of water, bring up, simmer 30 minutes. Skim the grey stuff off.","Potatoes on separately.","Cabbage into the bacon water for the last 6 minutes.","Butter and flour in a pan 2 minutes, whisk in the milk, simmer until it coats a spoon. Parsley in, plenty of pepper.","Slice the bacon thick, sauce over everything."]},
+
+{n:"Beef stew and dumplings",m:130,b:"A Sunday job. Almost all of it is waiting.",g:"Batch,Comfort,Freezer",
+ i:["700g stewing beef, cubed","2 onions, 3 carrots, chunky","2 tbsp flour, 500ml stock","A bottle of stout","150g self raising flour, 75g suet, for dumplings"],
+ s:["Brown the beef in batches. Crowding the pan steams it, so take your time.","Onions and carrots in, 10 minutes. Flour stirred through.","Stout and stock, scrape the base, lid on, 150C oven for 2 hours.","Rub the suet into the flour with salt and a splash of water, roll 8 balls.","Dumplings on top for the last 25 minutes, lid off, so they crisp."]},
+
+{n:"Chicken and chorizo rice",m:35,b:"One pot. The chorizo does all the seasoning for you.",g:"One pan",
+ i:["4 chicken thighs","100g chorizo, sliced","1 onion, 1 pepper","250g long grain rice","600ml stock","1 tsp smoked paprika, frozen peas"],
+ s:["Brown the chicken skin down in a wide pan, take it out.","Chorizo in until the red oil runs, then onion and pepper.","Rice and paprika, stir to coat in the oil.","Stock in, chicken back on top, lid on, 18 minutes on low. Do not stir it.","Peas in for the last 3 minutes, rest 5 minutes off the heat."]},
+
+{n:"Pad Thai",m:25,b:"Get everything chopped before the pan goes on. It moves fast.",g:"Quick",
+ i:["200g flat rice noodles","2 eggs","200g prawns or chicken","3 tbsp tamarind or lime juice","2 tbsp fish sauce, 2 tbsp sugar","Peanuts, spring onion, beansprouts"],
+ s:["Soak the noodles in hot water until bendy but not soft. Drain.","Mix the tamarind, fish sauce and sugar in a cup. That is the sauce.","Hot wok, cook the prawns 2 minutes, push aside, scramble the eggs in the space.","Noodles and sauce in, toss hard for 2 minutes.","Beansprouts, peanuts, spring onion, lime."]},
+
+{n:"Halloumi and couscous salad",m:20,b:"Warm, not a sad cold salad. Good in the summer.",g:"Quick,Veggie",
+ i:["150g couscous","1 block halloumi, sliced","1 courgette, sliced","Handful cherry tomatoes","Lemon, olive oil, mint","Pomegranate or toasted seeds"],
+ s:["Couscous in a bowl, boiling water just over it, plate on top, 5 minutes.","Griddle the courgette until marked, then the halloumi, 2 minutes a side.","Fork the couscous up, dress with lemon and oil while warm.","Tomatoes, mint, courgette through it.","Halloumi on top, seeds over."]},
+
+{n:"Toad in the hole",m:45,b:"Make the batter first and leave it sitting. That is the trick.",g:"Comfort,Cheap",
+ i:["6 sausages","140g plain flour","4 eggs","200ml milk","Beef dripping or oil","Onion gravy, to serve"],
+ s:["Whisk flour, eggs, milk and salt to a smooth batter. Leave it 30 minutes.","Oven 220C. Oil in a roasting tin with the sausages, 10 minutes until the fat is smoking.","Pour the batter straight in around the sausages and shut the door fast.","25 minutes. Do not open it, it will sink.","Gravy over the top."]},
+
+{n:"Prawn linguine, chilli and garlic",m:20,b:"Six things, one pan, restaurant dinner.",g:"Quick,Fancy",
+ i:["200g linguine","200g raw prawns","3 cloves garlic, sliced","1 red chilli, sliced","Glass of white wine","Parsley, lemon"],
+ s:["Pasta on. Salt the water properly.","Gently warm the garlic and chilli in a good glug of oil. Low, no colour.","Wine in, bubble for a minute.","Prawns in, 2 minutes until just pink.","Drained pasta in with a splash of its water, toss hard, parsley and lemon."]},
+
+{n:"Roast chicken thighs and potatoes",m:50,b:"The lazy roast dinner. Thighs are cheaper and better than breast.",g:"One pan,Cheap",
+ i:["6 chicken thighs, skin on","600g potatoes, halved","1 lemon, quartered","6 cloves garlic, unpeeled","Rosemary or thyme","Green veg on the side"],
+ s:["Oven 200C. Potatoes in a big tin with oil, salt and the garlic. 15 minutes head start.","Chicken on top, skin up. Lemon and herbs tucked in.","35 minutes until the skin is properly brown and crisp.","Squeeze the roasted garlic out of its skins and mash into the juices.","Spoon the pan juices over everything."]},
+
+{n:"Lasagne",m:90,b:"A proper job. Worth doing once a month and freezing half.",g:"Batch,Comfort,Freezer",
+ i:["500g beef mince","1 onion, 1 carrot, 1 stick celery","1 tin tomatoes, 2 tbsp puree","500ml milk, 40g butter, 40g flour","Lasagne sheets","150g cheddar or mozzarella"],
+ s:["Soften the veg 10 minutes, brown the mince in with it.","Tomatoes and puree, then simmer at least 40 minutes. This is where the flavour comes from, do not rush it.","White sauce: butter, flour, cook 2 minutes, whisk in the milk until thick. Nutmeg if you have it.","Layer meat, sheets, white sauce, twice. Finish with sauce and cheese.","180C for 40 minutes. Rest 10 minutes before cutting or it slides everywhere."]},
+
+{n:"Dal with rice",m:35,b:"About a euro a portion and genuinely one of the nicest things here.",g:"Veggie,Cheap,Freezer",
+ i:["200g red lentils","1 onion, garlic, ginger","1 tsp each turmeric, cumin, mustard seed","1 tin chopped tomatoes","Butter or ghee","Rice, coriander"],
+ s:["Rinse the lentils until the water runs clear. Into a pot with 700ml water and the turmeric.","Simmer 20 minutes, skimming, until collapsed and soupy.","In a separate pan fry the mustard seeds in butter until they pop, then onion, garlic, ginger, cumin.","Tomatoes in there, cook 5 minutes, then tip the whole lot into the lentils.","Salt hard. It needs more than you think. Coriander over, rice alongside."]},
+
+{n:"Steak with peppercorn sauce",m:30,b:"Friday night. The sauce is made in the steak pan in four minutes.",g:"Fancy",
+ i:["2 steaks, out of the fridge an hour before","1 tbsp crushed peppercorns","A splash of brandy or whiskey","150ml cream","1 tsp mustard","Chips and something green"],
+ s:["Chips in the oven first, they take the longest.","Pat the steaks bone dry, salt them, into a smoking hot pan. 3 minutes a side for medium rare on a thick one.","Out to rest on a warm plate. Resting is not optional.","Peppercorns into the pan, brandy in, scrape everything up. Cream and mustard, bubble 2 minutes.","Any juice off the resting plate back into the sauce, then pour over."]},
+
+{n:"Tuna pasta bake",m:40,b:"Cupboard dinner that everybody secretly likes.",g:"Cheap,Comfort",
+ i:["300g pasta","2 tins tuna, drained","400ml milk, 30g butter, 30g flour","1 tsp mustard","Sweetcorn","100g cheddar"],
+ s:["Pasta on, cook it 2 minutes short of the packet.","Butter and flour 2 minutes, whisk in the milk, simmer to thick. Mustard and half the cheese.","Tuna, sweetcorn and pasta folded through.","Into a dish, rest of the cheese on top.","200C for 20 minutes until brown and bubbling at the sides."]},
+
+{n:"Chicken noodle soup",m:35,b:"For when someone in the house is under the weather.",g:"Comfort,Cheap",
+ i:["2 chicken breasts or leftover roast chicken","1.2 litres good stock","2 carrots, 1 leek, sliced","Thumb of ginger, sliced","150g noodles","Soy sauce, spring onion"],
+ s:["Stock and ginger up to a simmer.","Chicken in whole, poach 15 minutes, then lift out and shred.","Carrot and leek into the stock, 8 minutes.","Noodles in for the last 4 minutes.","Chicken back, soy to taste, spring onion over."]},
+
+{n:"Pork chops with apple and mustard",m:30,b:"Apple with pork is a cliche because it works.",g:"Quick",
+ i:["2 thick pork chops","1 apple, sliced","1 tbsp wholegrain mustard","150ml cream or creme fraiche","Splash of cider","Mash or new potatoes"],
+ s:["Salt the chops. Hot pan, fat edge down first to render it, then 4 minutes a side.","Out to rest.","Apple into the pan, 3 minutes until it takes colour.","Cider in, scrape the pan, then mustard and cream. Two minutes.","Chops back in with their juices, spoon it over."]},
+
+{n:"Veggie chilli",m:45,b:"Nobody misses the meat in this one. Freezes perfectly.",g:"Veggie,Batch,Freezer",
+ i:["1 tin black beans, 1 tin kidney beans","1 tin chopped tomatoes","2 peppers, 1 onion, diced","2 tbsp chilli powder, 1 tbsp cumin, 1 tsp cinnamon","1 tbsp cocoa powder","Rice, yoghurt, lime"],
+ s:["Soften onion and peppers 10 minutes. Take your time, this is the base.","Spices and cocoa in, one minute.","Tomatoes, both tins of beans, a mug of water.","Simmer 25 minutes uncovered until thick.","Salt hard, lime through it, yoghurt on top."]},
+
+{n:"Oven fish and chips",m:40,b:"None of the deep frying, most of the point.",g:"Comfort",
+ i:["2 white fish fillets","4 tbsp flour, 1 egg, 100g breadcrumbs","800g potatoes, cut into chips","Frozen peas, to mush","Lemon, tartare sauce"],
+ s:["Chips parboiled 5 minutes, drained, shaken hard in the colander to rough the edges.","Onto a hot oiled tray, 220C, 30 minutes, turning once.","Flour, egg, crumb the fish. Onto a second tray for the last 15 minutes.","Peas boiled and crushed with butter and mint.","Lemon over everything."]},
+
+{n:"Butter chicken",m:45,b:"Milder than a curry house one and better for it.",g:"Comfort",
+ i:["500g chicken thighs, cubed","150g yoghurt, 1 tbsp garam masala","1 onion, garlic, ginger","1 tin tomatoes, blitzed","100ml cream, 50g butter","Rice or naan"],
+ s:["Marinate the chicken in the yoghurt and half the garam masala. An hour if you have it, ten minutes if you do not.","Colour the chicken in a hot pan, then set it aside. It does not need to cook through.","Butter in, onion, garlic, ginger, 10 minutes. Rest of the spice.","Tomatoes, simmer 15 minutes until it darkens.","Chicken back with the cream, 10 minutes gentle. Salt, a pinch of sugar."]},
+
+{n:"Mac and cheese with bacon",m:35,b:"Mustard is what stops it tasting flat. Do not skip it.",g:"Comfort",
+ i:["300g macaroni","6 rashers, chopped","500ml milk, 40g butter, 40g flour","1 tsp English mustard","200g strong cheddar","Breadcrumbs for the top"],
+ s:["Pasta on, 2 minutes under the packet time.","Crisp the bacon, keep it aside.","Butter and flour 2 minutes, whisk in the milk, simmer until it coats a spoon. Mustard and most of the cheese off the heat.","Pasta and bacon folded in, into a dish.","Rest of the cheese and the crumbs on top, 200C for 18 minutes."]},
+
+{n:"Greek chicken with orzo",m:25,b:"Lemon, oregano, feta. Tastes like a holiday.",g:"Quick",
+ i:["2 chicken breasts, sliced","200g orzo","1 lemon","2 tsp dried oregano","Cucumber, red onion, olives","100g feta"],
+ s:["Toss the chicken with oregano, oil, salt and half the lemon.","Griddle or fry 8 minutes until charred at the edges.","Orzo boiled 8 minutes, drained, dressed with oil and the rest of the lemon while hot.","Cucumber, onion and olives through the orzo.","Chicken on top, feta crumbled over."]},
+
+{n:"Proper burgers and chips",m:35,b:"Do not overwork the mince and do not press them in the pan.",g:"Comfort",
+ i:["400g beef mince, 20 percent fat","Buns, cheese slices","1 onion, sliced thin","800g potatoes for chips","Lettuce, pickles, sauce"],
+ s:["Chips in the oven first, 220C, 35 minutes.","Divide the mince in two, shape loosely, thumbprint in the middle. Salt only when it hits the pan.","Very hot pan, 3 minutes, flip once, cheese on, lid over for a minute.","Rest 3 minutes. Toast the buns in the beef fat.","Build it, pickles last."]},
+
+{n:"Aubergine parmigiana",m:60,b:"Salting the aubergine is worth the twenty minutes.",g:"Veggie,Comfort",
+ i:["2 aubergines, sliced lengthways","1 tin tomatoes, 2 cloves garlic, basil","150g mozzarella","50g parmesan","Olive oil","Bread, to serve"],
+ s:["Salt the aubergine slices, sit them in a colander 20 minutes, pat dry. That is what stops it going soggy.","Griddle or fry them in batches until soft and marked.","Simple sauce: garlic in oil, tomatoes, 20 minutes, basil, salt.","Layer aubergine, sauce, mozzarella, twice. Parmesan on top.","180C for 30 minutes. Rest 10 minutes before serving."]},
+
+{n:"Chicken caesar wraps",m:20,b:"The dressing takes two minutes and beats anything in a bottle.",g:"Quick",
+ i:["2 chicken breasts","Large tortillas","1 romaine lettuce","3 tbsp mayo, 1 tsp mustard","2 anchovies or 1 tsp Worcestershire","Parmesan, lemon"],
+ s:["Season the chicken, fry 6 minutes a side, rest, slice.","Mash the anchovies into the mayo with mustard, lemon, parmesan and a splash of water.","Toss the chopped lettuce through the dressing.","Chicken and lettuce into the wraps.","Roll tight, cut on the diagonal."]},
+
+{n:"Sausage pasta with fennel",m:25,b:"Squeeze the meat out of the skins. It is the whole trick.",g:"Quick",
+ i:["4 good sausages","1 tsp fennel seeds","200g pasta","1 tin tomatoes or 100ml cream","Chilli flakes","Parmesan"],
+ s:["Split the sausage skins and squeeze the meat into a hot pan in rough lumps.","Brown properly, breaking it up. Fennel seeds and chilli in.","Tomatoes or cream in, simmer while the pasta cooks.","Pasta drained into the sauce with a splash of its water.","Toss hard, parmesan over."]},
+
+{n:"Ramen with a soft egg",m:30,b:"Not the real thing. Still a very good bowl on a Tuesday.",g:"Comfort",
+ i:["1 litre chicken stock","2 tbsp miso paste, 1 tbsp soy","Garlic, ginger","2 eggs","2 nests of noodles","Spring onion, sweetcorn, chilli oil"],
+ s:["Eggs into boiling water for exactly 6 and a half minutes, then straight into cold water. Peel carefully.","Stock up with the garlic and ginger, simmer 10 minutes, then fish them out.","Miso whisked in off the boil, soy to taste.","Noodles cooked separately so they do not cloud the broth.","Noodles in the bowl, broth over, egg halved on top, everything else scattered."]},
+
+{n:"Cottage pie with sweet potato",m:60,b:"Beef this time. The sweet potato top is not authentic and is lovely.",g:"Comfort,Batch",
+ i:["500g beef mince","1 onion, 2 carrots","2 tbsp puree, 1 tbsp Worcestershire","300ml stock","800g sweet potato","Butter, cheddar"],
+ s:["Brown the mince hard, then the onion and carrot for 8 minutes.","Puree, Worcestershire, stock, simmer 25 minutes until thick.","Sweet potatoes boiled and mashed with butter and plenty of salt.","Spread over the mince, fork it, cheddar on top.","200C for 25 minutes."]},
+
+{n:"Spanish omelette",m:35,b:"Cold in a lunchbox the next day is half the reason to make it.",g:"Veggie,Cheap,Batch",
+ i:["600g potatoes, sliced thin","1 onion, sliced","6 eggs","Plenty of olive oil","Salt"],
+ s:["Potatoes and onion cooked gently in a good depth of oil, 20 minutes, until soft not brown. Drain, keep the oil.","Beat the eggs with a big pinch of salt, tip the potatoes in, let it sit 5 minutes.","Back into the pan with a spoon of the oil, medium low, 8 minutes until the edges set.","Plate over the pan, flip it, slide it back in. Deep breath, it is fine.","4 more minutes. The middle should still be slightly soft."]},
+
+{n:"Coconut fish curry",m:30,b:"White fish holds up better than you would think.",g:"Quick",
+ i:["400g white fish, cubed","1 tin coconut milk","1 onion, garlic, ginger","1 tsp turmeric, 1 tsp mustard seed, 1 green chilli","Curry leaves if you can get them","Lime, rice"],
+ s:["Mustard seeds popped in hot oil, then onion, garlic, ginger, chilli.","Turmeric in for 30 seconds.","Coconut milk, bring to a bare simmer. Do not boil it hard.","Fish in, 6 to 8 minutes, no stirring, just shake the pan.","Lime and salt at the end, over rice."]},
+
+{n:"Gnocchi bake",m:30,b:"Straight from packet to oven dish. No boiling.",g:"Veggie,One pan,Quick",
+ i:["500g fresh gnocchi","1 tin cherry tomatoes","2 cloves garlic","1 ball mozzarella","Basil","Parmesan"],
+ s:["Oven 220C.","Tip the raw gnocchi into an oven dish with the tomatoes, sliced garlic, oil and salt. Stir.","25 minutes, stirring once. The gnocchi crisps at the edges.","Tear the mozzarella over, back in for 5 minutes.","Basil and parmesan over."]},
+
+{n:"Bangers and mash, onion gravy",m:40,b:"The gravy is the dinner. Give the onions the time.",g:"Comfort,Cheap",
+ i:["6 sausages","800g potatoes","2 onions, sliced thin","1 tbsp flour","400ml beef stock","Butter, milk, mustard"],
+ s:["Onions into butter on a low heat with a pinch of salt. Twenty minutes, until sweet and brown. This is the bit people rush.","Sausages in a separate pan, low and slow, 20 minutes, turning.","Potatoes boiled, mashed with a lot of butter and warm milk.","Flour into the onions, then stock a bit at a time, whisking. Simmer 5 minutes.","Mustard into the mash, sausages on top, gravy over the lot."]},
+
+{n:"Chicken tikka skewers",m:35,b:"The yoghurt marinade does the tenderising. Give it as long as you can.",g:"Quick",
+ i:["500g chicken thighs, cubed","200g yoghurt","2 tbsp tikka or tandoori paste","Juice of a lemon","1 onion, 1 pepper, in chunks","Rice, mint yoghurt"],
+ s:["Chicken into the yoghurt, paste and lemon. Thirty minutes minimum, overnight is better.","Thread onto skewers with the onion and pepper.","Grill on high or griddle, 12 minutes, turning, until charred in places.","Rest 5 minutes.","Rice, mint yoghurt, lemon."]},
+
+{n:"Leek and potato soup",m:35,b:"Four ingredients. Do not put cream in it, it does not need it.",g:"Veggie,Cheap,Batch",
+ i:["3 leeks, sliced and washed well","3 potatoes, diced","1 litre stock","50g butter","Bread and butter, to serve"],
+ s:["Leeks into the butter with a pinch of salt, lid on, 10 minutes. Sweat, do not brown.","Potatoes in, stir to coat.","Stock in, simmer 18 minutes until the potato falls apart on a spoon.","Blitz smooth, or half of it if you like some texture.","Salt and a lot of black pepper. Taste twice."]}
+];
+
+const KEY = "dinnertonight1";
+let S = { seen:[], short:[], bin:[] };
+try{
+  const r = localStorage.getItem(KEY);
+  if(r){
+    const p = JSON.parse(r);
+    if(p && Array.isArray(p.seen) && Array.isArray(p.short) && Array.isArray(p.bin)) S = p;
+  }
+}catch(e){}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+let deck = [], i = 0, round = [], peeked = [];
+
+const el = function(id){ return document.getElementById(id); };
+function show(id){
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("on"); });
+  el("s-" + id).classList.add("on");
+  window.scrollTo(0,0);
+}
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function chips(n){
+  const d = D[n];
+  return '<div class="chips">' +
+    d.g.split(",").map(function(t){ return '<span class="chip">' + esc(t) + "</span>"; }).join("") +
+    '<span class="chip time">' + d.m + " min</span></div>";
+}
+function recipeHTML(n){
+  const d = D[n];
+  return '<div class="recipe">' +
+    '<p class="serves">Feeds two. Double it and it still works.</p>' +
+    "<h3>What you need</h3><ul>" + d.i.map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
+    "<h3>What you do</h3><ol>" + d.s.map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("") + "</ol></div>";
+}
+function tallyLine(){
+  el("tally").textContent = S.short.length ? S.short.length + " on the shortlist" : "";
+}
+function left(){
+  return D.map(function(d,n){ return n; })
+          .filter(function(n){ return S.seen.indexOf(n) < 0 && S.bin.indexOf(n) < 0; });
+}
+
+/* ---------- scoring round ---------- */
+function newRound(){
+  const pool = left();
+  for(let k = pool.length - 1; k > 0; k--){
+    const j = Math.floor(Math.random() * (k + 1));
+    const t = pool[k]; pool[k] = pool[j]; pool[j] = t;
+  }
+  deck = pool.slice(0, 15);
+  i = 0; round = []; peeked = [];
+  if(!deck.length){ results("You have been through all forty five."); return; }
+  buildScale();
+  show("deck");
+  render();
+}
+function buildScale(){
+  const s = el("scale");
+  if(s.childElementCount) return;
+  let h = "";
+  for(let n = 1; n <= 10; n++){
+    h += '<button class="' + (n >= 7 ? "hi" : "") + '" onclick="rate(' + n + ')">' + n + "</button>";
+  }
+  s.innerHTML = h;
+}
+function render(){
+  const n = deck[i];
+  const d = D[n];
+  el("pos").textContent = (i + 1) + " of " + deck.length;
+  el("kept").textContent = S.short.length ? S.short.length + " kept" : "";
+  el("bar").style.width = (i / deck.length * 100) + "%";
+  const open = peeked.indexOf(n) > -1;
+  el("dish").innerHTML =
+    '<div class="num lab">Dinner ' + (i + 1) + "</div>" +
+    "<h2>" + esc(d.n) + "</h2>" +
+    chips(n) +
+    '<p class="blurb">' + esc(d.b) + "</p>" +
+    (open ? recipeHTML(n) : '<button class="reveal" onclick="peek()">Show me the recipe</button>');
+  tallyLine();
+}
+function peek(){
+  const n = deck[i];
+  if(peeked.indexOf(n) < 0) peeked.push(n);
+  render();
+}
+function rate(v){
+  const n = deck[i];
+  if(S.seen.indexOf(n) < 0) S.seen.push(n);
+  if(v !== null) round.push({ n:n, s:v });
+  i++;
+  if(i >= deck.length){ results(); }
+  else { save(); render(); }
+}
+function commit(){
+  round.filter(function(r){ return r.s >= 7; }).forEach(function(r){
+    if(S.bin.indexOf(r.n) > -1) return;
+    const ex = S.short.find(function(x){ return x.n === r.n; });
+    if(ex){ ex.s = Math.max(ex.s, r.s); } else { S.short.push({ n:r.n, s:r.s }); }
+  });
+  S.short.sort(function(a,b){ return b.s - a.s; });
+  save();
+}
+
+/* ---------- results ---------- */
+function binIt(n){
+  S.short = S.short.filter(function(x){ return x.n !== n; });
+  if(S.bin.indexOf(n) < 0) S.bin.push(n);
+  save();
+  results(null, true);
+}
+function podium(n, s, lab){
+  return '<div class="podium"><div class="lab">' + lab + "</div>" +
+    "<h2>" + esc(D[n].n) + "</h2>" +
+    (s !== null && s !== undefined ? '<div class="score">You gave it ' + s + " out of 10</div>" : "") +
+    chips(n) +
+    '<p class="blurb">' + esc(D[n].b) + "</p>" +
+    '<button class="btn primary" onclick="cook(' + n + ')">Cook it</button></div>';
+}
+function results(msg, skipCommit){
+  if(!skipCommit) commit();
+  const remaining = left().length;
+  let h = "";
+  if(S.short.length){
+    h += podium(S.short[0].n, S.short[0].s, "Top of your shortlist");
+    const rest = S.short.slice(1);
+    if(rest.length){
+      h += '<h3 class="sec">Also on the shortlist</h3><ul class="rank">' + rest.map(function(r,k){
+        return "<li>" +
+          '<span class="p">' + (k + 2) + "</span>" +
+          '<span class="t">' + esc(D[r.n].n) + '<div class="m">' + r.s + "/10 &middot; " + D[r.n].m + " min</div></span>" +
+          '<button class="cook" onclick="cook(' + r.n + ')">Cook</button>' +
+          '<button class="bin" aria-label="Bin it for good" onclick="binIt(' + r.n + ')">&#10005;</button>' +
+        "</li>";
+      }).join("") + "</ul>";
+    }
+    h += '<p class="note">Tap the cross to bin one for good. Everything else stays here through every new batch.</p>';
+  } else {
+    h += '<div class="panel">' + esc(msg || "Nothing scored a seven or more yet. Grab a fresh fifteen and keep going.") + "</div>";
+  }
+  h += remaining
+    ? '<button class="btn primary" onclick="newRound()">Another fifteen (' + remaining + " left)</button>"
+    : '<p class="note">That is every dinner in the book.</p>';
+  h += '<button class="btn ghost" onclick="surprise()">Just pick one for me</button>' +
+       '<button class="btn ghost" onclick="wipe()">Start the whole thing over</button>';
+  el("s-out").innerHTML = h;
+  tallyLine();
+  show("out");
+}
+function surprise(){
+  const pool = D.map(function(d,n){ return n; }).filter(function(n){ return S.bin.indexOf(n) < 0; });
+  const n = pool[Math.floor(Math.random() * pool.length)];
+  el("s-out").innerHTML = podium(n, null, "That is what you are having") +
+    '<button class="btn" onclick="surprise()">No, pick another</button>' +
+    '<button class="btn ghost" onclick="newRound()">Score some instead</button>';
+  show("out");
+}
+
+/* ---------- cook mode ---------- */
+function cook(n){
+  const d = D[n];
+  el("s-cook").innerHTML =
+    '<div class="cookhead"><div class="lab" style="color:var(--red)">' + d.m + " minutes, feeds two</div>" +
+    "<h2>" + esc(d.n) + "</h2></div>" +
+    '<h3 class="sec">Get this out</h3>' +
+    '<div class="shop"><ul>' + d.i.map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>" +
+    '<h3 class="sec">Tap a step when it is done</h3>' +
+    '<ol class="steps" id="steps">' + d.s.map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("") + "</ol>" +
+    '<div style="margin-top:24px"><button class="btn" onclick="results()">Back to the shortlist</button></div>';
+  el("steps").querySelectorAll("li").forEach(function(li){
+    li.onclick = function(){ li.classList.toggle("done"); };
+  });
+  show("cook");
+}
+
+function wipe(){
+  if(!confirm("Wipe your shortlist and start the whole thing again?")) return;
+  S = { seen:[], short:[], bin:[] };
+  save();
+  el("resumeBtn").style.display = "none";
+  tallyLine();
+  show("intro");
+}
+
+el("foot").textContent = "Forty five dinners, all of them in this one file. Nothing is loaded from the internet and nothing leaves your phone.";
+if(S.short.length) el("resumeBtn").style.display = "block";
+tallyLine();
+</script>
+</body>
+</html>
