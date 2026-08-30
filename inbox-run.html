@@ -9,11 +9,12 @@
 <style>
 :root{--ink:#14181a;--dim:#5c6670;--line:#e2e7e4;--soft:#f4f6f5;--green:#0e6b45;--greend:#0a5636;--greent:rgba(14,107,69,.08);--amber:#8a5a06;--ambert:#fdf3dd;--amberline:#eed9a8;--bg:#ffffff}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
 html,body{margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;min-height:100vh;padding:0 0 calc(30px + env(safe-area-inset-bottom));display:flex;justify-content:center}
 .wrap{width:100%;max-width:470px;padding:0 15px}
-header{padding:18px 0 4px}
-.wordmark{font-size:13px;letter-spacing:.22em;font-weight:800;color:var(--green);text-transform:uppercase;cursor:pointer;user-select:none}
+header{padding:6px 0 0}
+.wordmark{display:inline-flex;align-items:center;min-height:44px;font-size:13px;letter-spacing:.22em;font-weight:800;color:var(--green);text-transform:uppercase;cursor:pointer;user-select:none}
 .screen{display:none}
 .screen.on{display:block;animation:fade .25s ease}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -213,7 +214,7 @@ button:focus-visible,.row:focus-visible{outline:2px solid var(--green);outline-o
   <div class="cols">
     <h3>For you if</h3>
     <ul>
-      <li>You sell online coaching at 500 euro plus a client, so one saved lead pays for the whole pilot.</li>
+      <li>You sell online coaching at 500 euro plus a client, so a saved lead or two pays for the whole pilot.</li>
       <li>Your DMs actually back up. The inbox on the receipts screen held 639.</li>
       <li>You or your VA answer the DMs, so there is a live inbox to work.</li>
       <li>You book consults out of the DMs. The inbox is the pipeline.</li>
@@ -226,7 +227,7 @@ button:focus-visible,.row:focus-visible{outline:2px solid var(--green);outline-o
       <li>Agencies and lead-gen shops.</li>
     </ul>
   </div>
-  <p class="bold">Anyone who wants a bot blasting the inbox or the sending done for them. The drafts get written, you read them, you send them. That is the model and it is not for sale any other way.</p>
+  <p class="bold">And it is not for anyone who wants a bot blasting the inbox or the sending done for them. The drafts get written, you read them, you send them. That is the model and it is not for sale any other way.</p>
   <p class="sub">If the For column reads like your week, keep going.</p>
   <button class="btn primary" onclick="go('offer')">The pilot</button>
   <button class="back" onclick="go('inbox')">Back to the inbox</button>
@@ -239,7 +240,7 @@ button:focus-visible,.row:focus-visible{outline:2px solid var(--green);outline-o
     <p>Same as the one you just watched. Every thread read first message to last. Every lead tiered. The spoke-last pile pulled out. Then drafts in your voice every day, you read and send. And the calendar check, so booked calls get marked Showed and moved Won instead of rotting at Confirmed.</p>
     <p class="price">Pilots start at 800 euro. Half up front through a Stripe link.</p>
     <p>The exact number gets sized on a 15 minute call, in your own figures. Your inbox, your client price, your show rate. That is also why no DM from this ever carries a price.</p>
-    <p class="dim">You sell coaching at 500 plus. One saved lead pays for the whole thing.</p>
+    <p class="dim">You sell coaching at 500 plus. A saved lead or two clears it.</p>
   </div>
   <div class="offercard plain">
     <h4>After the pilot</h4>
@@ -255,7 +256,7 @@ button:focus-visible,.row:focus-visible{outline:2px solid var(--green);outline-o
   <div class="ask">
     <p>That was the walkthrough. The same run happens on a real inbox.</p>
     <p>First step is 15 minutes on a call. We put your own numbers on it. No price before that, and no pitch if it is not a fit.</p>
-    <button class="btn primary" onclick="document.getElementById('askreveal').hidden=false;this.hidden=true">Grand, let&rsquo;s talk</button>
+    <button class="btn primary" id="askbtn" onclick="document.getElementById('askreveal').hidden=false;this.hidden=true">Grand, let&rsquo;s talk</button>
     <div class="reveal" id="askreveal" hidden>Sound. Fifteen minutes this week, what day suits you?<span class="todo">JACK, put your WhatsApp number here before this page goes to anyone.</span></div>
     <button class="back" onclick="resetDemo();go('inbox')">Run the demo again</button>
     <p class="fine">No analytics on this page. Nothing you tapped was recorded. The sample leads are made up, the dated numbers are real.</p>
@@ -281,7 +282,7 @@ var LEADS=[
  draft:"Honest answer, it depends on what you actually need, so I would only be guessing here. Have you 15 minutes this week for a quick call?",
  draftWhy:"No number in the DM, the price gets sized on the call in her own situation."},
 {name:"Tomás",handle:"@tomo.gymlog.sample",days:5,them:true,tier:"act",
- why:"Trains 4 days, lifts going up, mirror not moving, and he named the weekend himself. That is the whole ICP in one message.",
+ why:"Trains 4 days, lifts going up, mirror not moving, and he named the weekend himself. The exact fit, spelled out in one message.",
  thread:[["t","That reel about weekend calories was aimed at me I'd say 😂"],["c","Ha, you're far from the only one. What way do your weekends usually go?"],["t","Grand Monday to Friday, then it all falls apart"],["t","4 sessions a week and the lifts keep going up but I look the same. I know the weekends are the problem."]],
  draft:"So the week is grand and the weekend undoes it. What have you tried to sort that side of it?",
  draftWhy:"His own words back at him, then one question about what he has tried."},
@@ -325,7 +326,7 @@ var LEADS=[
  thread:[["c","Well Ger, long time no see. How's the gym treating you?"]],
  draft:null,guard:"Gone cold and gone for good. Closed off, no message coming and none going."}
 ];
-var ran=false,running=false,openIdx=null,sorted=[];
+var ran=false,running=false,openIdx=null,sorted=[],timer=null;
 
 function daysLabel(d){return d===0?"today":d+"d";}
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e;}
@@ -353,10 +354,11 @@ list.appendChild(row);
 
 function runTap(){
 if(running)return;
-if(ran){resetDemo();setTimeout(startRun,400);}
+if(ran){resetDemo();timer=setTimeout(startRun,400);}
 else startRun();
 }
 function startRun(){
+if(running)return;
 running=true;
 var btn=document.getElementById("runbtn");btn.disabled=true;
 var rows=document.querySelectorAll("#inboxlist .row");
@@ -368,7 +370,7 @@ rows[i].classList.add("triaged");
 if(LEADS[i].tier==="act")rows[i].classList.add("isact");
 if(LEADS[i].them)found++;
 tally.textContent="Reading thread "+(i+1)+" of 12. "+found+" spoke last and got nothing back.";
-i++;setTimeout(step,350);
+i++;timer=setTimeout(step,350);
 }
 function finish(){
 ran=true;running=false;
@@ -389,6 +391,9 @@ step();
 }
 
 function resetDemo(){
+clearTimeout(timer);timer=null;
+document.getElementById("askreveal").hidden=true;
+document.getElementById("askbtn").hidden=false;
 var list=document.getElementById("inboxlist");
 var rows=[].slice.call(list.querySelectorAll(".row"));
 rows.sort(function(a,b){return a.getAttribute("data-i")-b.getAttribute("data-i");});
