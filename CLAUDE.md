@@ -6,12 +6,13 @@ have to answer with his thumbs.
 
 ## What this repo is
 
-Two standalone, self-contained HTML pages. That is the whole repo.
+Standalone, self-contained HTML pages. That is the whole repo.
 
 | File | What it is |
 | --- | --- |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
+| `inbox-run.html` | The Inbox Run, the MVP demo of Jack's DM appointment-setting service. Twelve fictional sample leads get triaged live, then the real dated numbers, the four drafting moves, who it is for, and the EUR 800 pilot. Shown on a phone to fitness coaches. |
 
 ## Hard rules
 
@@ -71,6 +72,33 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
 - **The green is `#0e6b45`** throughout, with `#0a5636` for hover. Use the
   existing CSS classes rather than adding new ones where one already fits.
 
+### `inbox-run.html`
+
+- **Same hash routing as the vision build.** `SCREENS` is
+  `["inbox","lead","receipts","method","whofor","offer","ask"]`. A direct hit
+  on `#lead` with nothing open falls back to `inbox`.
+- **The sample leads are `LEADS`**, 12 objects shaped
+  `{name, handle, days, them, tier, why, thread, draft, draftWhy, guard}`.
+  `them: true` means the lead spoke last, 7 of the 12 do, and the tally counts
+  them at runtime rather than hardcoding the 7. Handles all end `.sample` on
+  purpose. Tiers sort in the order act, warm, hold, reply, first, mate, peer,
+  stop, dead.
+- **Nothing persists and nothing is tracked.** No localStorage, a refresh
+  resets the demo, same as the vision build. The page says so on the ask
+  screen, keep that true.
+- **The honesty split is the whole page.** The 12 leads are fictional and
+  labelled. The only real figures are the dated ones: 639 and 106 (25 July
+  2026), 2 warmer than the lead list, 22 stuck at Confirmed and 0 moved Won
+  (2 August 2026), 1 stalled lead closed off his own deadline. Do not add
+  testimonials, revenue claims or new counts, none exist. The client is never
+  named on the page, keep him anonymous.
+- **Two things Jack owns before this goes to anyone:** the WhatsApp number
+  placeholder on the ask screen (amber box, says JACK in it), and the four
+  stage names on the method screen, which are drafted from his rules, not
+  copied from his framework doc. The fine print on that screen says so.
+- **Coach voice in every bubble:** one question max, one emoji per thread max,
+  no price, no programme detail, no em dashes.
+
 ### `movienight.html`
 
 - **The film list is `F`**, an array of
@@ -107,6 +135,13 @@ script and publish the same file path to update the same link:
 | --- | --- |
 | `movienight.html` | https://claude.ai/code/artifact/a4460892-791b-4885-86f1-6658ebb4c674 |
 | `vision-k7x9q2.html` | https://claude.ai/code/artifact/1ce07a3f-9675-4864-8e56-e670ab18b631 |
+| `inbox-run.html` | https://claude.ai/code/artifact/1a528bfb-948d-45ad-aa42-779f84836e0a |
+
+`inbox-run.html` gets this banner, keep it unless Jack says otherwise:
+
+```
+python3 scripts/build-artifact.py inbox-run.html --banner "The twelve sample leads on this page are made up, every one of them. The 639 conversations read and the 106 people found waiting on a reply are real, counted on 25 July."
+```
 
 From a session that did not publish them, pass the URL above as `url` or a
 second, separate artifact is created instead.
