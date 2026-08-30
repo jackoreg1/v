@@ -12,7 +12,7 @@ Standalone, self-contained HTML pages. That is the whole repo.
 | --- | --- |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
-| `inbox-run.html` | The Inbox Run, the MVP demo of Jack's DM appointment-setting service. Twelve fictional sample leads get triaged live, then the real dated numbers, the four drafting moves, who it is for, and the EUR 800 pilot. Shown on a phone to fitness coaches. |
+| `inbox-run.html` | The Inbox Run, the MVP demo of Jack's AI setter. An AI reads the inbox, tiers the leads and drafts in the coach's voice, Jack checks, the coach sends. Twelve fictional sample leads triaged live, then the real dated numbers, the four drafting moves, who it is for, and the EUR 800 pilot. Shown on a phone to fitness coaches. |
 
 ## Hard rules
 
