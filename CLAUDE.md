@@ -46,6 +46,42 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
 - Never inflate. The book itself argues for the honesty cap and the mean
   0.1 multiplier. Copy that goes the other way is off-voice.
 
+## The bar, for anything new
+
+Jack's plan from 30 Aug is roughly five a week, split across personal and
+business, money and AI. That is a production line, so it needs a standard or it
+turns into a folder of half things nobody bought.
+
+Five rules. All five, or it does not go on the shop.
+
+1. **Working inside sixty seconds of opening it.** No setup screen, no signup,
+   no empty state that has to be filled before it does anything. It ships with
+   real content in it.
+2. **It has an opinion.** It decides something, sorts something, or tells you
+   which one. A blank box that stores what you type is a notes app, and nobody
+   pays fifteen euro for a notes app. The blanks in the vault and the 7+ cut in
+   the shortlist tools are what makes those two products rather than lists.
+3. **It makes something you would show somebody.** A result, a shortlist, a
+   number, a finished thing on the clipboard. The screenshot is the entire
+   marketing budget, so if there is no moment worth screenshotting, the tool is
+   not finished.
+4. **Jack has used it himself, for real, once, before it goes on sale.** Not
+   clicked through it. Used it for the actual job it claims to do. This rule is
+   also what sets the real cadence: if he cannot get through five a week, the
+   answer is fewer tools, never a skipped gate.
+5. **Wifi off, refresh, still there.** Same as the hard rules above.
+
+**What compounds is the person, not the pile.** Nobody buys the two hundredth
+tool. The weekly build is the marketing, the shop is the business, and the same
+buyer coming back for the fourth one is the whole model. So a new tool that
+serves the people who already bought beats a new tool aimed at strangers.
+
+**One buyer beats one more build.** If a session turns into building while
+nothing is on sale, say so once, plainly, and point at the checkout link that
+still is not live. That is the pattern named in `whats-real`, and it applies to
+this repo more than anywhere.
+
+
 ## How each page actually works
 
 ### `vision-k7x9q2.html`
