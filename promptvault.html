@@ -260,7 +260,15 @@ textarea.io{
       </div>
     </div>
     <div class="sec">
-      <p style="color:var(--faint);font-size:13px">Nothing here talks to the internet. No account, no sync, no tracking. Works with the wifi off.</p>
+      <h3>Where to keep this file</h3>
+      <p>This is one file and it holds your prompts in whatever browser you opened it in. So open it from the same place every time, or you will find an empty vault and think you lost them.</p>
+      <p><b>iPhone or iPad.</b> Save it to Files, then open it once and add it to your home screen from the share menu. Tap that icon from then on.</p>
+      <p><b>Android.</b> Save it to your files, open it with Chrome, then Add to Home screen.</p>
+      <p><b>Laptop.</b> Put it somewhere you will not tidy away, then bookmark it. Dropbox or iCloud is grand, it still opens straight off the disk.</p>
+      <p class="warn">Different browser means a different vault. That is not a bug, it is what having no account costs. Use the backup above to move between them.</p>
+    </div>
+    <div class="sec">
+      <p style="color:var(--faint);font-size:13px" id="credit"></p>
     </div>
   </div>
 </div>
@@ -274,6 +282,12 @@ textarea.io{
    because a browser in private mode throws on both.
 ------------------------------------------------------------------ */
 const KEY = "promptvault1";
+
+/* Your name and where people find more. Leave HOME empty and it just shows
+   the name with no link. This is the only thing in the file that mentions
+   the outside world, and it is still not a request, just text. */
+const MADE_BY = "Jack O'Regan";
+const HOME    = "";
 
 const SEED = [
   { t:"Rewrite this so it sounds like me",
@@ -679,6 +693,21 @@ function closeSheets(keepScroll){
 document.querySelectorAll("[data-close]").forEach(function(b){ b.onclick = function(){ closeSheets(); }; });
 $("veil").onclick = function(){ closeSheets(); };
 document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeSheets(); });
+
+/* ---------- credit ---------- */
+(function(){
+  const c = $("credit");
+  c.textContent = "Prompt Vault, by " + MADE_BY +
+    ". Nothing here talks to the internet. No account, no sync, no tracking, works with the wifi off. " +
+    "Yours to use and change as you like. Please do not resell it.";
+  if(HOME){
+    const a = document.createElement("a");
+    a.href = HOME; a.target = "_blank"; a.rel = "noopener";
+    a.style.color = "var(--green)";
+    a.textContent = " More at " + HOME.replace(/^https?:\/\//, "");
+    c.appendChild(a);
+  }
+})();
 
 /* ---------- wire up ---------- */
 $("btnadd").onclick = function(){ openEdit(null); };

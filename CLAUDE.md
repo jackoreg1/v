@@ -141,6 +141,9 @@ open and use in ten minutes, not something you read.
   is what Reset goes back to.
 - Backup is not decoration. localStorage is one cleared cache from losing the
   lot, so there is copy, download and paste-to-restore.
+- `MADE_BY` and `HOME` at the top of the script are the only mention of the
+  outside world. `HOME` empty renders the name with no link. Same pair sits in
+  `dinnertonight.html`. Fill them in before selling.
 
 ### `dinnertonight.html`
 
@@ -153,6 +156,22 @@ open and use in ten minutes, not something you read.
 - The whole method is in the file on purpose. That is the thing worth paying
   for, not the scoring, so never replace a recipe with a link.
 - Cook mode step ticks are deliberately not persisted. They are for one meal.
+
+## Selling these
+
+`docs/buyer-readme.md` is the text that ships with a download. It exists because
+the buyer is somebody who has never opened a file that was not a photo, and the
+first support email is always "how do I open this". It covers saving the file,
+adding it to the home screen, and the one thing that catches everybody: state
+lives in the browser it was opened in, so a different browser is a different
+set of saved stuff. Keep it in that voice and keep it honest about the tradeoff.
+
+**Not verified: iOS.** Everything here was checked in headless Chromium, opened
+over `file://` as a buyer would, including that saved state survives a reload
+and that blocked storage does not crash the page. Nobody has yet confirmed a
+real iPhone opening one of these out of Files and keeping its state. That is a
+two minute job on Jack's own phone and it needs doing before money changes
+hands, because the audience is phone first.
 
 ## Previewing on a phone
 

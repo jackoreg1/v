@@ -379,6 +379,11 @@ const D = [
 ];
 
 const KEY = "dinnertonight1";
+
+/* Your name and where people find more. Leave HOME empty and it just shows
+   the name with no link. */
+const MADE_BY = "Jack O'Regan";
+const HOME    = "";
 let S = { seen:[], short:[], bin:[] };
 try{
   const r = localStorage.getItem(KEY);
@@ -560,7 +565,24 @@ function wipe(){
   show("intro");
 }
 
-el("foot").textContent = "Forty five dinners, all of them in this one file. Nothing is loaded from the internet and nothing leaves your phone.";
+(function(){
+  const f = el("foot");
+  f.innerHTML =
+    "<p><b>Keep this file somewhere you will find again.</b> Your shortlist is saved in whichever browser you opened it in, so open it the same way every time. " +
+    "On a phone, save it to your files, open it once, then add it to your home screen and tap that from then on. A different browser is a different shortlist.</p>" +
+    "<p>Dinner Tonight, by " + MADE_BY + ". Forty five dinners, all of them in this one file. " +
+    "Nothing is loaded from the internet and nothing leaves your device. " +
+    "Yours to use and change as you like. Please do not resell it.</p>";
+  if(HOME){
+    const p = document.createElement("p");
+    const a = document.createElement("a");
+    a.href = HOME; a.target = "_blank"; a.rel = "noopener";
+    a.style.color = "var(--red)";
+    a.textContent = "More at " + HOME.replace(/^https?:\/\//, "");
+    p.appendChild(a);
+    f.appendChild(p);
+  }
+})();
 if(S.short.length) el("resumeBtn").style.display = "block";
 tallyLine();
 </script>
