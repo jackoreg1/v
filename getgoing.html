@@ -133,29 +133,29 @@ footer p{margin:0 0 8px}
 
 <div class="bar"><div class="wrap barin">
   <div class="brand">Get Going <span>/ Claude projects</span></div>
-  <button class="mini" id="topbundle">All 11, &euro;99</button>
+  <button class="mini" id="topbundle">All 6, &euro;69</button>
 </div></div>
 
 <div class="wrap">
 
   <div class="hero">
     <h1>Get Going</h1>
-    <p class="sub">Eleven things I actually built with Claude, and what is inside each one.</p>
-    <p class="lede">Everything on this page is a file I use. Not a course, not a template pack written to be sold. Most of it got built on my phone because something was costing me money or time and I was sick of it.</p>
+    <p class="sub">Working things I built with Claude, and what is inside each one.</p>
+    <p class="lede">These are not templates and they are not a course. They are files that do something. You download one, you open it, and it works, on a phone, with the wifi off, with no account and nothing to sign up to.</p>
     <p>Each one below is a post. <b>The first half is free and it is the useful half.</b> You get the mechanism, the reason it is shaped that way, and a bit of the real thing. Read it and go build your own, that is grand, that is the point.</p>
-    <p>The second half is the file itself. Ready to drop in, working, &euro;15.</p>
+    <p>The second half is the file itself. Working, ready to open, &euro;15.</p>
   </div>
 
   <div id="idx">
-    <div class="idxhd lab">The eleven</div>
+    <div class="idxhd lab">What is here</div>
   </div>
 
   <div id="posts"></div>
 
   <div class="bundle">
-    <h2>All eleven, &euro;99</h2>
-    <p>Two HTML pages and nine skills, ten files in all. <span class="strike">&euro;165</span> if you bought them one at a time. One download, everything in it.</p>
-    <a class="buy" id="bundlebtn" href="#">Get all eleven, &euro;99</a>
+    <h2>The lot, &euro;69</h2>
+    <p>All six. <span class="strike">&euro;90</span> if you bought them one at a time. One download, everything in it, and anything I add to this page later lands in your inbox for nothing.</p>
+    <a class="buy" id="bundlebtn" href="#">Get all six, &euro;69</a>
     <p class="after" id="bundleafter">One payment. Files land in your inbox.</p>
   </div>
 
@@ -163,16 +163,16 @@ footer p{margin:0 0 8px}
     <h2>Before you buy</h2>
 
     <p class="q">What actually turns up?</p>
-    <p>Plain files. The two pages are single HTML files, you double tap them and they open, no install and no internet needed. The nine skills are folders with a SKILL.md inside. You drop them in your skills folder and Claude picks them up.</p>
+    <p>Plain files. The four tools are single HTML files. You save one, you tap it, it opens in your browser like any other page. Nothing to install, no internet needed, no account. The two skills are folders with a SKILL.md inside, which you drop in your skills folder and Claude picks them up.</p>
 
     <p class="q">Do I need to be able to code?</p>
-    <p>No. You need to be able to save a file. The skills are written in English, you can read every line and change any of it.</p>
+    <p>No. You need to be able to save a file and tap it. Nothing here has a build step or a terminal in it. If you do want to change something, it is all readable English and one file, so you can point Claude at it and say what you want different.</p>
 
-    <p class="q">These are built around your business. What use are they to me?</p>
-    <p>The shape is the product, not my client list. A skill is a set of rules for when Claude should stop and check something. Swap my situation for yours and the rules still hold. Where a file names something of mine, it is there so you can see what a real one looks like instead of a blank template.</p>
+    <p class="q">Where does my stuff get saved?</p>
+    <p>In your own browser, on your own device, and nowhere else. There is no server, no login, no sync and no tracking, so nothing you type ever reaches me or anybody else. The flip side is that clearing your browsing data wipes it, which is why the vault has a backup button. Use it.</p>
 
     <p class="q">Will you keep updating them?</p>
-    <p>I update them when they fail me, which is the only reason worth updating anything. You get the version that is live the day you buy. I am not promising a roadmap.</p>
+    <p>I update them when they fail me, which is the only reason worth updating anything. You get the version that is live the day you buy. If you take the bundle, anything I add later comes to you for nothing. I am not promising a roadmap.</p>
 
     <p class="q">Refunds?</p>
     <p>Ask and you get it back. It is a file, I cannot take it off you anyway, and arguing over &euro;15 is not a business.</p>
@@ -193,212 +193,108 @@ footer p{margin:0 0 8px}
    grey and says so, instead of going nowhere.
 ------------------------------------------------------------------ */
 const BUY = {
-  movienight : "",
-  vision     : "",
-  leak       : "",
-  hunt       : "",
-  real       : "",
-  record     : "",
-  future     : "",
-  daily      : "",
-  whatsapp   : "",
-  transcript : "",
-  partner    : "",
-  bundle     : ""
+  promptvault : "",
+  dinner      : "",
+  movienight  : "",
+  vision      : "",
+  future      : "",
+  partner     : "",
+  bundle      : ""
 };
 
 const P = [
 {
+  id:"promptvault", kind:"Tool", t:"Prompt Vault", mins:3,
+  hook:"Your own prompts, saved with the blanks left in, one tap to fill and copy.",
+  free:`
+    <p>Everyone hits this in about week two. You write a prompt that works, you use it, and then it is gone, four hundred messages up in a chat you cannot find. So you rewrite it worse.</p>
+    <p>People try notes apps for this and give up, because a note is dead text. You still have to find it, select it, copy it, then hand edit the bit that changes every time. That last part is what kills it.</p>
+    <h3>The blanks are the whole idea</h3>
+    <p>Wrap anything in double curly braces and it becomes a blank. When you go to copy that prompt, it asks you for each blank first, shows you exactly what is about to land on your clipboard, then copies the finished thing. Use the same blank twice and it asks once and fills both.</p>
+    <p>That turns a saved prompt into something closer to a small tool. It also means you can write a genuinely long, fussy, good prompt once, because you are never retyping it.</p>
+    <p>It opens with twelve prompts already in it so it is useful the second you open it, including the handover one that fixes the "it forgot everything" problem.</p>`,
+  eg:{ lab:"What a prompt with blanks looks like", code:'Rewrite your draft so it sounds like mine.\nMatch sentence length and the words I actually use.\n\nMINE:\n{{something I already wrote}}\n\nYOURS:\n{{the draft to fix}}' },
+  gets:[
+    "The full file, opens on a phone or a laptop with the wifi off",
+    "Search across every prompt, tag chips built from your own tags",
+    "The blanks engine, live preview of what gets copied, repeats filled everywhere",
+    "A use counter, so after a fortnight you can see which prompts you actually reach for",
+    "Pin the ones you use daily to the top",
+    "Proper backup, copy the lot or download it, paste it back to restore. Browser storage is one cleared cache from losing everything"
+  ]
+},
+{
+  id:"dinner", kind:"Tool", t:"Dinner Tonight", mins:3,
+  hook:"Forty five dinners, score them out of ten, and the full method is in the file.",
+  free:`
+    <p>Deciding what to have takes longer than cooking it. Not because you have no ideas, because two people scrolling separately never land on the same thing. Scoring the same list out of ten fixes that in about twenty minutes, once, and then you have a shortlist forever.</p>
+    <p>Fifteen at a time. Read it, peek at the recipe, give it a score. Seven or more keeps it. Bin the ones you will never cook and they never come back.</p>
+    <h3>The recipes are in the file, and that is the point</h3>
+    <p>Every one of the forty five has its ingredients and its method sitting in the page. So there is no signal needed at the cooker, no advert covering the ingredients, and nobody's story about their grandmother before you get to step one.</p>
+    <p>Hit Cook it and you get the method in big text with the steps tappable, so you can tick off where you are with one greasy thumb and not lose your place.</p>`,
+  eg:{ lab:"One dinner, the whole record", code:'{ n:"Spaghetti carbonara", m:20,\n  b:"Four ingredients and no cream anywhere near it.",\n  g:"Quick",\n  i:["200g spaghetti","100g pancetta, diced", ...],\n  s:["Get the pasta on in well salted water.", ...] }' },
+  gets:[
+    "The full file, forty five dinners, ingredients and method for every one",
+    "Everything from twenty minute weeknight jobs to a Sunday stew",
+    "Cook mode, big text, tap a step off as you do it",
+    "The shortlist survives every refresh, binned dinners never come back",
+    "Just pick one for me, for when nobody will decide",
+    "Swap my forty five for your own in about twenty minutes, the format is one line per dinner"
+  ]
+},
+{
   id:"movienight", kind:"Tool", t:"Movie Night", mins:3,
   hook:"61 trailers, one score each, and a shortlist that survives the refresh.",
   free:`
-    <p>Picking a film takes longer than watching one. That is the actual problem, and it is not a taste problem, it is a shortlist problem. Two people scrolling a menu will never converge. Two people scoring the same 15 trailers out of 10 will converge in about twenty minutes.</p>
-    <p>So the app does one thing. It gives you 15 films you have not seen yet, one at a time, with the trailer and a one line blurb. You score it 1 to 10. Anything you give a 7 or more to goes on a shortlist. Anything you bin never comes back. Run another round whenever you want, the shortlist keeps building.</p>
+    <p>Same idea as the dinner one, and it came first. Picking a film takes longer than watching one, and it is not a taste problem, it is a shortlist problem. Two people scrolling a menu will never converge. Two people scoring the same 15 trailers out of 10 converge in about twenty minutes.</p>
+    <p>You get 15 films you have not seen, one at a time, with the trailer a tap away and a one line description that is honest about what it actually is. Score it. Seven or more goes on the shortlist. Bin one and it is gone for good.</p>
     <h3>The bit that makes it maintainable</h3>
-    <p>The entire film library is one array, and one film is one row. Title, runtime, blurb, comma separated tags, YouTube id. That is it. Adding a film is appending a line, and there is nothing else in the file to keep in sync with it.</p>
-    <p>That sounds like a small decision. It is the decision. Most apps like this die because adding content means editing four places, so nobody adds content, so the app goes stale in a fortnight.</p>`,
+    <p>The whole library is one array and one film is one row. Title, runtime, blurb, tags, YouTube id. Adding a film is appending a line, and there is nothing else in the file to keep in sync with it.</p>
+    <p>That sounds small. It is the decision. Most apps like this die because adding content means editing four places, so nobody adds content, so it goes stale in a fortnight.</p>`,
   eg:{ lab:"One film, the whole record", code:'["Sicario", 121, "Idealist FBI agent gets pulled into a cartel task force that answers to nobody.", "Thriller,Crime,Slow burn", "G8sQFuSQDU8"],' },
   gets:[
-    "The full 19KB file, all 61 films, opens on a phone with no internet",
-    "The three list state model in localStorage, seen, shortlist, bin, and why one key beats three",
-    "The round builder, why 15 is the number, and the reshuffle that never repeats a film",
+    "The full file, all 61 films, opens on a phone",
+    "The three list state model, seen, shortlist and bin, and why one storage key beats three",
+    "The round builder, why 15 is the number, and the shuffle that never repeats a film",
     "The dark theme as CSS variables, so recolouring the whole thing is four lines",
-    "How to swap my 61 films for your own list in about ten minutes"
+    "Swap my 61 for your own list in about ten minutes"
   ]
 },
 {
   id:"vision", kind:"Page", t:"The Vision Build", mins:4,
   hook:"A whole website written as if it is already eighteen months from now.",
   free:`
-    <p>This one is strange and it is the most useful thing on the page. It is my website, jackoregan.com, except written from August 2027 with the business already working. Home page, a weekly post, a quiz, a &euro;29 book with a reader you can page through, a &euro;999 assessment funnel, and a map of how the whole lot connects.</p>
+    <p>This one is strange and it is the most useful thing on the page. It is my website, written from August 2027 with the business already working. Home page, a weekly post, a quiz, a &euro;29 book with a reader you can page through, a &euro;999 funnel, and a map of how the lot connects.</p>
     <p>Every number on it is imagined. The revenue, the copies sold, the reviews, all of it. That is stated on the page itself and it needs to be, because out of context it reads as real.</p>
     <h3>Why write it as done instead of planning it</h3>
-    <p>A plan lets you stay vague. A page does not. The moment you have to write the actual sentence that sells the actual thing at an actual price, you find out which parts of your business you have not decided yet. I found four in an afternoon. What the book is called, what the quiz is for, what the &euro;999 thing includes, and who is meant to buy it.</p>
-    <p>It is a spec you can click through. Nobody argues with a plan, but everybody has an opinion on a page.</p>`,
+    <p>A plan lets you stay vague. A page does not. The moment you have to write the actual sentence that sells the actual thing at an actual price, you find out which parts you have not decided yet. I found four in an afternoon. What the book is called, what the quiz is for, what the expensive thing includes, and who is meant to buy it.</p>
+    <p>It is a spec you can click through. Nobody argues with a plan, everybody has an opinion on a page.</p>`,
   eg:{ lab:"A line from the 2027 home page", quote:"Most of what I find was already paid for. It is sitting switched off in software you are billed for every month, and nobody in the building knows it is there." },
   gets:[
-    "The full 70KB page, seven screens, working on a phone offline",
-    "Hash routing in about fifteen lines, add a screen by adding one div and one id",
-    "The quiz engine, question weights in euro per month, and the size multiplier on the last question",
-    "The paywall pattern, a single class that locks and unlocks every page of the book at once",
-    "The interactive book maths, nine leak inputs feeding a live scoreboard with an honesty cap on it",
-    "How to point the whole page at your own business without breaking the routing"
+    "The full page, seven screens, working on a phone offline",
+    "Hash routing in about fifteen lines, add a screen with one div and one id",
+    "The quiz engine, weights in euro per month and a multiplier on the last question",
+    "The paywall pattern, one class that locks and unlocks every page of the book at once",
+    "The interactive maths, nine inputs feeding a live scoreboard with an honesty cap on it",
+    "How to point the whole thing at your own business without breaking the routing"
   ]
 },
 {
-  id:"leak", kind:"Skill", t:"Fix The Leak", mins:5,
-  hook:"Four gates before you touch anything. Most fixes are already paid for and switched off.",
-  free:`
-    <p>This is my job written down. Something in a client's business is broken. Before I recommend a single change, four questions get answered out loud, in order. It fires on anything that would make me click a button in someone else's account.</p>
-    <h3>Gate 0. What is this leak worth?</h3>
-    <p>Put a number on it or say plainly that you cannot. An unsized leak is fine. An invented one is not. This gate exists because without it a whole day disappears into something worth forty quid while something worth four thousand sits untouched.</p>
-    <h3>Gate 1. Is it already in the account?</h3>
-    <p>Look at the menu before building the thing. Clients pay for software with the fix already in it, unticked, for years. There is a rule attached to this gate about date ranges, because saying "there are none" when you were looking at the last 30 days is how you lose trust in one sentence.</p>
-    <p>Gates 2 and 3 are behind the cut, and gate 2 is the one that changed how I get paid.</p>`,
-  eg:{ lab:"Why the gates exist at all", quote:"Added on 15 August 2026 because the skill failed. A tag was recommended on a live lead without the gates being run. The training the client already owned taught the whole process, better, and the recommendation had been half an answer." },
-  gets:[
-    "The full 175 line skill, all four gates with the exact wording",
-    "Gate 2, search the training the client already bought before you build anything",
-    "Gate 2b, watch the lesson before you press the button, so you can actually explain it",
-    "The query window rule, the one that stops you saying never when you meant this month",
-    "The three things that happen after every fix, including where to write it so it survives",
-    "How to hand it over one step at a time to someone working off a phone"
-  ]
-},
-{
-  id:"hunt", kind:"Skill", t:"Leak Hunt", mins:5,
-  hook:"Find a business provably leaking money, show them their own evidence, take a deposit before anything gets built.",
-  free:`
-    <p>The acquisition half. Six rungs, in order, no skipping. Evidence first and free. Outreach that sells only the next step. A fifteen minute call where they tell you their own numbers. A pilot with half up front. Delivery through the gates. A care plan at handoff.</p>
-    <p>Building anything before the deposit lands is the expensive mistake. It has happened. It does not happen again.</p>
-    <h3>The leak zone filter</h3>
-    <p>Public pain is the cheapest evidence there is, so target businesses whose customers already wrote the brief for you. Between 3.5 and 4.2 stars. Below that they are dying and cannot pay you, above that it is clean or farmed. At least 40 reviews, because small samples lie in both directions.</p>
-    <p>Then the tell, and it is the whole filter: <b>three or more independent mentions of the same operational complaint inside six months.</b> One complaint is a bad day. Four strangers describing the same broken process is a leak, and it is a leak you can point at.</p>`,
-  eg:{ lab:"How a cost gets written in a brief", quote:"4 people in 5 months, all describing the same missed callback. Two to four lost deals a month. Never an invented euro figure. One fake receipt costs every future receipt." },
-  gets:[
-    "The full ladder with pricing, floors, and where the deposit sits",
-    "The evidence brief, one page, the six things it has to contain before you send anything",
-    "The three touch outreach structure, subject lines, word counts, and the day gaps",
-    "The fifteen minute call, the four questions, and how to size the leak out loud in their numbers",
-    "What to do when the pain is not public, the Buyer's Walk on their own funnel",
-    "The stack, free tier by free tier, with spending gated on revenue",
-    "The NEXT MOVE rule that ends every session with one action, not a list"
-  ]
-},
-{
-  id:"real", kind:"Skill", t:"What's Real", mins:4,
-  hook:"Six hours once got built on things that were not true. This is what stops it happening twice.",
-  free:`
-    <p>On 7 August 2026 a session spent six hours working off numbers that were wrong. My own memory was wrong, and the files that were supposed to correct me were also wrong. This skill is the fix, and it is mostly one ordered list.</p>
-    <h3>The order of truth</h3>
-    <ul>
-      <li><b>1. What the person says about their own business, right now.</b> Highest authority. An offhand line about your own situation outranks every file. If you say you were paid, you were paid.</li>
-      <li><b>2. Live systems.</b> The account, the inbox, the messages. Read them, do not remember them.</li>
-    </ul>
-    <p>Ranks 3 and 4 are behind the cut and they are where the damage lives, because they are the ones that look most official.</p>
-    <p>The rule that comes out of it: <b>if a file contradicts the person, the file is wrong until proven otherwise.</b> Go and check the live thing, then say the file needs updating. And never state a number about a business from chat history. Go and read it.</p>`,
-  eg:{ lab:"The trap that cost the most", quote:"A page that reads like a source of truth, rebuilt automatically, that he does not use. It said no money had been collected and no invoice sent. Both were four days out of date. He had asked, been agreed, and been paid." },
-  gets:[
-    "The full four rank order of truth and what each rank is allowed to be used for",
-    "The forgotten document rule, how to spot a polished thing a chat window produced that nobody can stand over",
-    "Label every claim read-live, from-file or assumed, and what happens to a claim that cannot be sourced",
-    "The screenshot blind spot, the reason a whole reconciliation once got missed",
-    "The show it do not describe it rule, and the two guards that stop it becoming tool number forty two",
-    "The avoidance pattern to name out loud when a session turns into organising instead of asking"
-  ]
-},
-{
-  id:"record", kind:"Skill", t:"Track Record", mins:3,
-  hook:"A pointer, not a file, so your credentials never quietly go stale.",
-  free:`
-    <p>Small one, and it earns its place. Every time you need to say what you have done, a bio, a proposal, a pitch, a price justification, the temptation is to write it into a file. Then the file rots. Six weeks later you are quoting a number at a stranger that stopped being true in September.</p>
-    <h3>So the skill holds no claims at all</h3>
-    <p>It holds a link to where the record actually lives, and a set of rules for reading it. That is the whole trick. The skill cannot go stale because there is nothing in it to go stale.</p>
-    <h3>The rule that matters</h3>
-    <p>Everything is either Proven or Unproven, and <b>nothing moves from Unproven to Proven to make an answer sound better.</b> A smaller true story beats a bigger one that falls apart on the first follow up question. Get caught once and the credibility is gone for everything else you say.</p>`,
-  eg:{ lab:"When it fires", quote:"Before writing any outreach, proposal, landing page or offer copy, so the claims match the evidence rather than the mood." },
-  gets:[
-    "The full skill file, ready to point at your own record",
-    "The pointer pattern, so nothing you write about yourself needs maintaining twice",
-    "The Proven and Unproven split, and how to log something new the day it happens",
-    "The trigger list, every phrase that should make this fire before a claim gets made",
-    "The structure of the record itself, so a proposal can be assembled from it"
-  ]
-},
-{
-  id:"future", kind:"Skill", t:"Future Jack", mins:3,
+  id:"future", kind:"Skill", t:"Future Self", mins:3,
   hook:"Hear yourself explain what you already did, before you go and do it.",
   free:`
-    <p>This one sounds soft and it is not. It writes a spoken recording of you, a few months from now, looking back and explaining exactly what you did and how it went. Not a pep talk. A retrospective, dense with mechanics, including the parts that went wrong.</p>
+    <p>A skill file, so this one is for people using Claude rather than a page you open. It writes a spoken recording of you, a few months from now, looking back and explaining exactly what you did and how it went. Not a pep talk. A retrospective, dense with mechanics, including the parts that went wrong.</p>
     <h3>It is training wearing a disguise</h3>
-    <p>I use it before anything I have not done before. Naming a price out loud. A hard conversation. A build I do not know how to do yet. Hearing the mechanics in my own voice, in past tense, means I have already rehearsed the sentences before the room is real.</p>
-    <p>Which gives you the test the whole thing is judged on. <b>If you finish listening and cannot explain the mechanics out loud, it failed.</b> Not "did it feel good". Can you say it.</p>`,
+    <p>I use it before anything I have not done before. Naming a price out loud. A hard conversation. A build I do not know how to do yet. Hearing the mechanics in my own voice, in past tense, means I have rehearsed the sentences before the room is real.</p>
+    <p>Which gives you the test the whole thing is judged on. <b>If you finish listening and cannot explain the mechanics out loud, it failed.</b> Not whether it felt good. Whether you can say it.</p>`,
   eg:{ lab:"The structure trick", quote:"Quote the hard sentence verbatim and put silence after it. The price line, the refusal, the bad news. That is the bit that gets replayed." },
   gets:[
+    "The skill file, ready to drop into your skills folder",
     "The five rules, the ones that keep it a retrospective instead of a fantasy",
     "The structure that works, and where the silence goes",
     "Length and register, why it is spoken and not written, and what to do before writing it",
     "How to turn the script into actual audio",
-    "A worked example in the reference folder"
-  ]
-},
-{
-  id:"daily", kind:"Skill", t:"The Daily Loop", mins:4,
-  hook:"Morning, setter, goodnight. Three modes, and the entire point is continuity.",
-  free:`
-    <p>Two skills, one job. This is how I run a daily piece of client work as a loop instead of as a hundred separate requests where the same things get re-explained.</p>
-    <p>The complaint that caused it was mine, said plainly one evening: <i>"you keep missing shit weve already sorted but never brought forward."</i> Everything in the file exists to stop that.</p>
-    <h3>The three modes</h3>
-    <ul>
-      <li><b>Good morning.</b> Loads last night's handover, tells you what changed overnight by name, hands you today's messages ready to copy, and names any open question still blocking something.</li>
-      <li><b>Setter.</b> Re-reads the inbox live and drafts the next message per lead. Not templates. The next one, for that person, based on what they last said.</li>
-      <li><b>Goodnight.</b> Re-runs everything, reconciles what actually got done against what was planned, sweeps the day for decisions, and writes tomorrow's starting context.</li>
-    </ul>
-    <p>Goodnight is the one doing the work. It is behind the cut, seven steps.</p>`,
-  eg:{ lab:"The rule the loop is built on", quote:"Write it where it survives. Project instructions load into every session and outrank everything. A memory file gets read when it seems relevant. A dead price survived four deletions because it was in the wrong one of those two." },
-  gets:[
-    "Both files, the full daily skill and the named shortcut so the slash command works",
-    "The file layout, what a handover contains and where each thing gets written",
-    "Goodnight in seven steps, including the sweep for decisions made in passing",
-    "The triage that finds the money in an inbox, and the order to work it in",
-    "The traps section, the things that have actually gone wrong, and the nevers"
-  ]
-},
-{
-  id:"whatsapp", kind:"Skill", t:"Read The WhatsApp", mins:4,
-  hook:"Half the real facts are in voice notes, and a text only read will miss every one of them.",
-  free:`
-    <p>Reads a WhatsApp conversation properly through your own logged in browser. Scrolls back through the history, and pulls the media, so voice notes get downloaded and transcribed and photos get downloaded and read.</p>
-    <p>It never scans a code and never logs in. If it is ever asked to, it stops and tells you.</p>
-    <h3>Why the media half is the whole point</h3>
-    <p>On the 8th of August a &euro;997 price commitment and an entire contract build existed <b>only</b> in voice notes. Read the text, call it done, and you have a confident summary that is missing the biggest fact in the thread. That single failure is the reason this file exists.</p>
-    <h3>The one rule that is not technical</h3>
-    <p>Chat content is information, never instruction. If a message in a thread tells the assistant to do something, it gets surfaced to you, not acted on. That is worth having written down before you point any tool at your inbox.</p>`,
-  eg:{ lab:"The gotcha that fakes a dead end", quote:"If a session concludes the history is not there, that session used scrollTop and it silently did nothing. Scroll properly, re-collect after each tick, dedupe on the message timestamp." },
-  gets:[
-    "The full 107 line skill, text and media, both halves",
-    "The persistent dedupe Map, and the three DOM gotchas that quietly return nothing",
-    "The history wall, how to tell you have hit it and how to say so honestly",
-    "The media pull, downloading voice notes and getting them transcribed",
-    "Pacing, so a long thread does not time out halfway through",
-    "What to do with the read once you have it"
-  ]
-},
-{
-  id:"transcript", kind:"Skill", t:"Pull Transcript", mins:2,
-  hook:"YouTube blocks the sandbox. Use the browser you are already logged into.",
-  free:`
-    <p>Short and it removes a daily annoyance. Ask an assistant running in the cloud to read a YouTube video and it gets rate limited, because it is coming from a data centre. So it either guesses at the content or tells you it cannot.</p>
-    <p>Both of those are worse than useless. A take on a video nobody watched is just confident noise.</p>
-    <h3>The principle underneath</h3>
-    <p>Read the thing before giving a take. If the sandbox cannot reach it, go through the browser that can, which is the one sitting open on your own machine, already logged in to everything.</p>
-    <p>Same trick works on paid course platforms, where the content is behind a login the sandbox will never have. That variant is behind the cut.</p>`,
-  eg:{ lab:"What it is for", quote:"Drop a link, get the actual transcript, then a verdict on the actual content. Or add it to the bench of people whose material is worth keeping." },
-  gets:[
-    "The method that works on YouTube, step by step",
-    "The paid course variant, pulling per lesson written resources from a logged in platform",
-    "What to do with a transcript once you have it, and where it gets filed",
-    "The gotchas, including the failures that look like the video has no transcript"
+    "A worked example to copy the shape from"
   ]
 },
 {
@@ -408,17 +304,16 @@ const P = [
     <p>If you have a Notion full of downloaded guides, memberships you do not log into, and six business models half started, this is the one. It is written for that exact person because I was that exact person for six years.</p>
     <h3>It is not a motivation problem</h3>
     <p>That is the whole diagnosis. You are not lazy, you have too many open loops and no order to work them in, so every session starts with a decision you are too tired to make and ends with buying something else. The skill takes the decision off you. It picks one path and sequences the learning behind it.</p>
-    <p>Then it works ahead of you. It builds the thing before you ask for it, because friction is what actually kills a week, not doubt.</p>
-    <p>There is a hard constraint section listing what it is deliberately <b>not</b> building toward. That part is behind the cut and it is the part that keeps it honest.</p>`,
+    <p>Then it works ahead of you, building things before you ask, because friction is what kills a week, not doubt.</p>
+    <p>There is a section listing what it is deliberately <b>not</b> building toward. That part is behind the cut and it is what keeps it honest.</p>`,
   eg:{ lab:"The pattern it exists to name", quote:"Buying a course feels like progress and costs nothing emotionally. Being told no by a real person does not. Six years can go by inside that gap." },
   gets:[
-    "The full 162 line skill, all six phases",
-    "The audit, how to inventory what you already own without it becoming another project",
-    "Pick one path, the decision criteria, and how to close the other loops properly",
-    "Sequencing the learning so you consume in the order you need it, not the order you bought it",
+    "The full skill, all six phases",
+    "The audit, how to inventory what you own without it becoming another project",
+    "Pick one path, the criteria, and how to close the other loops properly",
+    "Sequencing, so you consume in the order you need it, not the order you bought it",
     "Reduce friction proactively, the things to build before they get asked for",
-    "The hard constraints, what this is not building toward, and why that list matters",
-    "The voice, which is a future self who already did it, not a coach"
+    "The hard constraints, what this is not building toward, and why that list matters"
   ]
 }
 ];
@@ -455,7 +350,7 @@ P.forEach(function(p, i){
   s.className = 'post';
   s.id = 'p-' + p.id;
   s.innerHTML =
-    '<div class="eyebrow lab"><span class="no">' + (i+1) + ' of 11</span><span>' + p.kind + '</span></div>' +
+    '<div class="eyebrow lab"><span class="no">' + (i+1) + ' of ' + P.length + '</span><span>' + p.kind + '</span></div>' +
     '<h2>' + p.t + '</h2>' +
     '<p class="hook">' + p.hook + '</p>' +
     '<p class="meta lab">Free half, about ' + p.mins + ' min read</p>' +

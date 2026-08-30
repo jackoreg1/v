@@ -6,13 +6,15 @@ have to answer with his thumbs.
 
 ## What this repo is
 
-Three standalone, self-contained HTML pages. That is the whole repo.
+Five standalone, self-contained HTML pages. That is the whole repo.
 
 | File | What it is |
 | --- | --- |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
-| `getgoing.html` | The shop. Eleven things Jack built with Claude, each written up as a post with the first half free and the file itself behind a EUR 15 buy block. Bundle at EUR 99. |
+| `getgoing.html` | The shop. Six things, each written up as a post with the first half free and the file itself behind a EUR 15 buy block. Bundle at EUR 69. |
+| `promptvault.html` | Save, tag and search your own prompts. Blanks in double curly braces get filled in on the way to the clipboard. |
+| `dinnertonight.html` | 45 dinners, score each 1-10, 7+ keeps it on a shortlist. Full ingredients and method for every one are in the file. |
 
 ## Hard rules
 
@@ -24,7 +26,7 @@ Three standalone, self-contained HTML pages. That is the whole repo.
   wrong.
 - **No tracking, no analytics, no third-party scripts.** `vision-k7x9q2.html`
   is deliberately `noindex,nofollow`.
-- **Mobile first.** Both pages are designed to be used on a phone. Check any
+- **Mobile first.** Every page here is designed to be used on a phone. Check any
   layout change at a narrow width before a wide one.
 - **Do not "fix" the 2027 numbers.** The dates, the EUR 214,000, the 61
   assessments, the 1,100 copies, the testimonials and the follower count in
@@ -39,7 +41,7 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
 - Irish, spoken, plain. "the fella ranking first", "grand", "aye", "on the
   tools", "before the dinner".
 - Short sentences. Comma splices are fine and used on purpose.
-- **No em dashes.** There are none in either file. Do not introduce any.
+- **No em dashes.** There are none in the copy. Do not introduce any.
 - Numbers do the persuading, not adjectives. Every claim carries a figure.
 - Never inflate. The book itself argues for the honesty cap and the mean
   0.1 multiplier. Copy that goes the other way is off-voice.
@@ -88,7 +90,7 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
 
 ### `getgoing.html`
 
-- **The eleven products are `P`**, an array of
+- **The six products are `P`**, an array of
   `{id, kind, t, hook, mins, free, eg, gets}`. `free` is the half that is
   given away, as an HTML string. `gets` is the bullet list of what is behind
   the buy block. Adding a product means appending one entry to `P` **and**
@@ -112,10 +114,45 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
   eyebrows, the contents heading, the example labels and the cut marker.
 - **The green is `#0e6b45`** again, same as the vision build.
 
-**Before any of these are actually sold, the files being delivered need
-scrubbing.** `whats-real`, `josh-daily` and `read-whatsapp-thread` name a
-client, and carry a live account id, a location id and API ids. The sales page
-itself is clean, the source files are not.
+**The audience decides what belongs on this page.** It is aimed at people who
+have just started using Claude, not at Jack's own clients, so the nine private
+work skills came off it on 30 Aug. `whats-real`, `josh-daily`, `leak-hunt`,
+`read-whatsapp-thread` and the rest are no use to somebody with no client and
+no CRM, and three of them name a client and carry a live account id, a location
+id and API ids. Do not put them back. `future-jack` and
+`online-business-action-partner` stayed because they work for anybody.
+
+**Anything new goes on this page as a tool, not a document.** Something you
+open and use in ten minutes, not something you read.
+
+### `promptvault.html`
+
+- **State is one key, `promptvault1`**, shaped `{v:1, items:[{id, title, body,
+  tags, fav, uses, created, updated}]}`. Every read and write is wrapped,
+  because a browser in private mode throws on both.
+- **The blanks are the product.** `varsIn()` pulls `{{name}}` out of a body,
+  `filledText()` substitutes with `split().join()` so a repeated blank is asked
+  once and filled everywhere. An unfilled blank is left in place rather than
+  replaced with nothing, and the copy toast says how many are still blank.
+- **`copyText()` always has the textarea fallback behind it.** The async
+  clipboard API is missing or blocked on a `file://` page in some browsers, and
+  a buyer opening this from Files is exactly that case.
+- Twelve seed prompts in `SEED` so it is useful on first open. `seedState()`
+  is what Reset goes back to.
+- Backup is not decoration. localStorage is one cleared cache from losing the
+  lot, so there is copy, download and paste-to-restore.
+
+### `dinnertonight.html`
+
+- **The 45 dinners are `D`**, entries of `{n, m, b, g, i, s}`: name, minutes,
+  blurb, comma separated tags, ingredients array, steps array. Adding one means
+  appending an entry, nothing else.
+- **Same state shape as `movienight.html`**, one key `dinnertonight1` holding
+  `{seen, short, bin}`. `n` is the index into `D`, so reordering `D` invalidates
+  saved state. If the order ever has to change, change `KEY` too.
+- The whole method is in the file on purpose. That is the thing worth paying
+  for, not the scoring, so never replace a recipe with a link.
+- Cook mode step ticks are deliberately not persisted. They are for one meal.
 
 ## Previewing on a phone
 
@@ -140,6 +177,8 @@ script and publish the same file path to update the same link:
 | `movienight.html` | https://claude.ai/code/artifact/a4460892-791b-4885-86f1-6658ebb4c674 |
 | `vision-k7x9q2.html` | https://claude.ai/code/artifact/1ce07a3f-9675-4864-8e56-e670ab18b631 |
 | `getgoing.html` | https://claude.ai/code/artifact/427562e0-49b2-436a-bb64-0d994c743870 |
+| `promptvault.html` | https://claude.ai/code/artifact/a3b3ec6a-f682-4676-bc56-c7f328cacb8f |
+| `dinnertonight.html` | https://claude.ai/code/artifact/e6001ca1-d3dc-45ca-8744-c21a27033a37 |
 
 From a session that did not publish them, pass the URL above as `url` or a
 second, separate artifact is created instead.
