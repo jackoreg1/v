@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101319">
+<title>Prompt Vault</title>
+<style>
+:root{
+  --bg:#101319; --panel:#181c24; --panel2:#20252f; --line:#2c323e; --line2:#3a4250;
+  --text:#e9e7e0; --dim:#9aa0ad; --faint:#6d7482;
+  --green:#2fb782; --greenh:#26a071; --greenink:#0c2a1e;
+  --warn:#e0a75c; --red:#e06b6b;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--text);font-family:var(--sans);
+  font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%;
+  padding:0 0 calc(88px + env(safe-area-inset-bottom));
+}
+.wrap{width:100%;max-width:640px;margin:0 auto;padding:0 14px}
+button,input,textarea,select{font-family:inherit;font-size:16px;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.lab{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+
+/* header */
+.top{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+.topin{display:flex;align-items:center;gap:10px;min-height:54px}
+.logo{font-weight:750;letter-spacing:-.015em;font-size:17px;flex:1;min-width:0}
+.logo em{font-style:normal;color:var(--green)}
+.icon{
+  background:var(--panel);border:1px solid var(--line);color:var(--text);
+  border-radius:8px;width:38px;height:38px;display:grid;place-items:center;
+  cursor:pointer;font-size:17px;flex:none;padding:0;
+}
+.icon:active{background:var(--panel2)}
+.count{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums}
+
+/* search + tags */
+.tools{padding:12px 0 4px}
+.search{
+  width:100%;background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:11px 13px;color:var(--text);
+}
+.search::placeholder{color:var(--faint)}
+.tagrow{display:flex;gap:7px;overflow-x:auto;padding:11px 0 3px;scrollbar-width:none}
+.tagrow::-webkit-scrollbar{display:none}
+.tag{
+  background:var(--panel);border:1px solid var(--line);color:var(--dim);
+  border-radius:999px;padding:6px 12px;font-size:13px;white-space:nowrap;cursor:pointer;flex:none;
+}
+.tag.on{background:var(--green);border-color:var(--green);color:var(--greenink);font-weight:700}
+.tag:active{border-color:var(--line2)}
+
+/* cards */
+.list{display:flex;flex-direction:column;gap:10px;padding:12px 0 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.card.fav{border-color:#3d4a44}
+.chead{display:flex;align-items:flex-start;gap:10px;padding:13px 13px 0}
+.ctitle{font-weight:700;letter-spacing:-.01em;flex:1;min-width:0;line-height:1.32}
+.star{background:none;border:0;padding:2px;cursor:pointer;font-size:16px;line-height:1;color:var(--faint);flex:none}
+.star.on{color:var(--warn)}
+.cbody{
+  margin:9px 13px 0;padding:10px 11px;background:#0c0f14;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--mono);font-size:12.5px;line-height:1.55;color:#c9cdd6;
+  white-space:pre-wrap;word-break:break-word;max-height:84px;overflow:hidden;position:relative;
+}
+.cbody.open{max-height:none}
+.cbody .var{color:var(--green);font-weight:700}
+.fadeout{position:absolute;left:0;right:0;bottom:0;height:38px;background:linear-gradient(to bottom,rgba(12,15,20,0),#0c0f14)}
+.cmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 13px 0}
+.pill{background:var(--panel2);border-radius:999px;padding:3px 9px;font-size:11.5px;color:var(--dim)}
+.uses{font-size:11.5px;color:var(--faint);font-variant-numeric:tabular-nums;margin-left:auto}
+.cact{display:flex;gap:8px;padding:11px 13px 13px}
+.btn{
+  background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:9px;
+  padding:10px 12px;font-size:14px;font-weight:650;cursor:pointer;
+}
+.btn:active{background:var(--line)}
+.btn.go{background:var(--green);border-color:var(--green);color:var(--greenink);font-weight:750;flex:1}
+.btn.go:active{background:var(--greenh)}
+.btn.quiet{background:none;color:var(--dim)}
+.btn.danger{background:none;border-color:#4a3030;color:var(--red)}
+
+/* empty */
+.empty{text-align:center;padding:54px 20px;color:var(--faint)}
+.empty p{margin:0 0 6px}
+.empty b{color:var(--dim);font-weight:650}
+
+/* add button */
+.fab{
+  position:fixed;left:0;right:0;bottom:0;z-index:25;
+  background:linear-gradient(to bottom,rgba(16,19,25,0),var(--bg) 42%);
+  padding:18px 14px calc(14px + env(safe-area-inset-bottom));
+}
+.fabin{max-width:640px;margin:0 auto}
+.fab .btn.go{width:100%;padding:15px;font-size:16px}
+
+/* sheet */
+.veil{position:fixed;inset:0;z-index:40;background:rgba(8,10,14,.72);display:none}
+.veil.on{display:block}
+.sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--panel);
+  border-top:1px solid var(--line2);border-radius:16px 16px 0 0;
+  max-height:92vh;overflow-y:auto;display:none;
+  padding:0 0 calc(18px + env(safe-area-inset-bottom));
+}
+.sheet.on{display:block}
+.shead{
+  position:sticky;top:0;background:var(--panel);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:10px;padding:14px 14px 12px;
+}
+.shead h2{font-size:17px;margin:0;flex:1;font-weight:750;letter-spacing:-.01em}
+.sbody{padding:14px}
+.f{margin:0 0 14px}
+.f label{display:block;color:var(--faint);margin:0 0 6px}
+.f input,.f textarea{
+  width:100%;background:#0c0f14;border:1px solid var(--line);border-radius:9px;
+  padding:11px 12px;color:var(--text);
+}
+.f textarea{font-family:var(--mono);font-size:13.5px;line-height:1.55;min-height:190px;resize:vertical}
+.f .hint{color:var(--faint);font-size:12.5px;margin:6px 0 0}
+.f .hint code{font-family:var(--mono);color:var(--green)}
+.srow{display:flex;gap:9px;margin-top:4px}
+.srow .btn{flex:1;justify-content:center;text-align:center;padding:13px}
+
+/* fill sheet */
+.fill .f label{color:var(--green);font-family:var(--mono);font-size:13px;letter-spacing:0;text-transform:none;font-weight:700}
+.preview{
+  background:#0c0f14;border:1px solid var(--line);border-radius:9px;padding:11px 12px;
+  font-family:var(--mono);font-size:12.5px;line-height:1.55;color:#c9cdd6;
+  white-space:pre-wrap;word-break:break-word;max-height:200px;overflow-y:auto;margin:0 0 14px;
+}
+
+/* settings */
+.sec{margin:0 0 22px}
+.sec h3{font-size:14px;margin:0 0 4px;font-weight:750}
+.sec p{margin:0 0 10px;color:var(--dim);font-size:14px}
+.sec p.warn{color:var(--warn)}
+textarea.io{
+  width:100%;background:#0c0f14;border:1px solid var(--line);border-radius:9px;padding:11px 12px;
+  color:var(--text);font-family:var(--mono);font-size:12px;line-height:1.5;min-height:120px;resize:vertical;
+}
+
+/* toast */
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%) translateY(14px);bottom:96px;z-index:60;
+  background:var(--green);color:var(--greenink);font-weight:750;font-size:14px;
+  padding:11px 18px;border-radius:999px;opacity:0;pointer-events:none;
+  transition:opacity .16s ease,transform .16s ease;max-width:88vw;text-align:center;
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="wrap topin">
+  <div class="logo">Prompt <em>Vault</em></div>
+  <span class="count" id="count"></span>
+  <button class="icon" id="btnset" aria-label="Backup and settings">&#9881;</button>
+</div></div>
+
+<div class="wrap">
+  <div class="tools">
+    <input class="search" id="q" type="search" placeholder="Search prompts, tags, anything" autocomplete="off">
+    <div class="tagrow" id="tags"></div>
+  </div>
+  <div class="list" id="list"></div>
+</div>
+
+<div class="fab"><div class="fabin">
+  <button class="btn go" id="btnadd">Add a prompt</button>
+</div></div>
+
+<div class="veil" id="veil"></div>
+
+<!-- editor -->
+<div class="sheet" id="sheetEdit" role="dialog" aria-modal="true" aria-label="Edit prompt">
+  <div class="shead">
+    <h2 id="editTitle">New prompt</h2>
+    <button class="icon" data-close aria-label="Close">&#10005;</button>
+  </div>
+  <div class="sbody">
+    <div class="f">
+      <label class="lab" for="fTitle">What is it called</label>
+      <input id="fTitle" type="text" placeholder="Rewrite this so it sounds like me">
+    </div>
+    <div class="f">
+      <label class="lab" for="fBody">The prompt</label>
+      <textarea id="fBody" placeholder="Type or paste the prompt here"></textarea>
+      <p class="hint">Wrap a blank in double curly braces to be asked for it every time you copy. Example: <code>{{the text}}</code></p>
+    </div>
+    <div class="f">
+      <label class="lab" for="fTags">Tags</label>
+      <input id="fTags" type="text" placeholder="writing, work, quick" autocomplete="off">
+      <p class="hint">Comma separated. They become the filter chips up top.</p>
+    </div>
+    <div class="srow">
+      <button class="btn" data-close>Cancel</button>
+      <button class="btn go" id="fSave">Save</button>
+    </div>
+    <div class="srow" id="delRow" hidden>
+      <button class="btn danger" id="fDel">Delete this prompt</button>
+    </div>
+  </div>
+</div>
+
+<!-- fill in the blanks -->
+<div class="sheet fill" id="sheetFill" role="dialog" aria-modal="true" aria-label="Fill in the blanks">
+  <div class="shead">
+    <h2>Fill in the blanks</h2>
+    <button class="icon" data-close aria-label="Close">&#10005;</button>
+  </div>
+  <div class="sbody">
+    <div id="fillFields"></div>
+    <div class="f">
+      <label class="lab">What gets copied</label>
+      <div class="preview" id="fillPreview"></div>
+    </div>
+    <div class="srow">
+      <button class="btn" data-close>Cancel</button>
+      <button class="btn go" id="fillCopy">Copy it</button>
+    </div>
+  </div>
+</div>
+
+<!-- settings -->
+<div class="sheet" id="sheetSet" role="dialog" aria-modal="true" aria-label="Backup and settings">
+  <div class="shead">
+    <h2>Backup</h2>
+    <button class="icon" data-close aria-label="Close">&#10005;</button>
+  </div>
+  <div class="sbody">
+    <div class="sec">
+      <h3>Get your prompts out</h3>
+      <p class="warn">Everything lives in this browser and nowhere else. Clear your browsing data and it is gone. Copy this somewhere safe now and again.</p>
+      <textarea class="io" id="exportBox" readonly></textarea>
+      <div class="srow">
+        <button class="btn go" id="btnCopyAll">Copy the lot</button>
+        <button class="btn" id="btnDownload">Download</button>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>Put them back</h3>
+      <p>Paste a backup in and it replaces everything here. You get asked first.</p>
+      <textarea class="io" id="importBox" placeholder="Paste your backup here"></textarea>
+      <div class="srow">
+        <button class="btn" id="btnImport">Replace everything</button>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>Start again</h3>
+      <p>Puts back the prompts it came with. Anything you added is lost.</p>
+      <div class="srow">
+        <button class="btn danger" id="btnReset">Reset the vault</button>
+      </div>
+    </div>
+    <div class="sec">
+      <p style="color:var(--faint);font-size:13px">Nothing here talks to the internet. No account, no sync, no tracking. Works with the wifi off.</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ------------------------------------------------------------------
+   Prompt Vault. One file, no network, no account.
+   State is one localStorage key. Every read and write is wrapped,
+   because a browser in private mode throws on both.
+------------------------------------------------------------------ */
+const KEY = "promptvault1";
+
+const SEED = [
+  { t:"Rewrite this so it sounds like me",
+    b:"Below is something I wrote, and below that is something you drafted.\n\nRewrite your draft so it sounds like mine. Match sentence length, how formal I am, and the words I actually use. Do not add anything I would not say, and do not smooth out the bits that sound like a person.\n\nMINE:\n{{something I already wrote}}\n\nYOURS:\n{{the draft to fix}}",
+    g:["writing"] },
+
+  { t:"Find the hole in this",
+    b:"Here is a plan I am about to act on.\n\nDo not tell me it is good. Find the single thing most likely to make it fail, say why, and tell me what you would check first to find out if you are right.\n\nOne problem, not a list.\n\n{{the plan}}",
+    g:["thinking","work"] },
+
+  { t:"What am I not asking?",
+    b:"I am trying to do this:\n\n{{what I am trying to do}}\n\nWhat is the question I should be asking that I have not asked? Assume I am new to this and do not know what I do not know. Give me the three things a person who has done this before would already have checked.",
+    g:["thinking"] },
+
+  { t:"Teach me this in ten minutes",
+    b:"Teach me {{the thing}} in about ten minutes of reading.\n\nStart with the one idea everything else hangs off. Then the three things I will actually use. Then the mistake beginners make. Use a real worked example, not a made up simple one. Skip the history and skip the caveats.\n\nAt the end give me one small thing to go and do to prove I understood it.",
+    g:["learning"] },
+
+  { t:"Turn this mess into a plan",
+    b:"Here is everything in my head about this. It is not in order.\n\n{{the brain dump}}\n\nTurn it into a plan. Group what belongs together, put it in the order it has to happen, and mark anything that is blocked by something else. Tell me the one thing to do first and why that one.\n\nIf something in there is not worth doing at all, say so.",
+    g:["work","planning"] },
+
+  { t:"Second opinion, be blunt",
+    b:"I have decided this:\n\n{{the decision}}\n\nArgue the other side properly. Not devil's advocate for the sake of it, the strongest honest case against. If, having done that, you still think I am right, say so plainly and tell me which part of my reasoning is doing the real work.",
+    g:["thinking"] },
+
+  { t:"Shorter, without losing anything",
+    b:"Cut this down by about half.\n\nKeep every fact, every number and every specific. Lose the throat clearing, the restating, and any sentence that only exists to introduce the next one. Do not make it sound like a press release.\n\nGive me the short version only, no notes about what you changed.\n\n{{the text}}",
+    g:["writing","quick"] },
+
+  { t:"Session handover",
+    b:"We are about to run out of room in this conversation.\n\nWrite a handover I can paste into a fresh one so it picks up exactly where you left off. Include: what we are trying to do, what is already done, what is half done, every decision we made and why, anything we tried that did not work, and the next step.\n\nWrite it for a version of you with no memory of this. Facts over summary. Do not be tactful about the bits that went badly.",
+    g:["ai","work"] },
+
+  { t:"Explain it like I actually asked",
+    b:"Explain {{the thing}} to me.\n\nNo analogies about restaurants, libraries or post offices. No bullet list of five benefits. Just tell me what it is, what it does, and when I would ever need it, the way you would explain it to a mate who is clever but has not come across it.\n\nIf it is simpler than people make out, say that.",
+    g:["learning","quick"] },
+
+  { t:"Read this before I send it",
+    b:"I am about to send this message.\n\n{{the message}}\n\nTell me how it will land with the person receiving it, not whether it is well written. Flag anything that could be read as sharper, needier or vaguer than I meant. Then give me one fixed version.\n\nIf it is fine as it is, say that and do not change it.",
+    g:["writing","work"] },
+
+  { t:"Decisions only",
+    b:"Read back over everything we have said in this conversation.\n\nGive me only the decisions that were actually made, one line each, in the order they happened. Not the options we discussed, not the things we agreed to think about. Decisions.\n\nThen, separately, anything still open that I have probably forgotten about.",
+    g:["ai","work"] },
+
+  { t:"Make me a checklist",
+    b:"Turn this into a checklist I can work through on my phone.\n\n{{the thing to do}}\n\nOne action per line, in the order they have to happen, each starting with a verb. No step that says prepare or consider. If a step needs something I might not have, say what and put it earlier.",
+    g:["work","quick"] }
+];
+
+/* ---------- storage ---------- */
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return seedState();
+    const s = JSON.parse(raw);
+    if(!s || !Array.isArray(s.items)) return seedState();
+    return { v:1, items: s.items.map(normalise) };
+  }catch(e){
+    return seedState();
+  }
+}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }
+  catch(e){ toast("Could not save, storage is blocked"); }
+}
+function seedState(){
+  const now = Date.now();
+  return { v:1, items: SEED.map(function(p,i){
+    return { id:uid(), title:p.t, body:p.b, tags:p.g, fav:false, uses:0, created:now-i, updated:now-i };
+  })};
+}
+function normalise(p){
+  return {
+    id: p.id || uid(),
+    title: String(p.title || "Untitled"),
+    body: String(p.body || ""),
+    tags: Array.isArray(p.tags) ? p.tags.map(String) : [],
+    fav: !!p.fav,
+    uses: Number(p.uses) || 0,
+    created: Number(p.created) || Date.now(),
+    updated: Number(p.updated) || Date.now()
+  };
+}
+function uid(){ return Math.random().toString(36).slice(2,9); }
+
+let state = load();
+let filterTag = "";
+let query = "";
+let editingId = null;
+let fillingId = null;
+
+/* ---------- helpers ---------- */
+const $ = function(id){ return document.getElementById(id); };
+function esc(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function varsIn(body){
+  const found = [];
+  const re = /\{\{([^{}]+)\}\}/g;
+  let m;
+  while((m = re.exec(body)) !== null){
+    const name = m[1].trim();
+    if(name && found.indexOf(name) === -1) found.push(name);
+  }
+  return found;
+}
+function highlight(body){
+  return esc(body).replace(/\{\{([^{}]+)\}\}/g, '<span class="var">{{$1}}</span>');
+}
+
+let toastTimer = null;
+function toast(msg){
+  const el = $("toast");
+  el.textContent = msg;
+  el.classList.add("on");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove("on"); }, 1900);
+}
+
+/* Clipboard. The async API is missing or blocked on a file:// page in some
+   browsers, so there is always the textarea fallback behind it. */
+function copyText(text, okMsg){
+  function fallback(){
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly","");
+    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    let ok = false;
+    try{ ok = document.execCommand("copy"); }catch(e){ ok = false; }
+    document.body.removeChild(ta);
+    toast(ok ? okMsg : "Could not copy, select it by hand");
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ toast(okMsg); }, fallback);
+  } else {
+    fallback();
+  }
+}
+
+/* ---------- render ---------- */
+function allTags(){
+  const seen = {};
+  state.items.forEach(function(p){ p.tags.forEach(function(t){ seen[t] = (seen[t]||0)+1; }); });
+  return Object.keys(seen).sort(function(a,b){ return seen[b]-seen[a] || a.localeCompare(b); });
+}
+
+function visible(){
+  const q = query.trim().toLowerCase();
+  return state.items.filter(function(p){
+    if(filterTag && p.tags.indexOf(filterTag) === -1) return false;
+    if(!q) return true;
+    return (p.title + " " + p.body + " " + p.tags.join(" ")).toLowerCase().indexOf(q) !== -1;
+  }).sort(function(a,b){
+    if(a.fav !== b.fav) return a.fav ? -1 : 1;
+    return b.updated - a.updated;
+  });
+}
+
+function renderTags(){
+  const tags = allTags();
+  const row = $("tags");
+  row.innerHTML = "";
+  if(!tags.length) return;
+  const mk = function(label, value){
+    const b = document.createElement("button");
+    b.className = "tag" + (filterTag === value ? " on" : "");
+    b.textContent = label;
+    b.onclick = function(){ filterTag = (filterTag === value ? "" : value); render(); };
+    return b;
+  };
+  row.appendChild(mk("All", ""));
+  tags.forEach(function(t){ row.appendChild(mk(t, t)); });
+}
+
+function renderList(){
+  const list = $("list");
+  const items = visible();
+  list.innerHTML = "";
+
+  $("count").textContent = state.items.length + (state.items.length === 1 ? " prompt" : " prompts");
+
+  if(!items.length){
+    const d = document.createElement("div");
+    d.className = "empty";
+    d.innerHTML = state.items.length
+      ? "<p><b>Nothing matches that.</b></p><p>Try a different word, or tap All.</p>"
+      : "<p><b>The vault is empty.</b></p><p>Add the first prompt below.</p>";
+    list.appendChild(d);
+    return;
+  }
+
+  items.forEach(function(p){
+    const vars = varsIn(p.body);
+    const card = document.createElement("div");
+    card.className = "card" + (p.fav ? " fav" : "");
+
+    const tagPills = p.tags.map(function(t){ return '<span class="pill">' + esc(t) + "</span>"; }).join("");
+    const varPill = vars.length
+      ? '<span class="pill" style="color:var(--green)">' + vars.length + (vars.length === 1 ? " blank" : " blanks") + "</span>"
+      : "";
+    const usePill = p.uses ? '<span class="uses">used ' + p.uses + "&times;</span>" : "";
+
+    card.innerHTML =
+      '<div class="chead">' +
+        '<div class="ctitle">' + esc(p.title) + "</div>" +
+        '<button class="star' + (p.fav ? " on" : "") + '" aria-label="Pin to the top">' + (p.fav ? "&#9733;" : "&#9734;") + "</button>" +
+      "</div>" +
+      '<div class="cbody">' + highlight(p.body) + "</div>" +
+      '<div class="cmeta">' + tagPills + varPill + usePill + "</div>" +
+      '<div class="cact">' +
+        '<button class="btn go">' + (vars.length ? "Fill in and copy" : "Copy") + "</button>" +
+        '<button class="btn quiet">Edit</button>' +
+      "</div>";
+
+    const body = card.querySelector(".cbody");
+    // Only show the fade and the tap-to-open if the text is actually clipped.
+    if(body.scrollHeight > body.clientHeight + 2){
+      const f = document.createElement("div");
+      f.className = "fadeout";
+      body.appendChild(f);
+      body.style.cursor = "pointer";
+      body.onclick = function(){
+        body.classList.add("open");
+        f.remove();
+        body.onclick = null;
+        body.style.cursor = "";
+      };
+    }
+
+    card.querySelector(".star").onclick = function(){
+      p.fav = !p.fav; p.updated = Date.now(); save(); render();
+    };
+    card.querySelector(".btn.go").onclick = function(){ usePrompt(p.id); };
+    card.querySelector(".btn.quiet").onclick = function(){ openEdit(p.id); };
+
+    list.appendChild(card);
+  });
+}
+
+function render(){ renderTags(); renderList(); }
+
+/* ---------- copy flow ---------- */
+function byId(id){
+  for(let i=0;i<state.items.length;i++){ if(state.items[i].id === id) return state.items[i]; }
+  return null;
+}
+function bump(p){ p.uses += 1; save(); renderList(); }
+
+function usePrompt(id){
+  const p = byId(id);
+  if(!p) return;
+  const vars = varsIn(p.body);
+  if(!vars.length){
+    copyText(p.body, "Copied");
+    bump(p);
+    return;
+  }
+  fillingId = id;
+  const box = $("fillFields");
+  box.innerHTML = "";
+  vars.forEach(function(name, i){
+    const f = document.createElement("div");
+    f.className = "f";
+    const inputId = "fill_" + i;
+    f.innerHTML = '<label for="' + inputId + '">' + esc(name) + "</label>" +
+                  '<textarea id="' + inputId + '" data-var="' + esc(name) + '" style="min-height:84px"></textarea>';
+    box.appendChild(f);
+  });
+  box.querySelectorAll("textarea").forEach(function(t){ t.oninput = renderFillPreview; });
+  renderFillPreview();
+  openSheet("sheetFill");
+  const first = box.querySelector("textarea");
+  if(first) first.focus();
+}
+
+function filledText(){
+  const p = byId(fillingId);
+  if(!p) return "";
+  let out = p.body;
+  $("fillFields").querySelectorAll("textarea").forEach(function(t){
+    const name = t.getAttribute("data-var");
+    const val = t.value.trim();
+    // Replace every occurrence of this exact placeholder, blanks left alone.
+    out = out.split("{{" + name + "}}").join(val || "{{" + name + "}}");
+  });
+  return out;
+}
+function renderFillPreview(){ $("fillPreview").innerHTML = highlight(filledText()); }
+
+$("fillCopy").onclick = function(){
+  const text = filledText();
+  const left = varsIn(text);
+  copyText(text, left.length ? "Copied, " + left.length + " still blank" : "Copied");
+  const p = byId(fillingId);
+  if(p) bump(p);
+  closeSheets();
+};
+
+/* ---------- editor ---------- */
+function openEdit(id){
+  editingId = id || null;
+  const p = id ? byId(id) : null;
+  $("editTitle").textContent = p ? "Edit prompt" : "New prompt";
+  $("fTitle").value = p ? p.title : "";
+  $("fBody").value  = p ? p.body : "";
+  $("fTags").value  = p ? p.tags.join(", ") : "";
+  $("delRow").hidden = !p;
+  openSheet("sheetEdit");
+  if(!p) $("fTitle").focus();
+}
+
+$("fSave").onclick = function(){
+  const title = $("fTitle").value.trim();
+  const body  = $("fBody").value.trim();
+  if(!body){ toast("The prompt itself is empty"); $("fBody").focus(); return; }
+  const tags = $("fTags").value.split(",").map(function(t){ return t.trim().toLowerCase(); })
+                 .filter(function(t,i,a){ return t && a.indexOf(t) === i; });
+  const now = Date.now();
+  if(editingId){
+    const p = byId(editingId);
+    if(p){ p.title = title || "Untitled"; p.body = body; p.tags = tags; p.updated = now; }
+  } else {
+    state.items.unshift({ id:uid(), title:title || "Untitled", body:body, tags:tags,
+                          fav:false, uses:0, created:now, updated:now });
+  }
+  save(); closeSheets(); render();
+  toast(editingId ? "Saved" : "Added");
+};
+
+$("fDel").onclick = function(){
+  if(!editingId) return;
+  const p = byId(editingId);
+  if(!p) return;
+  if(!confirm("Delete \"" + p.title + "\"? There is no undo.")) return;
+  state.items = state.items.filter(function(x){ return x.id !== editingId; });
+  save(); closeSheets(); render();
+  toast("Deleted");
+};
+
+/* ---------- settings, backup ---------- */
+function openSettings(){
+  $("exportBox").value = JSON.stringify(state, null, 2);
+  $("importBox").value = "";
+  openSheet("sheetSet");
+}
+$("btnCopyAll").onclick = function(){ copyText($("exportBox").value, "Backup copied"); };
+
+$("btnDownload").onclick = function(){
+  try{
+    const blob = new Blob([$("exportBox").value], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "prompt-vault-backup.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    toast("Downloading");
+  }catch(e){
+    toast("Download blocked, use Copy the lot");
+  }
+};
+
+$("btnImport").onclick = function(){
+  const raw = $("importBox").value.trim();
+  if(!raw){ toast("Nothing pasted in"); return; }
+  let parsed;
+  try{ parsed = JSON.parse(raw); }
+  catch(e){ toast("That is not a valid backup"); return; }
+  const items = Array.isArray(parsed) ? parsed : (parsed && parsed.items);
+  if(!Array.isArray(items) || !items.length){ toast("No prompts found in that"); return; }
+  if(!confirm("Replace all " + state.items.length + " prompts here with the " + items.length + " in that backup?")) return;
+  state = { v:1, items: items.map(normalise) };
+  save(); closeSheets(); render();
+  toast("Restored " + items.length);
+};
+
+$("btnReset").onclick = function(){
+  if(!confirm("Wipe the vault and put back the ones it came with? Anything you added is lost.")) return;
+  state = seedState();
+  save(); closeSheets(); render();
+  toast("Back to the starting set");
+};
+
+/* ---------- sheets ---------- */
+function openSheet(id){
+  closeSheets(true);
+  $("veil").classList.add("on");
+  $(id).classList.add("on");
+  document.body.style.overflow = "hidden";
+}
+function closeSheets(keepScroll){
+  ["sheetEdit","sheetFill","sheetSet"].forEach(function(id){ $(id).classList.remove("on"); });
+  $("veil").classList.remove("on");
+  if(!keepScroll) document.body.style.overflow = "";
+}
+document.querySelectorAll("[data-close]").forEach(function(b){ b.onclick = function(){ closeSheets(); }; });
+$("veil").onclick = function(){ closeSheets(); };
+document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeSheets(); });
+
+/* ---------- wire up ---------- */
+$("btnadd").onclick = function(){ openEdit(null); };
+$("btnset").onclick = openSettings;
+$("q").oninput = function(){ query = this.value; renderList(); };
+
+render();
+</script>
+</body>
+</html>
