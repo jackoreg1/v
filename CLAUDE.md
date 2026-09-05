@@ -12,6 +12,7 @@ Two standalone, self-contained HTML pages. That is the whole repo.
 | --- | --- |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
+| `operator90.html` | "Operator: 90 Days". A revenue leak operator sim, three tracks (Josh, Niall, the Creator), ten doors, seven states, 90 in-game days. Has a real life mode that turns the board into a dated tracker of the actual work. State persists in `localStorage` under `operator90.v1`. |
 
 ## Hard rules
 
@@ -107,6 +108,7 @@ script and publish the same file path to update the same link:
 | --- | --- |
 | `movienight.html` | https://claude.ai/code/artifact/a4460892-791b-4885-86f1-6658ebb4c674 |
 | `vision-k7x9q2.html` | https://claude.ai/code/artifact/1ce07a3f-9675-4864-8e56-e670ab18b631 |
+| `operator90.html` | https://claude.ai/code/artifact/799fedaa-cabe-4c71-bfba-ebc9e8e65709 |
 
 From a session that did not publish them, pass the URL above as `url` or a
 second, separate artifact is created instead.
