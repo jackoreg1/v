@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Operator: 90 Days</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#ECEDE8;
+  --surface:#F6F6F2;
+  --surface-2:#E1E3DC;
+  --ink:#1B1E1F;
+  --ink-soft:#4F5659;
+  --ink-faint:#7E868A;
+  --rule:#CBCEC6;
+  --rule-soft:#DDDFD8;
+  --money:#1F7A4D;
+  --money-wash:#D7E9DE;
+  --risk:#9A2B2B;
+  --risk-wash:#F0DCDA;
+  --warn:#8A6512;
+  --warn-wash:#F1E7CC;
+  --lock:#B9BDB5;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#121517;
+    --surface:#1A1E21;
+    --surface-2:#242A2E;
+    --ink:#E6E8E3;
+    --ink-soft:#A7AFB4;
+    --ink-faint:#7A838A;
+    --rule:#2F363B;
+    --rule-soft:#272D31;
+    --money:#62BF8E;
+    --money-wash:#1A2E24;
+    --risk:#E07B7B;
+    --risk-wash:#2F1D1E;
+    --warn:#D2B155;
+    --warn-wash:#2E2816;
+    --lock:#3A4247;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#121517;
+  --surface:#1A1E21;
+  --surface-2:#242A2E;
+  --ink:#E6E8E3;
+  --ink-soft:#A7AFB4;
+  --ink-faint:#7A838A;
+  --rule:#2F363B;
+  --rule-soft:#272D31;
+  --money:#62BF8E;
+  --money-wash:#1A2E24;
+  --risk:#E07B7B;
+  --risk-wash:#2F1D1E;
+  --warn:#D2B155;
+  --warn-wash:#2E2816;
+  --lock:#3A4247;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--paper);color:var(--ink);
+  font:14px/1.5 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:72px;
+}
+.mono,.n{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:Archivo,"IBM Plex Sans",system-ui,sans-serif;margin:0;text-wrap:balance}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--money);outline-offset:2px}
+a{color:inherit}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:2px solid var(--ink)}
+.top-in{max-width:1440px;margin:0 auto;padding:10px 14px 8px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
+h1{font-size:19px;font-weight:800;letter-spacing:-.015em;white-space:nowrap}
+.dayline{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;font-size:12.5px;color:var(--ink-soft)}
+.dayline b{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--ink);font-weight:600}
+.dayline .ph{font-weight:600;color:var(--ink)}
+.seg{margin-left:auto;display:inline-flex;border:1px solid var(--ink);border-radius:2px;overflow:hidden}
+.seg button{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border:0;background:transparent;color:var(--ink-soft)}
+.seg button.on{background:var(--ink);color:var(--paper)}
+.strip{max-width:1440px;margin:0 auto;padding:0 14px 8px}
+.strip-bar{display:grid;grid-template-columns:repeat(90,1fr);gap:1px;height:7px}
+.strip-bar i{display:block;background:var(--surface-2)}
+.strip-bar i.p1{background:color-mix(in srgb,var(--warn) 45%,var(--surface-2))}
+.strip-bar i.p2{background:color-mix(in srgb,var(--ink-faint) 45%,var(--surface-2))}
+.strip-bar i.p3{background:color-mix(in srgb,var(--ink-faint) 70%,var(--surface-2))}
+.strip-bar i.p4{background:color-mix(in srgb,var(--ink) 75%,var(--surface-2))}
+.strip-bar i.past{opacity:.35}
+.strip-bar i.now{background:var(--money);opacity:1}
+.strip-lab{display:grid;grid-template-columns:7fr 23fr 30fr 30fr;gap:1px;margin-top:4px;font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-faint);letter-spacing:.04em}
+.strip-lab span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* resources */
+.wrap{max-width:1440px;margin:0 auto;padding:12px 14px 0}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.res div{background:var(--surface);padding:8px 12px;min-width:0}
+.res .l{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap}
+.res .v{font-family:"IBM Plex Mono",monospace;font-size:20px;font-weight:600;line-height:1.2;margin-top:2px}
+.res .s{font-size:11.5px;color:var(--ink-faint);margin-top:1px}
+.res .cash .v{color:var(--money)}
+.res .cash{background:var(--money-wash)}
+.res .notmoney .v{color:var(--ink-faint)}
+.res .neg .v{color:var(--risk)}
+.res .trustrow .v{font-size:14px;display:flex;gap:10px;flex-wrap:wrap}
+.res .trustrow .v span{white-space:nowrap}
+
+/* rules */
+details.rules{margin-top:12px;border:1px solid var(--rule);background:var(--surface)}
+details.rules summary{cursor:pointer;padding:9px 12px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);list-style:none}
+details.rules summary::-webkit-details-marker{display:none}
+details.rules summary:before{content:"+ ";color:var(--ink-faint)}
+details[open].rules summary:before{content:"\2013  "}
+.rules-in{padding:4px 12px 12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px 22px;font-size:13px;color:var(--ink-soft)}
+.rules-in h3{font-size:12px;font-family:"IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin-bottom:4px;font-weight:600}
+.rules-in p{margin:0 0 6px}
+.rules-in table{border-collapse:collapse;font-size:12px;width:100%}
+.rules-in td{padding:2px 6px 2px 0;vertical-align:top}
+.rules-in td:first-child{font-family:"IBM Plex Mono",monospace;white-space:nowrap;color:var(--ink)}
+
+/* tabs, mobile only */
+.tabs{display:none;margin-top:12px;border:1px solid var(--ink);border-radius:2px;overflow:hidden}
+.tabs button{flex:1;padding:8px 4px;border:0;background:transparent;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600}
+.tabs button.on{background:var(--ink);color:var(--paper)}
+.tabs button small{display:block;font-weight:400;font-size:10px;letter-spacing:.04em;opacity:.8}
+
+/* board */
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:12px}
+.track{background:var(--surface);border:1px solid var(--rule);min-width:0;display:flex;flex-direction:column}
+.th{padding:11px 12px 9px;border-bottom:1px solid var(--ink)}
+.th .tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.th h2{font-size:17px;font-weight:800;letter-spacing:-.01em;margin-top:1px}
+.th .sub{font-size:12.5px;color:var(--ink-soft)}
+.trust{display:flex;align-items:center;gap:8px;margin-top:8px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint)}
+.trust .bar{flex:1;height:5px;background:var(--surface-2);position:relative}
+.trust .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--ink-soft)}
+.trust b{color:var(--ink);font-weight:600;min-width:34px;text-align:right}
+.facts{margin:0;padding:8px 12px;list-style:none;font-size:12px;color:var(--ink-soft);border-bottom:1px solid var(--rule-soft)}
+.facts li{padding-left:10px;position:relative;line-height:1.45}
+.facts li:before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;background:var(--ink-faint)}
+
+.sec{padding:8px 12px 0}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
+.sec-h span:last-child{letter-spacing:.02em;text-transform:none;color:var(--ink-faint)}
+
+/* doors */
+.tbl{overflow-x:auto}
+table.doors{width:100%;border-collapse:collapse;font-size:12.5px}
+table.doors th{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);text-align:left;font-weight:600;padding:3px 4px;border-bottom:1px solid var(--ink)}
+table.doors td{padding:4px 4px;border-bottom:1px solid var(--rule-soft);vertical-align:middle}
+table.doors td.i{font-family:"IBM Plex Mono",monospace;color:var(--ink-faint);width:20px;font-size:11px}
+table.doors td.name{line-height:1.25}
+table.doors td.name small{display:block;color:var(--ink-faint);font-size:10.5px}
+table.doors td.c{font-family:"IBM Plex Mono",monospace;text-align:right;white-space:nowrap;width:52px;font-weight:600}
+table.doors td.c.unk{color:var(--lock);font-weight:400}
+table.doors td.c.leak{color:var(--risk)}
+table.doors td.a{text-align:right;white-space:nowrap;width:1%}
+table.doors td.a input{width:54px}
+tr.fixed td.name:after{content:" fixed";font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--money);letter-spacing:.06em}
+tr.locked td{color:var(--ink-faint)}
+
+/* small buttons */
+.b{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.03em;padding:4px 8px;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:2px;white-space:nowrap}
+.b:hover{background:var(--surface-2)}
+.b[disabled]{opacity:.35;cursor:not-allowed}
+.b[disabled]:hover{background:transparent}
+.b.pri{background:var(--ink);color:var(--paper)}
+.b.pri:hover{opacity:.9;background:var(--ink)}
+.b.money{border-color:var(--money);color:var(--money)}
+.b.risk{border-color:var(--risk);color:var(--risk)}
+.b.ghost{border-color:var(--rule);color:var(--ink-soft)}
+.b .h{font-weight:400;color:var(--ink-faint)}
+.b.pri .h{color:var(--paper);opacity:.7}
+
+/* seven states */
+.states{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.states div{background:var(--surface);padding:5px 1px 4px;text-align:center;min-width:0;overflow:hidden}
+.states .l{font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:0;color:var(--ink-faint);white-space:nowrap}
+.states .v{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;color:var(--ink-soft);line-height:1.2}
+.states .col{background:var(--money-wash)}
+.states .col .v{color:var(--money)}
+.states .col .l{color:var(--money)}
+.states .st{display:flex;justify-content:center;gap:2px;margin-top:2px}
+.states .st button{font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1;padding:2px 5px;border:1px solid var(--rule);background:transparent;border-radius:2px}
+.flight{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-faint);margin-top:4px;display:flex;flex-wrap:wrap;gap:2px 10px}
+.flight b{color:var(--ink-soft);font-weight:600}
+
+.note{font-size:12px;color:var(--ink-soft);line-height:1.45}
+.trap{margin-top:6px;padding:6px 9px;background:var(--warn-wash);border-left:3px solid var(--warn);font-size:12px;line-height:1.4}
+.trap b{font-family:"IBM Plex Mono",monospace;font-weight:600}
+.ev{margin-top:6px;padding:6px 9px;background:var(--risk-wash);border-left:3px solid var(--risk);font-size:12px;line-height:1.4}
+.ev b{display:block;color:var(--risk);font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.ev .acts{margin-top:5px}
+.ok{margin-top:6px;padding:6px 9px;background:var(--money-wash);border-left:3px solid var(--money);font-size:12px;line-height:1.4}
+
+/* actions */
+.acts{display:flex;flex-wrap:wrap;gap:5px;padding:2px 0 6px}
+.deal{font-size:12px;color:var(--ink-soft)}
+.deal .ladder{display:flex;gap:2px;margin:4px 0 6px}
+.deal .ladder i{flex:1;height:5px;background:var(--surface-2)}
+.deal .ladder i.done{background:var(--ink-soft)}
+.deal .ladder i.paid{background:var(--money)}
+.deal .cur{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-weight:600}
+
+/* checklist */
+.chk{list-style:none;margin:0;padding:0;font-size:12px;color:var(--ink-soft)}
+.chk li{padding-left:18px;position:relative;line-height:1.5}
+.chk li:before{content:"\25A1";position:absolute;left:0;font-family:"IBM Plex Mono",monospace;color:var(--ink-faint)}
+.chk li.y{color:var(--ink)}
+.chk li.y:before{content:"\25A0";color:var(--money)}
+
+/* claim */
+.claim{margin:8px 12px 10px;border:1px dashed var(--rule);padding:8px 10px}
+.claim .sec-h{margin-bottom:6px}
+.claim .row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:4px 0;border-top:1px solid var(--rule-soft);font-size:12.5px}
+.claim .row:first-of-type{border-top:0}
+.claim .row .n{font-weight:600}
+.claim .row small{display:block;color:var(--ink-faint);font-size:11px}
+
+/* forms (real mode) */
+.form{margin-top:6px;padding:8px 10px;border:1px solid var(--rule);background:var(--surface-2);display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px}
+.form label{display:flex;align-items:center;gap:4px;white-space:nowrap}
+input,select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:2px;padding:4px 6px}
+input[type=number],input[type=date]{font-family:"IBM Plex Mono",monospace;font-size:12px}
+input[type=number]{width:84px}
+input[type=text]{min-width:120px;flex:1}
+input.hrs{width:56px}
+
+/* log */
+.log{margin-top:16px;border-top:1px solid var(--ink);padding-top:8px}
+.log ol{list-style:none;margin:0;padding:0;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-soft);display:flex;flex-direction:column;gap:2px}
+.log li{display:grid;grid-template-columns:44px 20px 1fr;gap:8px;line-height:1.4}
+.log li .d{color:var(--ink-faint)}
+.log li .t{color:var(--ink);font-weight:600}
+.log li.risk .m{color:var(--risk)}
+.log li.money .m{color:var(--money)}
+.log li.warn .m{color:var(--warn)}
+
+/* bottom bar */
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--paper);border-top:2px solid var(--ink)}
+.bottom-in{max-width:1440px;margin:0 auto;padding:8px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bottom .hrs{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-soft)}
+.bottom .hrs b{color:var(--ink);font-size:15px}
+.bottom .b{margin-left:auto;padding:8px 14px;font-size:12px}
+.hbar{display:flex;gap:2px}
+.hbar i{width:14px;height:8px;background:var(--surface-2)}
+.hbar i.on{background:var(--ink)}
+.hbar i.half{background:linear-gradient(90deg,var(--ink) 50%,var(--surface-2) 50%)}
+
+/* result */
+.result{margin-top:12px;border:2px solid var(--ink);background:var(--surface);padding:14px}
+.result .tier{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.result h2{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:2px 0 8px}
+.result h2.win{color:var(--money)}
+.result h2.loss{color:var(--risk)}
+.result table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+.result td,.result th{padding:6px 8px;border-bottom:1px solid var(--rule-soft);text-align:left;vertical-align:top}
+.result th{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--ink)}
+.result td.n{text-align:right;white-space:nowrap}
+.result p{margin:8px 0 0;font-size:13px;color:var(--ink-soft);max-width:70ch}
+
+.settings{margin-top:12px;font-size:12px;color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.muted{color:var(--ink-faint)}
+.hint{font-size:11.5px;color:var(--ink-faint);margin-top:3px}
+
+@media (max-width:980px){
+  .board{grid-template-columns:1fr}
+  .track{display:none}
+  .track.on{display:flex}
+  .tabs{display:flex}
+  .seg{margin-left:0}
+  .res{grid-template-columns:repeat(2,1fr)}
+  .res .v{font-size:18px}
+  .strip-lab{display:flex;justify-content:space-between;font-size:9.5px}
+  .strip-lab span{overflow:visible}
+  .states .l{font-size:7.5px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- constants ---------- */
+const KEY='operator90.v1';
+const DAY_HOURS=6;
+
+const DOORS=[
+  ['Showed intent','Liked, saved, asked a price, then nothing'],
+  ['Replied, never moved','Answered once and the thread died'],
+  ['Asked and forgotten','Put a question in that nobody answered'],
+  ['Booked, no show','Took a slot and did not turn up'],
+  ['Showed, did not buy','Came to the call, left without a decision'],
+  ['Said yes, never paid','Agreed and the money never landed'],
+  ['Messy onboarding','Paid and then got lost in the handover'],
+  ['Live now','Paying, active, at risk of drifting'],
+  ['Dead','Gone cold, worth one last message'],
+  ['Needs action today','Something is waiting on you right now'],
+];
+/* where a worked door feeds the pipeline */
+const ENTRY=['sent','sent','sent','booked','offered','agreed','live','live','sent','today'];
+/* which stage a fix on that door improves, and by how much */
+const FIXFX=[['sent',.1],['replied',.15],['sent',.1],['booked',.25],['offered',.15],['agreed',.3],null,null,['sent',.05],null];
+const STATES=['sent','replied','booked','showed','offered','agreed','collected'];
+const NEXT={sent:'replied',replied:'booked',booked:'showed',showed:'offered',offered:'agreed',agreed:'collected'};
+
+const PHASES=[
+  {from:1,to:7,name:'Count',aim:'Fixing is locked. Turn the bad feeling into a list of names.'},
+  {from:8,to:30,name:'Work the warm pool',aim:'Touch the names. First money possible.'},
+  {from:31,to:60,name:'Fix the route',aim:'Fix the route and the offer so the next hundred do not leak.'},
+  {from:61,to:90,name:'Make it repeat',aim:'Build the receipts. Ask for the next one.'},
+];
+
+const EVENTS={
+  splits:{name:'Processor stopped approving split payments',desc:'The €997 splits are being declined. Every second one bounces until you go card only.',days:99,who:['josh']},
+  checkout:{name:'Checkout link failing, silently',desc:'Half the payments are not going through and nobody is telling you.',days:8,hidden:true},
+  records:{name:'Payment records will not render',desc:'Nothing can be verified until they load again.',days:4},
+  fee:{name:'Client deferred your fee',desc:'Your cut is held until his collected revenue rises. Owed is not paid.',days:99,who:['josh']},
+  window:{name:'Messaging window closed',desc:'The platform shut the 7 day window. No new conversations on this track for 5 days.',days:5,who:['josh','creator']},
+  website:{name:'Client wants a website',desc:'The leak is not the website. Every day it sits unanswered costs trust.',days:99},
+  noOutcome:{name:'Appointment with no outcome recorded',desc:'Calls happened. Nobody wrote down what was said. Those people are in limbo.',days:99},
+};
+
+const TDEF={
+  josh:{tag:'Track A',name:'Josh',sub:'Coaching. Live client. Cork.',trust:50,access:true,
+    facts:['€997 16 week 1:1 and €197 8 week group','Inbox around 277 unread','One group sale landed, cash not verified','Two signed at €498.50 × 2, then €250 rolling','Your fee walked back to commission only'],
+    hidden:[58,44,36,15,12,7,5,9,71,20],batch:8,
+    rates:{sent:[.2,.3],replied:[.15,.28],booked:[.5,.27],showed:[.6,.07],offered:[.15,.35],agreed:[.4,.1]},
+    reported:10000,cut:.2},
+  niall:{tag:'Track B',name:'Niall',sub:'Landscaping, Cork. Never contacted.',trust:null,access:false,
+    facts:['Three known facts: landscaping, Cork, his name','No inbox, no audience, no CRM','The first message has never been sent'],
+    hidden:[4,3,5,1,2,2,1,3,7,2],batch:4,
+    rates:{sent:[.3,.25],replied:[.25,.25],booked:[.5,.17],showed:[.6,.07],offered:[.2,.25],agreed:[.4,.07]},
+    ticket:1400,reply:.5,audit:250,block:500,reported:0},
+  creator:{tag:'Track C',name:'The Creator',sub:'Archetype. Audience, irregular offer.',trust:0,access:false,
+    facts:['Real audience, posts land','Offer sells irregularly','Messages unanswered for weeks','No record of who booked or paid'],
+    hidden:[120,60,45,20,14,9,6,30,150,25],batch:10,
+    rates:{sent:[.15,.35],replied:[.12,.28],booked:[.4,.27],showed:[.55,.1],offered:[.12,.36],agreed:[.4,.1]},
+    ticket:350,reply:.3,audit:300,block:1200,reported:0},
+};
+const TKEYS=['josh','niall','creator'];
+const DEAL=['Not contacted','Message sent','Replied','Look agreed','Look happened','Audit offered','Audit agreed','Paid, unverified','Audit verified'];
+const DEAL2=['','','','','Block due','Block offered','Block agreed','Paid, unverified','Block verified'];
+
+/* ---------- helpers ---------- */
+const rnd=Math.random;
+function binom(n,p){let k=0;for(let i=0;i<n;i++)if(rnd()<p)k++;return k;}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function eur(v){v=Math.round(v);return '€'+v.toLocaleString('en-IE');}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function todayISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fmtDate(iso){if(!iso)return '';const p=iso.split('-');const m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return parseInt(p[2],10)+' '+m[parseInt(p[1],10)-1];}
+function addDays(iso,n){const p=iso.split('-');const d=new Date(p[0],p[1]-1,p[2]);d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function daysBetween(a,b){const pa=a.split('-'),pb=b.split('-');const da=new Date(pa[0],pa[1]-1,pa[2]),db=new Date(pb[0],pb[1]-1,pb[2]);return Math.round((db-da)/86400000);}
+function phaseOf(d){return PHASES.find(p=>d>=p.from&&d<=p.to)||PHASES[3];}
+function hrs(h){return (Math.round(h*2)/2).toString().replace('.5','½').replace(/^0½$/,'½')+'h';}
+
+/* ---------- state ---------- */
+let S=null;         /* whole persisted object {mode, sim, real} */
+let UI={tab:'josh',form:null};
+
+function newTrack(k){
+  const d=TDEF[k];
+  return {
+    key:k,trust:d.trust,access:d.access,lastAction:0,accuracy:1,leaked:0,boost:false,cardOnly:false,
+    doors:d.hidden.map(h=>({hidden:h,shown:null,counted:false,countedDay:null,worked:0,fixed:false,fixedDay:null,base:0,fixResult:null})),
+    flight:{sent:0,replied:0,booked:0,showed:0,offered:0,agreed:0,limbo:0,dead:0},
+    reached:{sent:0,replied:0,booked:0,showed:0,offered:0,agreed:0,collected:0},
+    pay:{un:0,unAmt:0,ver:0,verAmt:0,failed:0},
+    deal:{stage:0,round:1,sentDay:null,linkSent:false},
+    events:{},cool:{},
+    claimedVerified:false,claims:0,
+    cs:{permission:false,written:false},
+  };
+}
+function newSim(){
+  const s={day:1,hours:DAY_HOURS,evidence:0,cash:0,owed:0,log:[],done:false,claimedUnverified:0,strangerPaid:null,
+    tracks:{josh:newTrack('josh'),niall:newTrack('niall'),creator:newTrack('creator')}};
+  /* Josh starts with two signed and one group sale reported, nothing verified */
+  const j=s.tracks.josh;
+  j.reached.agreed=2;j.flight.agreed=2;j.reached.sent=2;j.reached.replied=2;j.reached.booked=2;j.reached.showed=2;j.reached.offered=2;
+  j.pay.un=1;j.pay.unAmt=197;j.reached.collected=1;
+  s.log.push({day:1,t:'josh',m:'Day one. 277 unread. One group sale reported, not verified. Two signed, nothing collected by you.',k:''});
+  s.log.push({day:1,t:'niall',m:'Never contacted. Three facts. The first message has never been sent.',k:''});
+  s.log.push({day:1,t:'creator',m:'Trust zero. They do not know you exist.',k:''});
+  return s;
+}
+function newRealTrack(k){
+  return {trust:TDEF[k].trust,doors:DOORS.map(()=>({n:null,date:null,worked:0,fixDate:null,fixResult:null})),
+    reached:{sent:0,replied:0,booked:0,showed:0,offered:0,agreed:0,collected:0},
+    payments:[],events:[],claims:[],permission:null,written:null,contact:null};
+}
+function newReal(){
+  return {start:todayISO(),hours:{},log:[],tracks:{josh:newRealTrack('josh'),niall:newRealTrack('niall'),creator:newRealTrack('creator')}};
+}
+function load(){
+  try{const raw=localStorage.getItem(KEY);if(raw){const o=JSON.parse(raw);if(o&&o.sim&&o.real)return o;}}catch(e){}
+  return {mode:'sim',sim:newSim(),real:newReal()};
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+/* ---------- sim: logging ---------- */
+function log(s,t,m,k){s.log.unshift({day:s.day,t:t,m:m,k:k||''});if(s.log.length>400)s.log.length=400;}
+
+/* ---------- sim: helpers ---------- */
+function counted(t){return t.doors.filter(d=>d.counted).length;}
+function hasFixResult(t){return t.doors.some(d=>d.fixResult!=null);}
+function blockedWindow(t){return (t.events.window||0)>0;}
+function spend(s,h){if(s.hours+1e-9<h)return false;s.hours=Math.round((s.hours-h)*2)/2;return true;}
+function bump(t,n){if(t.trust==null)return;t.trust=clamp(t.trust+n,0,100);}
+function ticketJosh(t){
+  if(rnd()<.3){ /* the €997 offer */
+    if(t.cardOnly)return 997;
+    return 498.5;
+  }
+  return 197;
+}
+function csReady(t){
+  return {
+    counted:counted(t)>=5,
+    accurate:t.accuracy>=.8,
+    paid:t.pay.ver>=1||t.deal.stage===8||(t.deal.round===2&&t.deal.stage>=4),
+    fix:hasFixResult(t),
+    permission:t.cs.permission,
+  };
+}
+function csProvable(t){const r=csReady(t);return r.counted&&r.accurate&&r.paid&&r.fix&&r.permission&&t.cs.written;}
+function reportedFigure(t){return TDEF[t.key].reported+t.pay.unAmt+t.flight.agreed*(TDEF[t.key].ticket||400);}
+function verifiedFigure(t){return t.pay.verAmt;}
+
+/* ---------- sim: actions ---------- */
+function act(name,tk,arg){
+  const s=S.sim;if(s.done)return;
+  const t=s.tracks[tk];const d=TDEF[tk];const ph=phaseOf(s.day);
+  const need=h=>{if(!spend(s,h)){log(s,tk,'Not enough hours left today. Needs '+hrs(h)+'.','warn');return false;}t.lastAction=s.day;return true;};
+
+  switch(name){
+    case 'count':{
+      const i=arg;const dr=t.doors[i];if(dr.counted||!t.access)return;
+      if(!need(1))return;
+      const err=(1-t.accuracy);
+      dr.shown=Math.max(0,Math.round(dr.hidden*(1+err*(rnd()*2-1))));
+      dr.counted=true;dr.countedDay=s.day;
+      s.evidence+=1;bump(t,1);
+      log(s,tk,'Counted "'+DOORS[i][0]+'": '+dr.shown+(t.accuracy<1?' (accuracy '+Math.round(t.accuracy*100)+'%)':'')+'. Dated, so it counts.');
+      break;}
+    case 'work':{
+      const i=arg;const dr=t.doors[i];if(!dr.counted)return;
+      const entry=ENTRY[i];
+      if(s.day<8){
+        if(!need(1))return;
+        t.accuracy=Math.max(.4,Math.round((t.accuracy-.1)*100)/100);
+        log(s,tk,'Day '+s.day+'. You went at "'+DOORS[i][0]+'" before the count was done. The count is now a guess. Accuracy '+Math.round(t.accuracy*100)+'%.','risk');
+        break;
+      }
+      if(blockedWindow(t)&&entry!=='live'&&entry!=='today'){log(s,tk,'Messaging window is shut. You cannot start that conversation.','risk');break;}
+      if(!need(1.5))return;
+      const want=Math.min(d.batch,dr.shown);
+      const got=Math.min(want,dr.hidden);
+      dr.hidden-=got;dr.shown=Math.max(0,dr.shown-want);dr.worked+=got;
+      if(entry==='live'||entry==='today'){
+        bump(t,4);s.evidence+=1;
+        log(s,tk,'Worked "'+DOORS[i][0]+'": '+got+' people looked after. Trust up, one dated line of evidence.');
+      }else{
+        t.flight[entry]+=got;t.reached[entry]+=got;
+        /* everyone entering later than sent also counts as having reached the earlier states */
+        const idx=STATES.indexOf(entry);for(let k=0;k<idx;k++)t.reached[STATES[k]]+=got;
+        bump(t,2);
+        let m='Worked "'+DOORS[i][0]+'": '+got+' moved to '+entry+'.';
+        if(got<want)m+=' Only '+got+' of the '+want+' you counted were still there.';
+        if(entry==='sent')m+=' Sent is not replied.';
+        log(s,tk,m,got<want?'warn':'');
+      }
+      break;}
+    case 'conv':{
+      if(blockedWindow(t)){log(s,tk,'Messaging window is shut. Only people who message first can be answered.','risk');break;}
+      if(!need(1.5))return;t.boost=true;bump(t,2);
+      log(s,tk,'An afternoon of conversations. Replies and bookings move faster tonight.');
+      break;}
+    case 'verify':{
+      if((t.events.records||0)>0){log(s,tk,'Records will not render. Nothing to verify against.','risk');break;}
+      if(!need(.5))return;
+      let did=false;
+      if(t.pay.un>0){
+        const n=t.pay.un,amt=t.pay.unAmt;
+        t.pay.ver+=n;t.pay.verAmt+=amt;t.pay.un=0;t.pay.unAmt=0;
+        s.evidence+=2*n;bump(t,2);did=true;
+        if(tk==='josh'){
+          const cut=amt*d.cut;
+          if((t.events.fee||0)>0){s.owed+=cut;log(s,tk,'Verified '+n+' payment'+(n>1?'s':'')+', '+eur(amt)+'. Your '+eur(cut)+' cut is owed, not paid. Fee is deferred.','warn');}
+          else{s.cash+=cut;log(s,tk,'Verified '+n+' payment'+(n>1?'s':'')+', '+eur(amt)+' collected. Your cut '+eur(cut)+' landed.','money');}
+        }else{
+          log(s,tk,'Verified '+n+' payment'+(n>1?'s':'')+', '+eur(amt)+' into their account. Dated.','money');
+        }
+      }
+      if(t.deal.stage===7){
+        const price=t.deal.round===1?d.audit:d.block;
+        t.deal.stage=8;s.cash+=price;s.evidence+=5;bump(t,10);did=true;
+        if(!s.strangerPaid)s.strangerPaid={t:tk,day:s.day,amt:price};
+        log(s,tk,(t.deal.round===1?'Audit':'Block')+' fee '+eur(price)+' verified in your account. A stranger paid.','money');
+        if(t.deal.round===1){t.deal.round=2;t.deal.stage=4;t.deal.linkSent=false;}
+      }
+      if((t.events.checkout||0)>0&&t.pay.failed>0){
+        log(s,tk,'While checking: '+t.pay.failed+' people tried to pay and nothing went through. The checkout is failing silently.','risk');
+      }
+      if(!did)log(s,tk,'Nothing to verify. Agreed is not paid.','warn');
+      break;}
+    case 'test':{
+      if(!need(.5))return;
+      if((t.events.checkout||0)>0){
+        s.evidence+=1;t.events.checkout=0;
+        log(s,tk,'Tested the checkout end to end. It was failing. '+t.pay.failed+' payment'+(t.pay.failed===1?'':'s')+' never went through. Fixed.','money');
+        t.pay.failed=0;
+      }else log(s,tk,'Tested the checkout. It works today.');
+      break;}
+    case 'cardOnly':{
+      if(!need(.5))return;t.cardOnly=true;t.events.splits=0;
+      log(s,tk,'Card only on the €997. No more bounced splits.','money');
+      break;}
+    case 'fix':{
+      const i=arg;const dr=t.doors[i];if(!dr.counted||dr.worked===0||dr.fixed||s.day<31)return;
+      if(!need(2))return;
+      dr.fixed=true;dr.fixedDay=s.day;
+      const fx=FIXFX[i];
+      if(fx){dr.base=t.reached[NEXT[fx[0]]];log(s,tk,'Built a fix for "'+DOORS[i][0]+'". Baseline written down. Measured in 7 days.');}
+      else{dr.fixResult='tidied';s.evidence+=3;log(s,tk,'Fixed "'+DOORS[i][0]+'". Small, boring, done. Three lines of dated evidence.','money');}
+      bump(t,4);
+      break;}
+    case 'sayNo':{
+      if(!need(.5))return;t.events.website=0;bump(t,-3);
+      log(s,tk,'Said no to the website. Showed the leak instead. Trust dipped, it will come back.');
+      break;}
+    case 'buildSite':{
+      if(!need(3))return;t.events.website=0;bump(t,6);
+      log(s,tk,'Three hours on a website. The leak is exactly where it was.','warn');
+      break;}
+    case 'record':{
+      if(!need(.5))return;const n=t.flight.limbo;t.flight.showed+=n;t.flight.limbo=0;t.events.noOutcome=0;s.evidence+=1;
+      log(s,tk,'Chased the outcomes. '+n+' people back on the board with a note against each.');
+      break;}
+    case 'terms':{
+      if(t.trust<65||s.evidence<20)return;
+      if(!need(1))return;t.events.fee=0;s.cash+=s.owed;
+      log(s,tk,'Revisited your terms with a month of evidence. '+eur(s.owed)+' owed became '+eur(s.owed)+' paid.','money');s.owed=0;
+      break;}
+    case 'permission':{
+      if(s.day<61||(t.trust||0)<60||!csReady(t).paid)return;
+      if(!need(.5))return;t.cs.permission=true;s.evidence+=2;
+      log(s,tk,'Permission in writing to use the name and the numbers.','money');
+      break;}
+    case 'write':{
+      const r=csReady(t);if(!(r.counted&&r.accurate&&r.paid&&r.fix&&r.permission))return;
+      if(!need(3))return;t.cs.written=true;s.evidence+=20;
+      log(s,tk,'Case study written from receipts only. Before, what you did, after, dates. Provable.','money');
+      break;}
+    /* deal ladder, Niall and the Creator */
+    case 'contact':{
+      if(blockedWindow(t)){log(s,tk,'Messaging window is shut.','risk');break;}
+      if(!need(1))return;t.deal.stage=1;t.deal.sentDay=s.day;
+      log(s,tk,tk==='niall'?'First message sent, as a person, not a pitch. Took '+s.day+' day'+(s.day>1?'s':'')+' to send it.':'Opener sent. Something true and specific you noticed. No pitch.');
+      break;}
+    case 'askLook':{
+      if(t.deal.stage!==2)return;if(!need(.5))return;t.deal.stage=3;
+      log(s,tk,'Asked for the free look, plainly.');
+      break;}
+    case 'offer':{
+      if(t.deal.stage!==4)return;
+      if(t.deal.round===1&&(counted(t)<4||s.day<8))return;
+      if(t.deal.round===2&&(s.day<31||!t.doors.some(x=>x.worked>0)))return;
+      if(!need(.5))return;t.deal.stage=5;
+      log(s,tk,t.deal.round===1?'Offered the audit at '+eur(d.audit)+', priced against one recovered sale.':'Offered the block at '+eur(d.block)+'. Written shape: what counts, who confirms it, when it is paid.');
+      break;}
+    case 'link':{
+      if(t.deal.stage!==6||t.deal.linkSent)return;if(!need(.5))return;t.deal.linkSent=true;
+      log(s,tk,'Payment link sent. Agreed is not collected.');
+      break;}
+    case 'claimV':{
+      if(t.claimedVerified)return;t.claimedVerified=true;s.evidence+=2;
+      log(s,tk,'You said '+eur(verifiedFigure(t))+' out loud and could show it. Two lines of evidence.','money');
+      break;}
+    case 'claimU':{
+      s.evidence-=25;bump(t,-10);s.claimedUnverified++;t.claims++;
+      log(s,tk,'You said '+eur(reportedFigure(t))+' out loud. The first person who asked to see it found out in the room. Evidence minus 25, trust minus 10.','risk');
+      break;}
+    case 'endDay':endDay();return;
+  }
+  save();render();
+}
+
+/* ---------- sim: daily tick ---------- */
+function endDay(){
+  const s=S.sim;if(s.done)return;
+  for(const tk of TKEYS){
+    const t=s.tracks[tk];const d=TDEF[tk];
+    /* leaks from doors */
+    t.doors.forEach((dr,i)=>{
+      if(dr.hidden<=0)return;
+      if(!dr.counted){if(rnd()<.7){const l=Math.max(1,Math.round(dr.hidden*.04));dr.hidden-=l;t.leaked+=l;}}
+      else if(dr.worked===0&&!dr.fixed){if(rnd()<.3){dr.hidden-=1;t.leaked+=1;}}
+    });
+    /* pipeline flow, back to front so nobody moves twice */
+    const boost=t.boost?1.8:1;
+    const fixBonus=st=>t.doors.reduce((a,dr,i)=>a+((dr.fixed&&FIXFX[i]&&FIXFX[i][0]===st)?FIXFX[i][1]:0),0);
+    for(const st of ['agreed','offered','showed','booked','replied','sent']){
+      const n=t.flight[st];if(!n)continue;
+      let rate=d.rates[st][0]+fixBonus(st);const dropRate=d.rates[st][1];
+      if(st==='sent'||st==='replied'||st==='offered')rate*=boost;
+      rate=clamp(rate,0,.95);
+      const mv=binom(n,rate);
+      if(st==='agreed'){
+        let paid=0;
+        for(let k=0;k<mv;k++){
+          let amt=tk==='josh'?ticketJosh(t):d.ticket;
+          if(tk==='josh'&&amt===498.5&&(t.events.splits||0)>0&&rnd()<.5){t.pay.failed++;continue;}
+          if((t.events.checkout||0)>0&&rnd()<.5){t.pay.failed++;continue;}
+          t.pay.un++;t.pay.unAmt+=amt;t.reached.collected++;paid++;
+        }
+        const dropN=binom(n-mv,dropRate);
+        t.flight.agreed-=paid+dropN;t.flight.dead+=dropN;
+        if(paid)log(s,tk,paid+' payment'+(paid>1?'s':'')+' reported. Not verified yet.','warn');
+      }else{
+        const dropN=binom(n-mv,dropRate);
+        t.flight[st]-=mv+dropN;t.flight[NEXT[st]]+=mv;t.reached[NEXT[st]]+=mv;t.flight.dead+=dropN;
+      }
+    }
+    t.boost=false;
+    /* fixes measured after 7 days */
+    t.doors.forEach((dr,i)=>{
+      if(dr.fixed&&dr.fixResult==null&&FIXFX[i]&&s.day-dr.fixedDay>=7){
+        const now=t.reached[NEXT[FIXFX[i][0]]];const diff=now-dr.base;
+        if(diff>0){dr.fixResult=diff;s.evidence+=5;log(s,tk,'Fix on "'+DOORS[i][0]+'" measured: '+diff+' more reached '+NEXT[FIXFX[i][0]]+' in 7 days. Before and after, dated.','money');}
+        else{dr.fixedDay=s.day;log(s,tk,'Fix on "'+DOORS[i][0]+'": nothing moved in 7 days. Nothing to claim yet. Measuring again.','warn');}
+      }
+    });
+    /* deal ladder */
+    const dl=t.deal;
+    if(dl.stage===1){
+      if(rnd()<d.reply){dl.stage=2;t.trust=tk==='niall'?40:20;log(s,tk,tk==='niall'?'He replied. Talking about the last three jobs.':'They replied. A back and forth is going.','money');}
+      else if(s.day-dl.sentDay>=7&&tk==='creator'){dl.stage=0;t.events.window=5;log(s,tk,'Seven days, no reply. The platform closed the window. Send a fresh opener in 5 days.','risk');}
+      else if(s.day-dl.sentDay>=10&&tk==='niall'){dl.stage=0;log(s,tk,'Ten days, nothing. He never saw it. Send it again, or find the way in.','risk');}
+    }else if(dl.stage===3){
+      if(rnd()<.6){dl.stage=4;t.access=true;bump(t,10);log(s,tk,tk==='niall'?'The free look happened. You can count his doors now.':'The call happened. You can count their doors now.','money');}
+      else if(rnd()<.2){dl.stage=2;log(s,tk,'No show. Ask again, once.','warn');}
+    }else if(dl.stage===5){
+      const p=((t.trust||0)/100)*.35;
+      if(rnd()<p){dl.stage=6;log(s,tk,'Yes to the '+(dl.round===1?'audit':'block')+'. Nothing has been paid.','warn');}
+      else if(rnd()<.05){dl.stage=4;bump(t,-3);log(s,tk,'They went quiet on the offer.','warn');}
+    }else if(dl.stage===6&&dl.linkSent){
+      if((t.events.checkout||0)>0&&rnd()<.5){t.pay.failed++;}
+      else if(rnd()<.5){dl.stage=7;log(s,tk,'Paid, per the notification. Not verified.','warn');}
+    }
+    /* trust drift */
+    const live=t.access||dl.stage>=2;
+    if(live&&t.trust!=null&&s.day-t.lastAction>=3){bump(t,-3);}
+    if((t.events.website||0)>0)bump(t,-2);
+    /* event countdown */
+    for(const k in t.events){if(t.events[k]>0&&t.events[k]<99)t.events[k]--;}
+    for(const k in t.cool){if(t.cool[k]>0)t.cool[k]--;}
+  }
+  /* failure events */
+  if(s.day>=4&&rnd()<.15)drawEvent(s);
+  s.day++;s.hours=DAY_HOURS;
+  if(s.day>90){s.day=90;s.done=true;log(s,'',finalLine(s),'');}
+  save();render();
+}
+
+function drawEvent(s){
+  const tk=TKEYS[Math.floor(rnd()*3)];const t=s.tracks[tk];
+  const pool=[];
+  for(const id in EVENTS){
+    const e=EVENTS[id];
+    if((t.events[id]||0)>0||(t.cool[id]||0)>0)continue;
+    if(e.who&&!e.who.includes(tk))continue;
+    if(id==='splits'&&t.cardOnly)continue;
+    if(id==='checkout'&&!(t.flight.agreed>0||t.deal.stage===6))continue;
+    if(id==='records'&&!(t.pay.un>0||t.deal.stage===7))continue;
+    if(id==='fee'&&s.day<8)continue;
+    if(id==='window'&&!(t.reached.sent>0||t.deal.stage===1))continue;
+    if(id==='website'&&!t.access)continue;
+    if(id==='noOutcome'&&t.flight.showed<2)continue;
+    pool.push(id);if(id==='website'&&tk==='niall')pool.push(id);
+  }
+  if(!pool.length)return;
+  const id=pool[Math.floor(rnd()*pool.length)];
+  t.events[id]=EVENTS[id].days;t.cool[id]=20;
+  if(id==='noOutcome'){const n=Math.min(3,t.flight.showed);t.flight.showed-=n;t.flight.limbo+=n;}
+  if(id==='window'&&t.deal.stage===1){t.deal.stage=0;}
+  if(!EVENTS[id].hidden)log(s,tk,EVENTS[id].name+'. '+EVENTS[id].desc,'risk');
+}
+
+/* ---------- scoring ---------- */
+function score(sim){
+  const cs=TKEYS.filter(k=>csProvable(sim.tracks[k]));
+  const stranger=!!sim.strangerPaid;
+  let tier=(stranger&&cs.length)?'win':(cs.length||stranger)?'partial':'loss';
+  let note='';
+  if(sim.evidence<0&&tier!=='loss'){tier=tier==='win'?'partial':'loss';note='Evidence below zero. You said numbers you could not show, so the result drops a tier.';}
+  return {tier,cs,stranger,note};
+}
+function finalLine(s){const r=score(s);return r.tier==='win'?'Day 90. A stranger paid and you can show a second stranger why.':r.tier==='partial'?'Day 90. Something provable, not yet a business.':'Day 90. Ninety days of activity, nothing dated.';}
+
+/* ---------- real mode ---------- */
+function realDay(){const r=S.real;return daysBetween(r.start,todayISO())+1;}
+function realEvidence(){
+  let ev=0;
+  for(const k of TKEYS){const t=S.real.tracks[k];
+    ev+=t.doors.filter(d=>d.n!=null).length;
+    ev+=t.payments.filter(p=>p.verified).length*5;
+    ev+=t.doors.filter(d=>d.fixResult).length*5;
+    if(realProvable(t))ev+=20;
+    t.claims.forEach(c=>{ev+=c.verified?2:-25;});
+  }
+  return ev;
+}
+function realProvable(t){return t.doors.filter(d=>d.n!=null).length>=5&&t.payments.some(p=>p.verified)&&t.doors.some(d=>d.fixResult)&&!!t.permission&&!!t.written;}
+function realCash(){let c=0;TKEYS.forEach(k=>S.real.tracks[k].payments.forEach(p=>{if(p.verified&&p.to==='me')c+=p.amt;}));return c;}
+function realUnverified(){let c=0;TKEYS.forEach(k=>S.real.tracks[k].payments.forEach(p=>{if(!p.verified)c+=p.amt;}));return c;}
+function realStranger(){for(const k of ['niall','creator']){const p=S.real.tracks[k].payments.find(p=>p.verified&&p.to==='me');if(p)return {t:k,date:p.date,amt:p.amt};}return null;}
+function rlog(t,m,k){S.real.log.unshift({date:todayISO(),t:t,m:m,k:k||''});if(S.real.log.length>600)S.real.log.length=600;}
+
+function ract(name,tk,arg,el){
+  const r=S.real;const t=r.tracks[tk];const today=todayISO();const day=realDay();
+  const form=el?el.closest('.form'):null;
+  const val=n=>{const x=form?form.querySelector('[name="'+n+'"]'):null;return x?(x.type==='checkbox'?x.checked:x.value):null;};
+  switch(name){
+    case 'door':{const i=arg;const v=el.value===''?null:Math.max(0,parseInt(el.value,10)||0);t.doors[i].n=v;t.doors[i].date=v==null?null:today;if(v!=null)rlog(tk,'Counted "'+DOORS[i][0]+'": '+v+'.');break;}
+    case 'worked':{const i=arg;if(t.doors[i].n==null)return;if(day<8){rlog(tk,'Day '+day+'. Fixing is locked until day 8. Count first.','risk');break;}t.doors[i].worked++;rlog(tk,'Worked "'+DOORS[i][0]+'" (+1).');break;}
+    case 'fixOpen':UI.form={t:tk,type:'fix',door:arg};break;
+    case 'fixSave':{const i=parseInt(val('door'),10);t.doors[i].fixDate=val('date')||today;const res=(val('result')||'').trim();t.doors[i].fixResult=res||null;rlog(tk,'Fix on "'+DOORS[i][0]+'"'+(res?': '+res:' logged, no result yet.'),res?'money':'');UI.form=null;break;}
+    case 'state':{const st=arg.st;const dlt=arg.d;t.reached[st]=Math.max(0,(t.reached[st]||0)+dlt);rlog(tk,st+' '+(dlt>0?'+1':'-1')+(st==='sent'&&dlt>0?'. Sent is not replied.':''));break;}
+    case 'trust':{if(t.trust==null)t.trust=0;t.trust=clamp(t.trust+arg,0,100);break;}
+    case 'payOpen':UI.form={t:tk,type:'pay'};break;
+    case 'paySave':{const amt=parseFloat(val('amt'));if(!(amt>0))return;const p={amt:amt,date:val('date')||today,to:val('to'),verified:!!val('verified'),note:(val('note')||'').trim()};t.payments.push(p);
+      rlog(tk,(p.verified?'Verified ':'Reported, not verified: ')+eur(amt)+(p.to==='me'?' to you':' to the client')+(p.note?'. '+p.note:'')+'.',p.verified?'money':'warn');UI.form=null;break;}
+    case 'payVerify':{const p=t.payments[arg];if(!p||p.verified)return;p.verified=true;p.vdate=today;rlog(tk,'Verified '+eur(p.amt)+' from '+fmtDate(p.date)+'.','money');break;}
+    case 'payDel':{t.payments.splice(arg,1);break;}
+    case 'evOpen':UI.form={t:tk,type:'ev'};break;
+    case 'evSave':{const id=val('ev');if(!EVENTS[id])return;t.events.push({id:id,date:val('date')||today,open:true});rlog(tk,EVENTS[id].name+'.','risk');UI.form=null;break;}
+    case 'evClose':{const e=t.events[arg];if(e){e.open=false;e.closed=today;rlog(tk,EVENTS[e.id].name+': resolved.');}break;}
+    case 'claimOpen':UI.form={t:tk,type:'claim'};break;
+    case 'claimSave':{const amt=parseFloat(val('amt'));if(!(amt>0))return;const v=!!val('verified');t.claims.push({amt:amt,verified:v,date:today});
+      rlog(tk,v?'Said '+eur(amt)+' out loud. You can show it. Evidence +2.':'Said '+eur(amt)+' out loud and could not show it. Evidence minus 25.',v?'money':'risk');UI.form=null;break;}
+    case 'permission':{t.permission=t.permission?null:today;if(t.permission)rlog(tk,'Permission in writing to use the name and numbers.','money');break;}
+    case 'written':{t.written=t.written?null:today;if(t.written)rlog(tk,'Case study written.'+(realProvable(t)?' Provable.':' Not provable yet, see the checklist.'),realProvable(t)?'money':'warn');break;}
+    case 'contact':{t.contact=t.contact?null:today;if(t.contact)rlog(tk,'First message sent.');break;}
+    case 'replied':{t.replied=t.replied?null:today;if(t.replied)rlog(tk,'They replied.','money');break;}
+    case 'hours':{const v=parseFloat(el.value);if(v>=0)r.hours[today]=v;else delete r.hours[today];break;}
+    case 'start':{if(el.value){r.start=el.value;}break;}
+    case 'formCancel':UI.form=null;break;
+  }
+  save();render();
+}
+
+/* ---------- render ---------- */
+const app=document.getElementById('app');
+
+function render(){
+  const real=S.mode==='real';
+  const day=real?clamp(realDay(),1,999):S.sim.day;
+  const ph=phaseOf(clamp(day,1,90));
+  const html=[];
+  html.push(renderTop(day,ph,real));
+  html.push('<div class="wrap">');
+  html.push(real?renderResReal():renderResSim());
+  html.push(renderRules());
+  if(real){
+    html.push('<div class="settings"><label>Day 1 was <input type="date" data-act="start" value="'+esc(S.real.start)+'"></label><span class="muted">Day 90 is '+fmtDate(addDays(S.real.start,89))+'</span><label>Hours on this today <input class="hrs" type="number" step="0.5" min="0" data-act="hours" value="'+esc(S.real.hours[todayISO()]==null?'':S.real.hours[todayISO()])+'"></label><button class="b ghost" data-act="resetReal">Reset the tracker</button></div>');
+    if(day>90)html.push(renderResultReal());
+  }else if(S.sim.done){
+    html.push(renderResultSim());
+  }
+  html.push('<div class="tabs">'+TKEYS.map(k=>'<button data-tab="'+k+'" class="'+(UI.tab===k?'on':'')+'">'+esc(TDEF[k].name)+'<small>'+esc(TDEF[k].tag)+'</small></button>').join('')+'</div>');
+  html.push('<div class="board">'+TKEYS.map(k=>real?renderTrackReal(k,day):renderTrackSim(k)).join('')+'</div>');
+  html.push(renderLog(real));
+  html.push('</div>');
+  html.push(renderBottom(day,real));
+  app.innerHTML=html.join('');
+}
+
+function renderTop(day,ph,real){
+  const shown=Math.min(day,90);
+  let strip='';
+  for(let i=1;i<=90;i++){const p=phaseOf(i);const idx=PHASES.indexOf(p)+1;strip+='<i class="p'+idx+(i<shown?' past':'')+(i===shown?' now':'')+'"></i>';}
+  const dateBit=real?' <span class="muted">'+fmtDate(todayISO())+'</span>':'';
+  return '<div class="top"><div class="top-in"><h1>Operator: 90 Days</h1>'+
+    '<div class="dayline"><span>Day <b>'+(day>90?'90+':day)+'</b> of <b>90</b>'+dateBit+'</span><span class="ph">'+esc(ph.name)+'</span><span>'+esc(ph.aim)+'</span></div>'+
+    '<div class="seg"><button data-mode="sim" class="'+(real?'':'on')+'">Simulation</button><button data-mode="real" class="'+(real?'on':'')+'">Real life</button></div>'+
+    '</div><div class="strip"><div class="strip-bar">'+strip+'</div><div class="strip-lab"><span>1 to 7 Count</span><span>8 to 30 Warm pool</span><span>31 to 60 Fix the route</span><span>61 to 90 Make it repeat</span></div></div></div>';
+}
+
+function trustCells(getTrust){
+  return TKEYS.map(k=>{const v=getTrust(k);return '<span>'+esc(TDEF[k].name.replace('The ',''))+' <b>'+(v==null?'??':v)+'</b></span>';}).join('');
+}
+function renderResSim(){
+  const s=S.sim;
+  const acts=TKEYS.reduce((a,k)=>a+s.tracks[k].reached.sent,0);
+  return '<div class="res">'+
+    '<div><div class="l">Hours left today</div><div class="v">'+hrs(s.hours)+'</div><div class="s">of '+DAY_HOURS+'h. Count 1h, work 1½h, build 2h</div></div>'+
+    '<div class="'+(s.evidence<0?'neg':'')+'"><div class="l">Evidence</div><div class="v">'+s.evidence+'</div><div class="s">the real score. Dated, verified only</div></div>'+
+    '<div class="cash"><div class="l">Cash to you, collected</div><div class="v">'+eur(s.cash)+'</div><div class="s">'+(s.owed>0?eur(s.owed)+' owed, not paid':'the only number that pays')+'</div></div>'+
+    '<div class="notmoney"><div class="l">Agreed, not paid</div><div class="v">'+eur(TKEYS.reduce((a,k)=>{const t=s.tracks[k];return a+t.flight.agreed*(TDEF[k].ticket||400)+t.pay.unAmt;},0))+'</div><div class="s">not money. '+acts+' sent in total</div></div>'+
+    '<div class="trustrow"><div class="l">Trust</div><div class="v">'+trustCells(k=>s.tracks[k].trust)+'</div></div>'+
+    '</div>';
+}
+function renderResReal(){
+  const ev=realEvidence();const today=todayISO();const h=S.real.hours[today];
+  const totalH=Object.values(S.real.hours).reduce((a,b)=>a+b,0);
+  const sent=TKEYS.reduce((a,k)=>a+(S.real.tracks[k].reached.sent||0),0);
+  return '<div class="res">'+
+    '<div><div class="l">Hours logged</div><div class="v">'+hrs(h||0)+'</div><div class="s">today. '+hrs(totalH)+' over the 90</div></div>'+
+    '<div class="'+(ev<0?'neg':'')+'"><div class="l">Evidence</div><div class="v">'+ev+'</div><div class="s">counts, verified payments, measured fixes</div></div>'+
+    '<div class="cash"><div class="l">Cash to you, verified</div><div class="v">'+eur(realCash())+'</div><div class="s">seen in the bank or the processor</div></div>'+
+    '<div class="notmoney"><div class="l">Reported, not verified</div><div class="v">'+eur(realUnverified())+'</div><div class="s">not money. '+sent+' sent in total</div></div>'+
+    '<div class="trustrow"><div class="l">Trust</div><div class="v">'+trustCells(k=>S.real.tracks[k].trust)+'</div></div>'+
+    '</div>';
+}
+
+function renderRules(){
+  return '<details class="rules"><summary>How the board works</summary><div class="rules-in">'+
+    '<div><h3>The job</h3><p>You are a revenue leak operator. Three businesses, ninety days. Find where interested buyers slip out and fix the first leak. Only dated, verified outcomes score.</p>'+
+    '<h3>Four phases</h3><table><tr><td>1 to 7</td><td>Count. Fixing is locked. Working a door now makes your count a guess.</td></tr><tr><td>8 to 30</td><td>Work the warm pool. First money possible.</td></tr><tr><td>31 to 60</td><td>Build fixes on doors you have worked. Measured after 7 days.</td></tr><tr><td>61 to 90</td><td>Permission in writing, write the case study, ask for the next one.</td></tr></table></div>'+
+    '<div><h3>Ten doors</h3><p>Every business has ten doors where people go missing. Counting a door shows how many are behind it and dates it. Only counted doors can be worked. Uncounted doors leak people every night, and a counted door you never touch goes stale.</p>'+
+    '<h3>Seven states</h3><p>sent, replied, booked, showed, offered, agreed, collected. Kept separate, never merged. Only collected pays, and only once you verify it against a record.</p></div>'+
+    '<div><h3>Resources</h3><table><tr><td>Hours</td><td>'+DAY_HOURS+' a day. Everything costs some.</td></tr><tr><td>Trust</td><td>Per client. Up with delivered work, down with three days of silence or a number you could not back.</td></tr><tr><td>Evidence</td><td>The real score. A dated count is 1. A verified payment is 2, a stranger paying you is 5, a measured fix is 5, a case study is 20.</td></tr><tr><td>Cash</td><td>Collected and verified. Not pipeline, not agreed, not owed.</td></tr></table>'+
+    '<h3>Day 90</h3><table><tr><td>Win</td><td>A stranger paid you and you have one provable case study.</td></tr><tr><td>Partial</td><td>One of those two.</td></tr><tr><td>Loss</td><td>Ninety days of activity, nothing dated.</td></tr></table><p>Saying an unverified number out loud costs 25 evidence. Evidence below zero drops the result a tier. That is the whole lesson.</p></div>'+
+    '<div><h3>Real life mode</h3><p>Flip the switch and the board stops simulating. Day 1 is the date you started, the counts are the ones you actually made, and a payment is only cash when you tick that you have seen it land. Everything saves on this device.</p></div>'+
+    '</div></details>';
+}
+
+function trustBar(v){
+  return '<div class="trust"><span>Trust</span><div class="bar"><i style="width:'+(v==null?0:v)+'%"></i></div><b>'+(v==null?'??':v)+'</b></div>';
+}
+function statesGrid(reached,extra,editable,tk){
+  return '<div class="states">'+STATES.map(st=>'<div class="'+(st==='collected'?'col':'')+'"><div class="l">'+st+'</div><div class="v">'+(reached[st]||0)+'</div>'+
+    (editable?'<div class="st"><button data-act="state" data-t="'+tk+'" data-st="'+st+'" data-d="-1" aria-label="minus">−</button><button data-act="state" data-t="'+tk+'" data-st="'+st+'" data-d="1" aria-label="plus">+</button></div>':'')+'</div>').join('')+'</div>'+(extra||'');
+}
+function trapLine(sent,collected,agreed){
+  if(sent>=8&&collected===0)return '<div class="trap"><b>'+sent+' sent, 0 verified.</b> That is activity, not money.</div>';
+  if(agreed>=2&&collected===0)return '<div class="trap"><b>'+agreed+' agreed, 0 verified.</b> Agreed is a promise. Send the link, then verify.</div>';
+  return '';
+}
+
+function renderTrackSim(k){
+  const s=S.sim;const t=s.tracks[k];const d=TDEF[k];const day=s.day;const done=s.done;
+  const h=[];
+  h.push('<section class="track '+(UI.tab===k?'on':'')+'"><div class="th"><div class="tag">'+esc(d.tag)+'</div><h2>'+esc(d.name)+'</h2><div class="sub">'+esc(d.sub)+'</div>'+trustBar(t.trust)+'</div>');
+  h.push('<ul class="facts">'+d.facts.map(f=>'<li>'+esc(f)+'</li>').join('')+'</ul>');
+
+  /* deal ladder for prospects */
+  if(k!=='josh'){
+    const dl=t.deal;const labels=dl.round===1?DEAL:DEAL2;
+    h.push('<div class="sec deal"><div class="sec-h"><span>Your own seven states</span><span>'+(dl.round===2?'round 2, the block':'round 1, the audit')+'</span></div>');
+    h.push('<div class="ladder">'+labels.slice(1).map((l,i)=>'<i class="'+((i+1)<=dl.stage?((i+1)===8?'paid':'done'):'')+'"></i>').join('')+'</div>');
+    h.push('<div>Now: <span class="cur">'+esc(labels[dl.stage]||DEAL[dl.stage])+'</span>'+(dl.stage===1?' <span class="muted">day '+dl.sentDay+'</span>':'')+(dl.stage===6&&dl.linkSent?' <span class="muted">link sent</span>':'')+'</div>');
+    h.push('<div class="acts">');
+    if(dl.stage===0)h.push(btn('contact',k,k==='niall'?'Send the first message':'Send an opener','1h',done||blockedWindow(t)));
+    if(dl.stage===1)h.push('<span class="note">Waiting on a reply. '+(k==='creator'?'Seven days and the window shuts.':'Trades are slow to answer.')+'</span>');
+    if(dl.stage===2)h.push(btn('askLook',k,'Ask for the free look','½h',done));
+    if(dl.stage===3)h.push('<span class="note">Waiting for the look to happen.</span>');
+    if(dl.stage===4&&dl.round===1)h.push(btn('offer',k,'Offer the audit '+eur(d.audit),'½h',done||counted(t)<4||day<8,counted(t)<4?'count 4 doors first':day<8?'nothing is for sale in counting week':''));
+    if(dl.stage===4&&dl.round===2)h.push(btn('offer',k,'Offer the block '+eur(d.block),'½h',done||day<31||!t.doors.some(x=>x.worked>0),day<31?'from day 31':!t.doors.some(x=>x.worked>0)?'work a door first':''));
+    if(dl.stage===5)h.push('<span class="note">Offered. They decide at the speed of trust.</span>');
+    if(dl.stage===6&&!dl.linkSent)h.push(btn('link',k,'Send the payment link','½h',done));
+    if(dl.stage===6&&dl.linkSent)h.push('<span class="note">Link sent. Agreed is not collected.</span>');
+    if(dl.stage===7)h.push(btn('verify',k,'Verify the payment','½h',done||(t.events.records||0)>0,'','money'));
+    if(dl.stage===8)h.push('<span class="note">Block verified. Ask for a name.</span>');
+    h.push('</div></div>');
+  }
+
+  /* doors */
+  h.push('<div class="sec"><div class="sec-h"><span>Ten doors</span><span>'+(t.access?(counted(t)+' of 10 counted'+(t.leaked?', '+t.leaked+' leaked':'')):'no access yet')+'</span></div>');
+  h.push('<div class="tbl"><table class="doors"><tr><th></th><th>Door</th><th style="text-align:right">People</th><th></th></tr>');
+  t.doors.forEach((dr,i)=>{
+    let cell,cls='c';
+    if(!dr.counted){cell='?';cls+=' unk';}
+    else{cell=dr.shown;if(dr.worked>0&&dr.shown===0)cell='0';}
+    let a='';
+    if(!done){
+      if(!t.access)a='';
+      else if(!dr.counted)a=btn('count',k,'Count','1h',s.hours<1,'',null,i);
+      else if(day<8)a=btn('work',k,'Work','locked',false,'','ghost',i);
+      else{
+        const canFix=day>=31&&dr.worked>0&&!dr.fixed;
+        if(dr.shown>0)a+=btn('work',k,'Work','1½h',s.hours<1.5||(blockedWindow(t)&&ENTRY[i]!=='live'&&ENTRY[i]!=='today'),'',null,i);
+        if(canFix)a+=' '+btn('fix',k,'Build fix','2h',s.hours<2,'','money',i);
+        if(dr.fixed&&dr.fixResult==null)a+='<span class="muted n" style="font-size:10.5px"> measuring</span>';
+      }
+    }
+    h.push('<tr class="'+(dr.fixed?'fixed':'')+(!t.access?' locked':'')+'"><td class="i">'+(i+1)+'</td><td class="name">'+esc(DOORS[i][0])+'<small>'+esc(DOORS[i][1])+(dr.counted?' · counted day '+dr.countedDay+(dr.worked?', worked '+dr.worked:''):'')+'</small></td><td class="'+cls+'">'+cell+'</td><td class="a">'+a+'</td></tr>');
+  });
+  h.push('</table></div>');
+  if(t.accuracy<1)h.push('<div class="hint">Count accuracy '+Math.round(t.accuracy*100)+'%. Counts are guesses now. A case study needs 80%.</div>');
+  if(!t.access)h.push('<div class="hint">'+(k==='niall'?'Nothing to count until he lets you look.':'Nothing to count until they take the call.')+'</div>');
+  h.push('</div>');
+
+  /* their seven states */
+  h.push('<div class="sec"><div class="sec-h"><span>Their buyers, seven states</span><span>cumulative</span></div>');
+  const fl=t.flight;
+  const flight='<div class="flight"><span>in flight:</span>'+['sent','replied','booked','showed','offered','agreed'].map(st=>'<span>'+st+' <b>'+fl[st]+'</b></span>').join('')+(fl.limbo?'<span style="color:var(--risk)">limbo <b>'+fl.limbo+'</b></span>':'')+'<span>gone quiet <b>'+fl.dead+'</b></span></div>';
+  h.push(statesGrid(t.reached,flight,false,k));
+  h.push(trapLine(t.reached.sent,t.pay.ver,fl.agreed));
+  if(t.pay.un>0)h.push('<div class="trap"><b>'+t.pay.un+' payment'+(t.pay.un>1?'s':'')+' reported, '+eur(t.pay.unAmt)+'.</b> Reported is not verified. Verify it or it is a story.</div>');
+  if(t.pay.ver>0)h.push('<div class="ok"><b class="n">'+t.pay.ver+' verified, '+eur(t.pay.verAmt)+'</b>'+(k==='josh'?', your cut '+eur(t.pay.verAmt*d.cut):'')+'. Dated.</div>');
+  h.push('</div>');
+
+  /* actions */
+  h.push('<div class="sec"><div class="sec-h"><span>Work</span><span>'+(day<8?'counting week':'')+'</span></div><div class="acts">');
+  if(!done){
+    const live=t.access||t.deal.stage>=2;
+    if(t.access)h.push(btn('conv',k,'Conversations','1½h',day<8||s.hours<1.5||blockedWindow(t),day<8?'from day 8':blockedWindow(t)?'window shut':''));
+    if(t.pay.un>0)h.push(btn('verify',k,'Verify payments','½h',s.hours<.5||(t.events.records||0)>0,(t.events.records||0)>0?'records down':'','money'));
+    if(fl.agreed>0||t.deal.stage===6)h.push(btn('test',k,'Test the checkout','½h',s.hours<.5));
+    if(day>=61&&live)h.push(btn('permission',k,t.cs.permission?'Permission in writing ✓':'Ask permission in writing','½h',t.cs.permission||(t.trust||0)<60||!csReady(t).paid||s.hours<.5,(t.trust||0)<60?'trust 60 needed':!csReady(t).paid?'a verified payment first':''));
+    if(day>=61&&live){const r=csReady(t);h.push(btn('write',k,t.cs.written?'Case study written ✓':'Write the case study','3h',t.cs.written||!(r.counted&&r.accurate&&r.paid&&r.fix&&r.permission)||s.hours<3,'','money'));}
+    if(!t.access&&t.deal.stage<2)h.push('<span class="note">Nothing to work until there is a conversation.</span>');
+  }
+  h.push('</div>');
+  if(day>=45&&(t.access)){
+    const r=csReady(t);
+    h.push('<div class="sec-h" style="margin-top:4px"><span>Case study checklist</span></div><ul class="chk">'+
+      '<li class="'+(r.counted?'y':'')+'">Five doors counted</li><li class="'+(r.accurate?'y':'')+'">Count accuracy 80% or better</li><li class="'+(r.paid?'y':'')+'">One verified payment</li><li class="'+(r.fix?'y':'')+'">One fix with a measured result</li><li class="'+(r.permission?'y':'')+'">Permission in writing, day 61 on</li><li class="'+(t.cs.written?'y':'')+'">Written from receipts</li></ul>');
+  }
+  h.push('</div>');
+
+  /* events */
+  const evs=Object.keys(t.events).filter(id=>t.events[id]>0&&!EVENTS[id].hidden);
+  if(evs.length){
+    h.push('<div class="sec">');
+    evs.forEach(id=>{
+      const e=EVENTS[id];
+      h.push('<div class="ev"><b>'+esc(e.name)+(e.days<99?' · '+t.events[id]+'d left':'')+'</b>'+esc(e.desc)+'<div class="acts">');
+      if(!done){
+        if(id==='splits')h.push(btn('cardOnly',k,'Card only on the €997','½h',s.hours<.5));
+        if(id==='website')h.push(btn('sayNo',k,'Say no, show the leak','½h',s.hours<.5)+btn('buildSite',k,'Build the website','3h',s.hours<3,'','ghost'));
+        if(id==='noOutcome')h.push(btn('record',k,'Chase and record the outcomes','½h',s.hours<.5));
+        if(id==='fee')h.push(btn('terms',k,'Revisit your terms','1h',t.trust<65||s.evidence<20||s.hours<1,'trust 65 and evidence 20'));
+        if(id==='records')h.push('<span class="note">Wait it out, or get the figure from the client directly and mark it reported.</span>');
+        if(id==='window')h.push('<span class="note">Only replies for now. Live and today doors still work.</span>');
+      }
+      h.push('</div></div>');
+    });
+    h.push('</div>');
+  }
+
+  /* claim */
+  const vf=verifiedFigure(t),rf=reportedFigure(t);
+  h.push('<div class="claim"><div class="sec-h"><span>Say a number out loud</span><span>what you tell the next person</span></div>');
+  h.push('<div class="row"><div><span class="n">'+eur(vf)+'</span> verified<small>dated, in a record you have seen</small></div>'+(done?'':btn('claimV',k,t.claimedVerified?'Said it ✓':'Say it','',t.claimedVerified||vf<=0,'','money'))+'</div>');
+  h.push('<div class="row"><div><span class="n">'+eur(rf)+'</span> reported<small>'+(k==='josh'?'his word, plus agreed, plus unverified':'agreed plus unverified')+'</small></div>'+(done?'':btn('claimU',k,'Say it','',rf<=0,'','risk'))+'</div>');
+  if(t.claims)h.push('<div class="hint" style="color:var(--risk)">Claimed unverified '+t.claims+' time'+(t.claims>1?'s':'')+'.</div>');
+  h.push('</div>');
+  h.push('</section>');
+  return h.join('');
+}
+
+function btn(act,tk,label,cost,disabled,why,cls,arg){
+  return '<button class="b '+(cls||'')+'" data-act="'+act+'" data-t="'+tk+'"'+(arg!=null?' data-arg="'+arg+'"':'')+(disabled?' disabled':'')+(why?' title="'+esc(why)+'"':'')+'>'+esc(label)+(cost?' <span class="h">'+cost+'</span>':'')+'</button>';
+}
+
+function renderTrackReal(k,day){
+  const r=S.real;const t=r.tracks[k];const d=TDEF[k];const today=todayISO();
+  const h=[];const f=UI.form&&UI.form.t===k?UI.form:null;
+  h.push('<section class="track '+(UI.tab===k?'on':'')+'"><div class="th"><div class="tag">'+esc(d.tag)+'</div><h2>'+esc(d.name)+'</h2><div class="sub">'+esc(d.sub)+'</div>'+trustBar(t.trust)+
+    '<div class="acts" style="padding-top:6px"><button class="b ghost" data-act="trust" data-t="'+k+'" data-arg="-5">trust −5</button><button class="b ghost" data-act="trust" data-t="'+k+'" data-arg="5">trust +5</button></div></div>');
+  h.push('<ul class="facts">'+d.facts.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>');
+  if(k!=='josh'){
+    h.push('<div class="sec"><div class="sec-h"><span>Contact</span></div><div class="acts">'+
+      '<button class="b '+(t.contact?'pri':'')+'" data-act="contact" data-t="'+k+'">'+(t.contact?'First message sent '+fmtDate(t.contact):'First message sent')+'</button>'+
+      '<button class="b '+(t.replied?'pri':'')+'" data-act="replied" data-t="'+k+'">'+(t.replied?'Replied '+fmtDate(t.replied):'They replied')+'</button></div></div>');
+  }
+  /* doors */
+  const cnt=t.doors.filter(x=>x.n!=null).length;
+  h.push('<div class="sec"><div class="sec-h"><span>Ten doors</span><span>'+cnt+' of 10 counted</span></div><div class="tbl"><table class="doors"><tr><th></th><th>Door</th><th style="text-align:right">People</th><th></th></tr>');
+  t.doors.forEach((dr,i)=>{
+    const canFix=day>=31&&dr.n!=null;
+    h.push('<tr class="'+(dr.fixResult?'fixed':'')+'"><td class="i">'+(i+1)+'</td><td class="name">'+esc(DOORS[i][0])+'<small>'+(dr.date?'counted '+fmtDate(dr.date):esc(DOORS[i][1]))+(dr.worked?', worked '+dr.worked:'')+(dr.fixDate&&!dr.fixResult?', fix '+fmtDate(dr.fixDate)+' unmeasured':'')+'</small></td>'+
+      '<td class="a"><input type="number" min="0" inputmode="numeric" placeholder="?" data-act="door" data-t="'+k+'" data-arg="'+i+'" value="'+(dr.n==null?'':dr.n)+'"></td>'+
+      '<td class="a">'+(dr.n==null?'':'<button class="b" data-act="worked" data-t="'+k+'" data-arg="'+i+'"'+(day<8?' title="locked until day 8"':'')+'>Worked +1</button>'+(canFix?' <button class="b money" data-act="fixOpen" data-t="'+k+'" data-arg="'+i+'">'+(dr.fixDate?'Fix result':'Log fix')+'</button>':''))+'</td></tr>');
+  });
+  h.push('</table></div>');
+  if(day<8)h.push('<div class="hint">Counting week. Working a door before day 8 is logged as a warning, not a tick.</div>');
+  if(day>=8&&day<31)h.push('<div class="hint">Fixes unlock on day 31, '+fmtDate(addDays(r.start,30))+'.</div>');
+  if(f&&f.type==='fix'){const dr=t.doors[f.door];h.push('<div class="form"><input type="hidden" name="door" value="'+f.door+'"><span>Fix on <b>'+esc(DOORS[f.door][0])+'</b></span><label>date <input type="date" name="date" value="'+esc(dr.fixDate||today)+'"></label><input type="text" name="result" placeholder="measured result, e.g. 4 more booked in 7 days" value="'+esc(dr.fixResult||'')+'"><button class="b pri" data-act="fixSave" data-t="'+k+'">Save</button><button class="b ghost" data-act="formCancel" data-t="'+k+'">Cancel</button></div>');}
+  h.push('</div>');
+
+  /* states */
+  h.push('<div class="sec"><div class="sec-h"><span>Their buyers, seven states</span><span>tap to tick</span></div>');
+  h.push(statesGrid(t.reached,'',true,k));
+  const ver=t.payments.filter(p=>p.verified).length;
+  h.push(trapLine(t.reached.sent||0,ver,t.reached.agreed||0));
+  h.push('</div>');
+
+  /* payments */
+  h.push('<div class="sec"><div class="sec-h"><span>Payments</span><span>collected only</span></div>');
+  if(t.payments.length){
+    h.push('<div class="tbl"><table class="doors">');
+    t.payments.forEach((p,i)=>{
+      h.push('<tr><td class="name"><span class="n" style="font-weight:600;color:'+(p.verified?'var(--money)':'var(--ink-faint)')+'">'+eur(p.amt)+'</span> '+(p.to==='me'?'to you':'to client')+'<small>'+fmtDate(p.date)+(p.verified?' · verified'+(p.vdate&&p.vdate!==p.date?' '+fmtDate(p.vdate):''):' · reported, not verified')+(p.note?' · '+esc(p.note):'')+'</small></td><td class="a">'+(p.verified?'':'<button class="b money" data-act="payVerify" data-t="'+k+'" data-arg="'+i+'">Verify</button> ')+'<button class="b ghost" data-act="payDel" data-t="'+k+'" data-arg="'+i+'" aria-label="remove">×</button></td></tr>');
+    });
+    h.push('</table></div>');
+  }
+  h.push('<div class="acts"><button class="b money" data-act="payOpen" data-t="'+k+'">Log a payment</button></div>');
+  if(f&&f.type==='pay')h.push('<div class="form"><label>€ <input type="number" name="amt" step="0.01" min="0" inputmode="decimal" placeholder="amount"></label><label>date <input type="date" name="date" value="'+today+'"></label><label>paid to <select name="to"><option value="me">you</option><option value="client">the client</option></select></label><label><input type="checkbox" name="verified"> I have seen it land</label><input type="text" name="note" placeholder="who, what for"><button class="b pri" data-act="paySave" data-t="'+k+'">Save</button><button class="b ghost" data-act="formCancel" data-t="'+k+'">Cancel</button></div>');
+  h.push('</div>');
+
+  /* events */
+  const open=t.events.map((e,i)=>({e,i})).filter(x=>x.e.open);
+  h.push('<div class="sec"><div class="sec-h"><span>What broke</span></div>');
+  open.forEach(x=>h.push('<div class="ev"><b>'+esc(EVENTS[x.e.id].name)+' · since '+fmtDate(x.e.date)+'</b>'+esc(EVENTS[x.e.id].desc)+'<div class="acts"><button class="b" data-act="evClose" data-t="'+k+'" data-arg="'+x.i+'">Resolved</button></div></div>'));
+  h.push('<div class="acts"><button class="b risk" data-act="evOpen" data-t="'+k+'">Something broke</button></div>');
+  if(f&&f.type==='ev')h.push('<div class="form"><select name="ev">'+Object.keys(EVENTS).map(id=>'<option value="'+id+'">'+esc(EVENTS[id].name)+'</option>').join('')+'</select><label>date <input type="date" name="date" value="'+today+'"></label><button class="b pri" data-act="evSave" data-t="'+k+'">Log it</button><button class="b ghost" data-act="formCancel" data-t="'+k+'">Cancel</button></div>');
+  h.push('</div>');
+
+  /* case study */
+  const prov=realProvable(t);
+  h.push('<div class="sec"><div class="sec-h"><span>Case study</span><span>'+(prov?'provable':'not yet')+'</span></div><ul class="chk">'+
+    '<li class="'+(cnt>=5?'y':'')+'">Five doors counted</li><li class="'+(ver>0?'y':'')+'">One verified payment</li><li class="'+(t.doors.some(x=>x.fixResult)?'y':'')+'">One fix with a measured result</li><li class="'+(t.permission?'y':'')+'">Permission in writing'+(t.permission?' '+fmtDate(t.permission):'')+'</li><li class="'+(t.written?'y':'')+'">Written from receipts'+(t.written?' '+fmtDate(t.written):'')+'</li></ul>'+
+    '<div class="acts"><button class="b '+(t.permission?'pri':'')+'" data-act="permission" data-t="'+k+'"'+(day<61?' disabled title="from day 61"':'')+'>Permission in writing</button><button class="b '+(t.written?'pri':'')+'" data-act="written" data-t="'+k+'">Case study written</button></div></div>');
+
+  /* claims */
+  const vsum=t.payments.filter(p=>p.verified).reduce((a,p)=>a+p.amt,0);
+  h.push('<div class="claim"><div class="sec-h"><span>Say a number out loud</span><span>be honest here</span></div>'+
+    '<div class="row"><div><span class="n">'+eur(vsum)+'</span> verified<small>what you can show</small></div><button class="b" data-act="claimOpen" data-t="'+k+'">I said a number</button></div>');
+  if(t.claims.length)h.push('<div class="hint">'+t.claims.map(c=>fmtDate(c.date)+' '+eur(c.amt)+(c.verified?' shown':' <span style="color:var(--risk)">not shown</span>')).join(' · ')+'</div>');
+  if(f&&f.type==='claim')h.push('<div class="form"><label>€ <input type="number" name="amt" step="1" min="0" inputmode="numeric" placeholder="the number you said"></label><label><input type="checkbox" name="verified"> I could show it</label><button class="b pri" data-act="claimSave" data-t="'+k+'">Log it</button><button class="b ghost" data-act="formCancel" data-t="'+k+'">Cancel</button></div>');
+  h.push('</div></section>');
+  return h.join('');
+}
+
+function renderLog(real){
+  const items=real?S.real.log:S.sim.log;
+  if(!items.length)return '';
+  return '<div class="log"><div class="sec-h"><span>Log</span><span>'+items.length+' lines, newest first</span></div><ol>'+items.slice(0,60).map(l=>'<li class="'+esc(l.k)+'"><span class="d">'+(real?fmtDate(l.date):'day '+l.day)+'</span><span class="t">'+(l.t?esc(TDEF[l.t].name[0]==='T'?'C':TDEF[l.t].name[0]):'')+'</span><span class="m">'+esc(l.m)+'</span></li>').join('')+'</ol></div>';
+}
+
+function renderBottom(day,real){
+  if(real){
+    return '<div class="bottom"><div class="bottom-in"><span class="hrs">Real life. Day <b>'+(day>90?'90+':day)+'</b>. The board is a tracker, the days pass on their own.</span></div></div>';
+  }
+  const s=S.sim;
+  let bar='<div class="hbar">';for(let i=0;i<DAY_HOURS;i++){bar+='<i class="'+(s.hours>=i+1?'on':s.hours>i?'half':'')+'"></i>';}bar+='</div>';
+  if(s.done)return '<div class="bottom"><div class="bottom-in"><span class="hrs">Day 90. Board closed.</span><button class="b pri" data-act="newGame">Play again</button></div></div>';
+  return '<div class="bottom"><div class="bottom-in">'+bar+'<span class="hrs"><b>'+hrs(s.hours)+'</b> left today</span><button class="b pri" data-act="endDay">End day '+s.day+' →</button></div></div>';
+}
+
+function renderResultSim(){
+  const s=S.sim;const r=score(s);
+  const sent=TKEYS.reduce((a,k)=>a+s.tracks[k].reached.sent,0);
+  const col=TKEYS.reduce((a,k)=>a+s.tracks[k].pay.ver,0);
+  const label=r.tier==='win'?'Win':r.tier==='partial'?'Partial':'Loss';
+  const line=r.tier==='win'?'A stranger paid, and you can show a second stranger why.':r.tier==='partial'?'Something provable. Not yet a business.':'Ninety days of activity, nothing dated.';
+  return '<div class="result"><div class="tier">Day 90 scoreboard</div><h2 class="'+r.tier+'">'+label+'. '+line+'</h2>'+
+    '<table><tr><th>What counts</th><th></th></tr>'+
+    '<tr><td>A stranger paid you</td><td class="n">'+(r.stranger?eur(s.strangerPaid.amt)+' from '+esc(TDEF[s.strangerPaid.t].name)+', day '+s.strangerPaid.day:'no')+'</td></tr>'+
+    '<tr><td>Provable case study</td><td class="n">'+(r.cs.length?r.cs.map(k=>TDEF[k].name).join(', '):'none')+'</td></tr>'+
+    '<tr><td>Evidence</td><td class="n">'+s.evidence+'</td></tr>'+
+    '<tr><td>Cash to you, verified</td><td class="n">'+eur(s.cash)+(s.owed?' + '+eur(s.owed)+' owed':'')+'</td></tr>'+
+    '<tr><td>Activity</td><td class="n">'+sent+' sent, '+col+' verified payments</td></tr>'+
+    '<tr><td>Unverified numbers said out loud</td><td class="n">'+s.claimedUnverified+'</td></tr>'+
+    '</table>'+(r.note?'<p style="color:var(--risk)">'+esc(r.note)+'</p>':'')+
+    '<p>The question was never how much you did. It was whether a stranger paid you, and whether you could show the next one why.</p></div>';
+}
+function renderResultReal(){
+  const ev=realEvidence();const st=realStranger();const cs=TKEYS.filter(k=>realProvable(S.real.tracks[k]));
+  let tier=(st&&cs.length)?'win':(st||cs.length)?'partial':'loss';let note='';
+  if(ev<0&&tier!=='loss'){tier=tier==='win'?'partial':'loss';note='Evidence below zero. Numbers said that could not be shown drop the result a tier.';}
+  const label=tier==='win'?'Win':tier==='partial'?'Partial':'Loss';
+  return '<div class="result"><div class="tier">Ninety real days, from '+fmtDate(S.real.start)+'</div><h2 class="'+tier+'">'+label+'.</h2>'+
+    '<table><tr><td>A stranger paid you</td><td class="n">'+(st?eur(st.amt)+' from '+esc(TDEF[st.t].name)+', '+fmtDate(st.date):'no')+'</td></tr>'+
+    '<tr><td>Provable case study</td><td class="n">'+(cs.length?cs.map(k=>TDEF[k].name).join(', '):'none')+'</td></tr>'+
+    '<tr><td>Evidence</td><td class="n">'+ev+'</td></tr><tr><td>Cash to you, verified</td><td class="n">'+eur(realCash())+'</td></tr></table>'+(note?'<p style="color:var(--risk)">'+esc(note)+'</p>':'')+
+    '<p>Move the start date to run another ninety, or keep ticking. The board does not mind.</p></div>';
+}
+
+/* ---------- events ---------- */
+app.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act],[data-tab],[data-mode]');if(!b)return;
+  if(b.dataset.tab){UI.tab=b.dataset.tab;render();return;}
+  if(b.dataset.mode){S.mode=b.dataset.mode;UI.form=null;save();render();window.scrollTo(0,0);return;}
+  const a=b.dataset.act;
+  if(b.tagName==='INPUT'||b.tagName==='SELECT')return;
+  if(a==='newGame'){if(confirm('Start a fresh ninety days? The current run is wiped.')){S.sim=newSim();save();render();window.scrollTo(0,0);}return;}
+  if(a==='resetReal'){if(confirm('Wipe the real life tracker on this device? This cannot be undone.')){S.real=newReal();save();render();}return;}
+  const tk=b.dataset.t;
+  if(S.mode==='real'){
+    let arg=b.dataset.arg;
+    if(a==='state')arg={st:b.dataset.st,d:parseInt(b.dataset.d,10)};
+    else if(arg!=null&&/^-?\d+$/.test(arg))arg=parseInt(arg,10);
+    ract(a,tk,arg,b);
+  }else{
+    let arg=b.dataset.arg;if(arg!=null)arg=parseInt(arg,10);
+    act(a,tk,arg);
+  }
+});
+app.addEventListener('change',e=>{
+  const el=e.target;if(!el.dataset||!el.dataset.act)return;
+  if(S.mode!=='real')return;
+  const arg=el.dataset.arg!=null?parseInt(el.dataset.arg,10):null;
+  ract(el.dataset.act,el.dataset.t,arg,el);
+});
+app.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.closest('.form')){const f=e.target.closest('.form');const b=f.querySelector('.b.pri');if(b){e.preventDefault();b.click();}}
+});
+
+/* ---------- boot ---------- */
+S=load();
+render();
+})();
+</script>
+</body>
+</html>
