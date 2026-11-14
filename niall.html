@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1d2a17">
+<title>Niall's Rounds</title>
+<style>
+:root{--bg:#1d2a17;--card:#fffdf6;--ink:#1d211a;--muted:#5d6458;--line:#e3dccb;--green:#2f7d32;--greenD:#21602a;--hv:#f4c20d;--bad:#b3261e;--hud:rgba(16,22,12,.84)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--card:#1f261c;--ink:#eef1e8;--muted:#a8b39f;--line:#36402f}}
+:root[data-theme="dark"]{--card:#1f261c;--ink:#eef1e8;--muted:#a8b39f;--line:#36402f}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-user-select:none;user-select:none;overscroll-behavior:none}
+canvas#c{position:fixed;left:0;top:0;touch-action:none;display:block}
+#hud{position:fixed;left:0;right:0;top:0;z-index:5;padding:calc(env(safe-area-inset-top) + 6px) 10px 7px;background:var(--hud);color:#fff;font-size:12px;pointer-events:none;display:none}
+#hud.on{display:block}
+#hud .top{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+#hud .pill{background:var(--hv);color:#1a1a00;border-radius:999px;padding:2px 9px;font-size:12px}
+#hud .money{margin-left:auto;color:#9fe08a;font-size:16px}
+#hud .bars{display:flex;gap:8px;margin-top:6px}
+#hud .bar{flex:1;display:flex;align-items:center;gap:5px;min-width:0}
+#hud .bar span{opacity:.8;font-size:11px}
+#hud .bar b,#hud .task b{flex:1;height:7px;border-radius:9px;background:rgba(255,255,255,.18);overflow:hidden;display:block}
+#hud i{display:block;height:100%;width:50%;background:#7fd35b;border-radius:9px;transition:width .2s}
+#hud i.low{background:#ff6b5b}
+#hud .task{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;font-weight:600}
+#hud .task span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62%}
+#hud .task i{background:var(--hv)}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 92px);transform:translate(-50%,-10px);z-index:6;background:#fff;color:#1d211a;font-weight:700;font-size:14px;padding:9px 14px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.3);opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;max-width:88vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+.ctl{position:fixed;z-index:5;border:0;border-radius:16px;font-family:inherit;font-weight:800;font-size:16px;line-height:1;padding:0 18px;height:58px;display:none;box-shadow:0 6px 18px rgba(0,0,0,.35);touch-action:none}
+.ctl.on{display:block}
+#bBrake{left:14px;bottom:calc(env(safe-area-inset-bottom) + 18px);background:#e0473a;color:#fff;width:96px}
+#bPull{right:14px;bottom:calc(env(safe-area-inset-bottom) + 18px);background:var(--hv);color:#1a1a00;animation:pulse 1s infinite}
+#bFinish{right:14px;bottom:calc(env(safe-area-inset-bottom) + 18px);background:var(--green);color:#fff}
+@keyframes pulse{50%{transform:scale(1.06)}}
+#panel{position:fixed;inset:0;z-index:10;display:none;align-items:flex-end;justify-content:center;background:rgba(8,12,6,.5);padding:16px 16px calc(env(safe-area-inset-bottom) + 16px)}
+#panel.on{display:flex}
+#pin{width:100%;max-width:440px;max-height:88vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:20px;padding:20px 18px;box-shadow:0 20px 60px rgba(0,0,0,.45);-webkit-overflow-scrolling:touch;animation:up .25s ease}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+#pin h1{margin:6px 0 4px;font-size:28px;letter-spacing:-.02em;text-align:center}
+#pin h2{margin:0 0 6px;font-size:21px;letter-spacing:-.01em}
+#pin h3{margin:18px 0 8px;font-size:15px}
+#pin p{margin:0 0 12px;line-height:1.5;color:var(--muted);font-size:15px}
+#pin .sub{color:var(--ink);font-weight:600}
+#pin ul{margin:0 0 14px;padding-left:18px;color:var(--muted);font-size:14px;line-height:1.5}
+#pin li{margin-bottom:4px}
+.kick{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:800;text-align:center}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:15px;font-family:inherit;font-weight:800;font-size:16px;line-height:1.1;background:var(--green);color:#fff;cursor:pointer;margin-top:10px}
+.btn:active{transform:scale(.985)}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:600;font-size:14px;padding:11px}
+.por{display:block;margin:0 auto 4px;width:150px;height:150px}
+.item{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.item div{flex:1;min-width:0}
+.item b{display:block;font-size:15px}
+.item small{display:block;color:var(--muted);font-size:13px;line-height:1.35;margin-top:2px}
+.item button{border:0;border-radius:12px;background:var(--green);color:#fff;font-family:inherit;font-weight:800;font-size:14px;line-height:1;padding:11px 12px;min-width:76px;cursor:pointer}
+.item button:disabled{background:var(--line);color:var(--muted)}
+.sum{width:100%;border-collapse:collapse;font-size:15px;margin:4px 0 6px}
+.sum td{padding:7px 0;border-top:1px solid var(--line)}
+.sum td:last-child{text-align:right;font-weight:700}
+.sum tr.tot td{font-size:17px;border-top:2px solid var(--ink)}
+.neg{color:var(--bad)}
+.stat{display:flex;gap:8px;margin:6px 0 4px}
+.stat span{flex:1;background:rgba(127,127,127,.12);border-radius:10px;padding:8px;text-align:center;font-size:12px;color:var(--muted)}
+.stat span b{display:block;color:var(--ink);font-size:16px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="hud">
+  <div class="top"><span id="hDay" class="pill">Day 1</span><span id="hClock">8:00</span><span id="hMoney" class="money">&euro;80</span></div>
+  <div class="bars">
+    <div class="bar"><span>Belly</span><b><i id="bE"></i></b></div>
+    <div class="bar"><span>Diesel</span><b><i id="bD"></i></b></div>
+    <div class="bar"><span>Mower</span><b><i id="bP"></i></b></div>
+  </div>
+  <div class="task"><span id="hTask">In the yard</span><b><i id="bT"></i></b></div>
+</div>
+<div id="toast"></div>
+
+<button id="bBrake" class="ctl">Brake</button>
+<button id="bPull" class="ctl">Pull in</button>
+<button id="bFinish" class="ctl">Finish job</button>
+
+<div id="panel"><div id="pin"></div></div>
+
+<script>
+"use strict";
+/* ============ basics ============ */
+const KEY="niall1",G=8,BS=2;
+const $=id=>document.getElementById(id);
+const cv=$("c"),ctx=cv.getContext("2d");
+let W=0,H=0,DPR=1,HUDH=80;
+function resize(){DPR=Math.min(2,window.devicePixelRatio||1);W=window.innerWidth;H=window.innerHeight;cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);cv.style.width=W+"px";cv.style.height=H+"px";HUDH=$("hud").offsetHeight||80;}
+addEventListener("resize",resize);resize();
+
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+function rng(seed){let s=(seed>>>0)||7;return function(){s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296;};}
+function hs(str){let h=2166136261>>>0;str=String(str);for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h;}
+function angDiff(a,b){let d=a-b;while(d>Math.PI)d-=6.2832;while(d<-Math.PI)d+=6.2832;return d;}
+function circ(g,x,y,r){g.beginPath();g.arc(x,y,r,0,6.2832);g.fill();}
+function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
+const r8=v=>Math.round(v/8)*8;
+const eur=n=>(n<0?"-€":"€")+Math.abs(Math.round(n));
+const eur2=n=>"€"+n.toFixed(2);
+function clk(m){m=Math.floor(m);return (Math.floor(m/60)%24)+":"+String(m%60).padStart(2,"0");}
+
+/* ============ save ============ */
+function fresh(){return {v:1,day:1,money:80,diesel:45,petrol:60,up:{deck:0,eng:0,blow:0},total:0};}
+function loadSave(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.v===1)return s;}catch(e){}return fresh();}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(save));}catch(e){}}
+let save=loadSave();
+
+/* ============ the day ============ */
+const ESTATES=["Glanmire Heights","Ballincollig Meadows","Carrigaline Grove","Douglas Woods","Blarney Court","Midleton Park","Bishopstown Drive","Rochestown Rise","Ballyvolane Close","Mahon Crescent","Little Island Mews","Passage View","Ovens Lawn","Riverstick Green"];
+let day=null,mode="title",paused=true,E=null,job=null,D=null,T=0;
+
+function makePlan(n){
+  const R=rng(n*977+13),pool=ESTATES.slice(),names=[];
+  for(let i=0;i<3;i++)names.push(pool.splice((R()*pool.length)|0,1)[0]);
+  const mr=Math.min(5,2+Math.floor((n-1)/2)),br=Math.min(3,2+Math.floor((n-1)/3)),lv=Math.min(280,110+n*20);
+  return [
+    {t:"drive",to:names[0]},
+    {t:"mow",at:names[0],rows:mr},
+    {t:"drive",to:names[1]},
+    {t:"blow",at:names[1],rows:br,leaves:lv},
+    {t:"drive",to:names[2]},
+    n%2?{t:"mow",at:names[2],rows:mr}:{t:"blow",at:names[2],rows:br,leaves:lv},
+    {t:"drive",to:"the yard",home:1}
+  ];
+}
+function startDay(){
+  day={n:save.day,clock:480,energy:40,earn:0,spend:0,pen:0,tips:0,step:-1,buzz:0,plan:makePlan(save.day),starve:0};
+  mode="yard";E=null;job=null;D=null;
+  const jobs=day.plan.filter(s=>s.t!=="drive");
+  panel(`<div class="kick">Day ${day.n}</div><h2>8:00 in the yard</h2>
+  <p class="sub">${jobs.map(j=>(j.t==="mow"?"Grass at ":"Leaves at ")+j.at).join(". ")}.</p>
+  <p>Niall hasn't eaten a thing. There's a shop on every road, pull in for a breakfast roll before the first job, and a chicken fillet roll at lunch.</p>
+  <button class="btn" data-act="next">Into the van</button>`);
+}
+function next(){
+  day.step++;
+  const s=day.plan[day.step];
+  if(!s){dayEnd();return;}
+  if(s.t==="drive"){closePanel();startDrive(s);}
+  else jobIntro(s);
+}
+
+/* ============ money ============ */
+function earn(n){save.money+=n;day.earn+=n;}
+function spend(n){save.money-=n;day.spend+=n;}
+function penal(n,msg){save.money-=n;day.pen+=n;if(job)job.pen+=n;toast(msg+" "+eur(n)+".");}
+
+/* ============ UI ============ */
+let toastT=0;
+function toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("on");toastT=2.6;}
+function panel(html){$("pin").innerHTML=html;$("panel").classList.add("on");paused=true;$("pin").scrollTop=0;const p=$("pin").querySelector("canvas.por");if(p)drawPortrait(p);}
+function closePanel(){$("panel").classList.remove("on");paused=false;}
+$("pin").addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b||b.disabled)return;ACT[b.dataset.act](b.dataset.arg);});
+
+const ACT={
+  start(){startDay();},
+  reset(){panel(`<h2>Start over?</h2><p>This wipes day ${save.day}, ${eur(save.money)} in the bank and every upgrade. Niall goes back to day 1.</p><button class="btn" data-act="wipe">Yes, wipe it</button><button class="btn ghost" data-act="title">No, keep going</button>`);},
+  wipe(){save=fresh();persist();showTitle();},
+  title(){showTitle();},
+  next(){next();},
+  go(){closePanel();},
+  buy(id){buyItem(id);},
+  leave(){closePanel();day.clock+=4;toast("Back on the road.");},
+  up(k){const lv=save.up[k],c=UPC[lv];if(lv<3&&save.money>=c){save.money-=c;save.up[k]++;persist();dayEndPanel();toast("Sorted. "+UPS.find(u=>u.k===k).n+".");}},
+  newday(){startDay();}
+};
+
+function showTitle(){
+  mode="title";
+  const cont=save.day>1;
+  panel(`<canvas class="por" width="300" height="300"></canvas>
+  <div class="kick">A day on the tools around Cork</div>
+  <h1>Niall's Rounds</h1>
+  <p style="text-align:center">Cut the grass on the ride on. Blow the leaves off the estates. Drive between jobs and get a roll into Niall at the shop before he fades.</p>
+  <ul>
+    <li><b>Mowing and blowing:</b> put your thumb anywhere and drag. That's the stick.</li>
+    <li><b>Driving:</b> drag left and right to steer, hold Brake. Overtake tractors when the other side is clear.</li>
+    <li><b>Belly</b> runs down as he works. At zero he goes at half speed.</li>
+  </ul>
+  ${cont?`<div class="stat"><span><b>Day ${save.day}</b>next up</span><span><b>${eur(save.money)}</b>in the bank</span><span><b>${eur(save.total)}</b>earned so far</span></div>`:""}
+  <button class="btn" data-act="start">${cont?"Start day "+save.day:"Start the day"}</button>
+  ${cont?`<button class="btn ghost" data-act="reset">Start over from day 1</button>`:""}`);
+}
+
+/* ============ input ============ */
+const keys=new Set();
+addEventListener("keydown",e=>{const k=e.key.toLowerCase();keys.add(k);if(k.startsWith("arrow")||k===" ")e.preventDefault();});
+addEventListener("keyup",e=>keys.delete(e.key.toLowerCase()));
+addEventListener("blur",()=>keys.clear());
+const joy={on:0,id:null,ox:0,oy:0,x:0,y:0};
+let drag=null,brake=0;
+cv.addEventListener("pointerdown",e=>{
+  if(paused)return;
+  e.preventDefault();
+  try{cv.setPointerCapture(e.pointerId);}catch(_){}
+  if(mode==="mow"||mode==="blow"){joy.on=1;joy.id=e.pointerId;joy.ox=joy.x=e.clientX;joy.oy=joy.y=e.clientY;}
+  else if(mode==="drive"){drag={id:e.pointerId,x:e.clientX};}
+});
+cv.addEventListener("pointermove",e=>{
+  if(joy.on&&e.pointerId===joy.id){joy.x=e.clientX;joy.y=e.clientY;}
+  if(drag&&e.pointerId===drag.id&&D){D.tx=clamp(D.tx+(e.clientX-drag.x)/(D.rw/2)*1.15,-1.15,1.15);drag.x=e.clientX;}
+});
+function endPtr(e){if(e.pointerId===joy.id){joy.on=0;joy.id=null;}if(drag&&e.pointerId===drag.id)drag=null;}
+cv.addEventListener("pointerup",endPtr);cv.addEventListener("pointercancel",endPtr);
+const bb=$("bBrake");
+bb.addEventListener("pointerdown",e=>{e.preventDefault();brake=1;});
+["pointerup","pointercancel","pointerleave"].forEach(ev=>bb.addEventListener(ev,()=>brake=0));
+$("bPull").addEventListener("click",()=>pullIn());
+$("bFinish").addEventListener("click",()=>finishJob());
+
+function stick(){
+  let x=0,y=0;
+  if(keys.has("arrowleft")||keys.has("a"))x-=1;
+  if(keys.has("arrowright")||keys.has("d"))x+=1;
+  if(keys.has("arrowup")||keys.has("w"))y-=1;
+  if(keys.has("arrowdown")||keys.has("s"))y+=1;
+  if(x||y){const l=Math.hypot(x,y);return [x/l,y/l,1];}
+  if(joy.on){const dx=(joy.x-joy.ox)/48,dy=(joy.y-joy.oy)/48,l=Math.hypot(dx,dy);if(l>1)return [dx/l,dy/l,1];return [dx,dy,l];}
+  return [0,0,0];
+}
+
+/* ============ estates ============ */
+const ROOFS=["#7a3b2e","#4a4f57","#5b3a29","#3e4a3d","#6b6560","#8a4a32","#3f4350"];
+const CARC=["#c0392b","#2c3e50","#e9ecef","#7f8c8d","#2f6fb3","#16a085","#1a1a1a","#d35400","#8e2b5a"];
+const FLOW=["#e84a5f","#ffd23f","#f7f7f7","#b56dd8","#ff8c42","#e84a8a"];
+
+function genEstate(rows,seed,autumn){
+  const R=rng(seed),w=640;
+  const E={w,walls:[],lawns:[],drives:[],houses:[],hedges:[],cars:[],trees:[],beds:[],gnomes:[],tarps:[],rows,gardens:rows*2,autumn,parts:[]};
+  const gy=40,gh=240;
+  E.green={x:40,y:gy,w:560,h:gh};E.lawns.push(E.green);
+  const ry=gy+gh+20;E.ry=ry;
+  E.roadH={x:0,y:ry,w:w,h:72};
+  let y=ry+72+24;
+  for(let i=0;i<rows;i++){
+    for(let s=0;s<2;s++){
+      const X=(x,ww)=>s?w-x-ww:x;
+      const house={x:X(16,120),y,w:120,h:112,roof:ROOFS[(R()*ROOFS.length)|0],s};
+      E.houses.push(house);E.walls.push(house);
+      const lawn={x:X(136,120),y,w:120,h:112};E.lawns.push(lawn);
+      E.drives.push({x:X(136,120),y:y+112,w:120,h:40});
+      if(R()<0.6){const c={x:X(150+((R()*34)|0),62),y:y+116,w:62,h:32,col:CARC[(R()*CARC.length)|0],s};E.cars.push(c);E.walls.push(c);}
+      const hedge={x:X(16,240),y:y+152,w:240,h:16};E.walls.push(hedge);E.hedges.push(hedge);
+      if(R()<0.75){const bh=r8(40+R()*48);E.beds.push({x:X(136,16),y:y+8+r8(R()*(96-bh)),w:16,h:bh,dam:0});}
+      if(R()<0.4){E.beds.push({x:X(r8(200+R()*24),24),y:y+r8(16+R()*56),w:24,h:24,dam:0});}
+      if(R()<0.45)E.gnomes.push({x:lawn.x+24+R()*(lawn.w-48),y:lawn.y+22+R()*68,down:0});
+      if(R()<0.3)E.trees.push({x:lawn.x+34+R()*(lawn.w-68),y:lawn.y+30+R()*52,r:12+R()*5});
+    }
+    y+=176;
+  }
+  E.h=y+32;
+  E.roadV={x:280,y:ry,w:80,h:E.h-ry};
+  if(!autumn)E.beds.push({x:288,y:gy+gh/2-16,w:64,h:32,dam:0});
+  const nt=4+((R()*4)|0);
+  for(let k=0,tries=0;k<nt&&tries<200;tries++){
+    const t={x:E.green.x+40+R()*(E.green.w-80),y:E.green.y+36+R()*(E.green.h-72),r:15+R()*7};
+    if(Math.abs(t.x-320)<70&&Math.abs(t.y-(gy+gh/2))<60)continue;
+    if(E.trees.some(o=>Math.hypot(o.x-t.x,o.y-t.y)<75))continue;
+    E.trees.push(t);k++;
+  }
+  return E;
+}
+
+function buildGrid(E,uncut){
+  E.gw=Math.ceil(E.w/G);E.gh=Math.ceil(E.h/G);E.grid=new Uint8Array(E.gw*E.gh);E.total=0;E.cut=0;
+  for(const L of E.lawns){
+    for(let j=Math.floor(L.y/G);j<Math.ceil((L.y+L.h)/G);j++)for(let i=Math.floor(L.x/G);i<Math.ceil((L.x+L.w)/G);i++){
+      const cx=(i+.5)*G,cy=(j+.5)*G;
+      if(cx<L.x||cx>L.x+L.w||cy<L.y||cy>L.y+L.h)continue;
+      if(E.beds.some(b=>cx>=b.x&&cx<=b.x+b.w&&cy>=b.y&&cy<=b.y+b.h))continue;
+      if(E.trees.some(t=>Math.hypot(cx-t.x,cy-t.y)<t.r-1))continue;
+      const k=j*E.gw+i;if(E.grid[k])continue;
+      E.grid[k]=uncut?1:(((i/3)|0)%2?2:3);if(uncut)E.total++;
+    }
+  }
+}
+
+const UNCUT=["#3f7a2b","#3a7327","#44812f"];
+function paintCell(g,i,j,v){
+  if(v===1){g.fillStyle=UNCUT[(i*7+j*13)%3];g.fillRect(i*G,j*G,G,G);g.fillStyle="rgba(18,52,10,.45)";g.fillRect(i*G+((i*3+j)%5),j*G+((j*5+i)%6),1.4,2.4);g.fillStyle="rgba(120,180,70,.35)";g.fillRect(i*G+((i*5+j*3)%6),j*G+((j*7+i)%5),1.2,2);}
+  else{g.fillStyle=v===2?"#7dc350":"#63aa3e";g.fillRect(i*G,j*G,G,G);}
+}
+function paintBed(g,b){
+  g.fillStyle=b.dam?"#5a4232":"#6b4a33";g.fillRect(b.x,b.y,b.w,b.h);
+  const R=rng(hs(b.x+","+b.y)),n=Math.max(3,(b.w*b.h/45)|0);
+  for(let i=0;i<n;i++){const x=b.x+3+R()*(b.w-6),y=b.y+3+R()*(b.h-6),c=FLOW[(R()*FLOW.length)|0];
+    if(b.dam){g.fillStyle="rgba(70,100,40,.7)";g.fillRect(x-2,y,4,1.2);g.fillStyle=c;g.globalAlpha=.5;g.fillRect(x+R()*4-2,y+R()*4-2,1.4,1.4);g.globalAlpha=1;}
+    else{g.fillStyle="#2f6a22";circ(g,x,y,2.4);g.fillStyle=c;circ(g,x,y,1.4);}}
+  g.strokeStyle="#9a9183";g.lineWidth=1.4;g.strokeRect(b.x+.7,b.y+.7,b.w-1.4,b.h-1.4);
+}
+function paintBase(E){
+  const c=document.createElement("canvas");c.width=E.w*BS;c.height=E.h*BS;
+  const g=c.getContext("2d");g.scale(BS,BS);E.base=c;E.bg=g;
+  g.fillStyle="#c4beb2";g.fillRect(0,0,E.w,E.h);
+  g.strokeStyle="rgba(0,0,0,.07)";g.lineWidth=.8;g.beginPath();
+  for(let x=0;x<=E.w;x+=24){g.moveTo(x,0);g.lineTo(x,E.h);}for(let y=0;y<=E.h;y+=24){g.moveTo(0,y);g.lineTo(E.w,y);}g.stroke();
+  for(const r of [E.roadH,E.roadV]){g.fillStyle="#54575d";g.fillRect(r.x,r.y,r.w,r.h);}
+  g.fillStyle="#9e988c";g.fillRect(0,E.ry-3,E.w,3);g.fillRect(0,E.ry+72,280,3);g.fillRect(360,E.ry+72,280,3);g.fillRect(277,E.ry+72,3,E.h);g.fillRect(360,E.ry+72,3,E.h);
+  g.strokeStyle="#e9e4cf";g.lineWidth=2;g.setLineDash([14,12]);g.beginPath();g.moveTo(0,E.ry+36);g.lineTo(E.w,E.ry+36);g.moveTo(320,E.ry+80);g.lineTo(320,E.h);g.stroke();g.setLineDash([]);
+  for(const d of E.drives){g.fillStyle="#a9876c";g.fillRect(d.x,d.y,d.w,d.h);g.strokeStyle="rgba(0,0,0,.13)";g.lineWidth=.8;g.beginPath();
+    for(let y=d.y;y<=d.y+d.h;y+=8){g.moveTo(d.x,y);g.lineTo(d.x+d.w,y);}
+    for(let y=d.y,r=0;y<d.y+d.h;y+=8,r++)for(let x=d.x+(r%2?8:0);x<d.x+d.w;x+=16){g.moveTo(x,y);g.lineTo(x,y+8);}g.stroke();}
+  for(let j=0;j<E.gh;j++)for(let i=0;i<E.gw;i++){const v=E.grid[j*E.gw+i];if(v)paintCell(g,i,j,v);}
+  for(const b of E.beds)paintBed(g,b);
+  for(const h of E.houses){
+    g.fillStyle="rgba(0,0,0,.25)";g.fillRect(h.x,h.y+5,h.w,h.h);
+    g.fillStyle=h.roof;g.fillRect(h.x,h.y,h.w,h.h);
+    const cx=h.x+h.w/2;
+    g.fillStyle="rgba(0,0,0,.14)";g.beginPath();g.moveTo(h.x,h.y);g.lineTo(cx,h.y+30);g.lineTo(cx,h.y+h.h-30);g.lineTo(h.x,h.y+h.h);g.fill();
+    g.fillStyle="rgba(255,255,255,.07)";g.beginPath();g.moveTo(h.x,h.y);g.lineTo(h.x+h.w,h.y);g.lineTo(cx,h.y+30);g.fill();
+    g.strokeStyle="rgba(0,0,0,.12)";g.lineWidth=.8;g.beginPath();for(let y=h.y+6;y<h.y+h.h;y+=6){g.moveTo(h.x,y);g.lineTo(h.x+h.w,y);}g.stroke();
+    g.strokeStyle="rgba(0,0,0,.35)";g.lineWidth=1.4;g.beginPath();g.moveTo(h.x,h.y);g.lineTo(cx,h.y+30);g.lineTo(h.x+h.w,h.y);g.moveTo(h.x,h.y+h.h);g.lineTo(cx,h.y+h.h-30);g.lineTo(h.x+h.w,h.y+h.h);g.moveTo(cx,h.y+30);g.lineTo(cx,h.y+h.h-30);g.stroke();
+    g.fillStyle="#8a6d5a";g.fillRect(cx+(h.s?-28:18),h.y+40,10,12);g.fillStyle="#3a2e28";g.fillRect(cx+(h.s?-26:20),h.y+42,6,3);
+    g.strokeStyle="rgba(0,0,0,.45)";g.lineWidth=1;g.strokeRect(h.x+.5,h.y+.5,h.w-1,h.h-1);
+  }
+  for(const h of E.hedges){g.fillStyle="rgba(0,0,0,.2)";g.fillRect(h.x,h.y+4,h.w,h.h);g.fillStyle="#2b5a1f";g.fillRect(h.x,h.y,h.w,h.h);
+    g.fillStyle="#3a6d2a";for(let x=h.x+5;x<h.x+h.w;x+=9)circ(g,x,h.y+5+((x*7)%5),4.5);}
+  for(const c of E.cars){
+    g.fillStyle="rgba(0,0,0,.25)";rr(g,c.x+1,c.y+4,c.w,c.h,7);g.fill();
+    g.fillStyle=c.col;rr(g,c.x,c.y,c.w,c.h,7);g.fill();
+    const fx=c.s?c.x+6:c.x+c.w-20;
+    g.fillStyle="rgba(25,35,48,.85)";rr(g,fx,c.y+4,14,c.h-8,3);g.fill();
+    g.fillStyle="rgba(25,35,48,.7)";rr(g,c.s?c.x+c.w-14:c.x+6,c.y+5,9,c.h-10,3);g.fill();
+    g.fillStyle="rgba(255,255,255,.16)";g.fillRect(c.x+22,c.y+6,c.w-44,c.h-12);
+  }
+  // minimap
+  const m=document.createElement("canvas");m.width=E.gw;m.height=E.gh;const mg=m.getContext("2d");E.mm=m;E.mg=mg;
+  mg.fillStyle="#b9b3a6";mg.fillRect(0,0,E.gw,E.gh);
+  mg.fillStyle="#55585e";for(const r of [E.roadH,E.roadV])mg.fillRect(r.x/G,r.y/G,r.w/G,r.h/G);
+  for(let j=0;j<E.gh;j++)for(let i=0;i<E.gw;i++){const v=E.grid[j*E.gw+i];if(v){mg.fillStyle=v===1?"#f0c93a":"#5fa83a";mg.fillRect(i,j,1,1);}}
+  mg.fillStyle="#6b4b3c";for(const h of E.houses)mg.fillRect(h.x/G,h.y/G,h.w/G,h.h/G);
+  mg.fillStyle="#2b5a1f";for(const h of E.hedges)mg.fillRect(h.x/G,h.y/G,h.w/G,h.h/G);
+}
+
+/* ============ jobs ============ */
+function jobIntro(s){
+  if(s.t==="mow"){
+    E=genEstate(s.rows,hs(s.at+day.n),false);buildGrid(E,true);paintBase(E);
+    const base=30+E.gardens*14+35;
+    job={kind:"mow",name:s.at,base,pen:0,pct:0,p:{x:320,y:E.ry+36,a:Math.PI/2,v:0},dry:0,cutT:0};
+    mode="mow";
+    panel(`<div class="kick">Job ${jobNo()}</div><h2>${s.at}</h2>
+    <p class="sub">Grass cutting. The green and ${E.gardens} front gardens.</p>
+    <ul><li>About <b>${eur(base)}</b> if it's all cut. You can finish from 85 percent, pay drops for what's left.</li>
+    <li>Drive through a flower bed and it's <b>&euro;8</b> off. Knock a gnome, <b>&euro;3</b>.</li>
+    <li>The yellow on the little map is what's still long.</li>
+    <li>The stripes are for your own pride.</li></ul>
+    <button class="btn" data-act="go">Unload the ride on</button>`);
+  }else{
+    E=genEstate(s.rows,hs(s.at+day.n),true);buildGrid(E,false);
+    const gy=E.green.y+E.green.h/2;
+    E.tarps=[{x:284,y:gy-36,w:72,h:72,n:0},{x:288,y:E.h-84,w:64,h:64,n:0}];
+    paintBase(E);
+    const R=rng(hs("lv"+s.at+day.n)),leaves=[];
+    const gardens=E.lawns.filter(l=>l!==E.green);
+    const areas=[[gardens,5],[E.drives,2],[[E.green],2],[[{x:0,y:E.ry+4,w:640,h:64},{x:284,y:E.ry+72,w:72,h:E.h-E.ry-160}],2]];
+    const tot=areas.reduce((a,b)=>a+b[1],0);
+    let guard=0;
+    while(leaves.length<s.leaves&&guard++<s.leaves*20){
+      let x,y;
+      if(R()<0.25&&E.trees.length){const t=E.trees[(R()*E.trees.length)|0],a=R()*6.28,d=t.r*(0.6+R()*1.2);x=t.x+Math.cos(a)*d;y=t.y+Math.sin(a)*d;}
+      else{let pick=R()*tot,list=areas[0][0];for(const a of areas){if(pick<a[1]){list=a[0];break;}pick-=a[1];}const r=list[(R()*list.length)|0];x=r.x+4+R()*(r.w-8);y=r.y+4+R()*(r.h-8);}
+      if(x<4||y<4||x>E.w-4||y>E.h-4||hitWall(x,y)||inTarp(x,y))continue;
+      leaves.push({x,y,vx:0,vy:0,r:R()*6.28,sp:0,c:(R()*LEAFC.length)|0,s:0.8+R()*0.5});
+    }
+    const base=Math.round(40+leaves.length*0.35);
+    job={kind:"blow",name:s.at,base,pen:0,pct:0,p:{x:320,y:E.ry+36,a:Math.PI/2},leaves,total:leaves.length,bagged:0,blowing:0,moving:0};
+    mode="blow";
+    panel(`<div class="kick">Job ${jobNo()}</div><h2>${s.at}</h2>
+    <p class="sub">Leaf blowing. ${leaves.length} leaves on the gardens, the drives and the road.</p>
+    <ul><li>Blow them onto the blue tarps. One's on the green, one's at the bottom of the road.</li>
+    <li>A small push on the stick blows on the spot. Push it further to walk and blow.</li>
+    <li>About <b>${eur(base)}</b> for a clean job. Finish from 85 percent.</li></ul>
+    <button class="btn" data-act="go">Strap on the blower</button>`);
+  }
+}
+function jobNo(){return day.plan.slice(0,day.step+1).filter(s=>s.t!=="drive").length;}
+
+function finishJob(){
+  if(!job||paused)return;
+  const pct=job.pct;
+  const thr=0.85;if(pct<thr)return;
+  let pay=Math.round(job.base*Math.min(1,pct/0.98)),tip=0,tipMsg="";
+  if(pct>=0.985){tip=10;tipMsg=job.kind==="mow"?"Mrs Walsh came out with a tenner and a cup of tea.":"The residents' committee were delighted. A tenner for the tin.";day.energy=Math.min(100,day.energy+6);}
+  earn(pay+tip);day.tips+=tip;
+  const what=job.kind==="mow"?"Cut":"Bagged";
+  panel(`<div class="kick">Job done</div><h2>${job.name}</h2>
+  <p>${what} ${Math.round(pct*100)} percent, finished at ${clk(day.clock)}.</p>
+  <table class="sum">
+  <tr><td>The job</td><td>${eur(pay)}</td></tr>
+  ${tip?`<tr><td>Tip</td><td>${eur(tip)}</td></tr>`:""}
+  <tr><td>Damage on the day</td><td class="${job.pen?"neg":""}">${job.pen?"-"+eur(job.pen):"&euro;0"}</td></tr>
+  <tr class="tot"><td>In the bank</td><td>${eur(save.money)}</td></tr></table>
+  ${tipMsg?`<p>${tipMsg}</p>`:""}
+  <button class="btn" data-act="next">Load up and go</button>`);
+  job=null;mode="yard";
+}
+
+function hitWall(x,y){for(const r of E.walls)if(x>r.x&&x<r.x+r.w&&y>r.y&&y<r.y+r.h)return true;return false;}
+function inTarp(x,y){for(const t of E.tarps)if(x>t.x&&x<t.x+t.w&&y>t.y&&y<t.y+t.h)return t;return null;}
+function collide(o,rad,treeK){
+  let hit=false;
+  for(const r of E.walls){
+    const nx=clamp(o.x,r.x,r.x+r.w),ny=clamp(o.y,r.y,r.y+r.h),dx=o.x-nx,dy=o.y-ny,d2=dx*dx+dy*dy;
+    if(d2>=rad*rad)continue;hit=true;
+    if(d2>1e-4){const d=Math.sqrt(d2);o.x=nx+dx/d*rad;o.y=ny+dy/d*rad;}
+    else{const l=o.x-r.x,rt=r.x+r.w-o.x,t=o.y-r.y,b=r.y+r.h-o.y,m=Math.min(l,rt,t,b);
+      if(m===l)o.x=r.x-rad;else if(m===rt)o.x=r.x+r.w+rad;else if(m===t)o.y=r.y-rad;else o.y=r.y+r.h+rad;}
+  }
+  for(const t of E.trees){const tr=t.r*treeK+rad,dx=o.x-t.x,dy=o.y-t.y,d=Math.hypot(dx,dy);if(d<tr&&d>0.01){o.x=t.x+dx/d*tr;o.y=t.y+dy/d*tr;hit=true;}}
+  if(o.x<rad){o.x=rad;hit=true;}if(o.x>E.w-rad){o.x=E.w-rad;hit=true;}
+  if(o.y<rad){o.y=rad;hit=true;}if(o.y>E.h-rad){o.y=E.h-rad;hit=true;}
+  return hit;
+}
+const BEDLINES=["Through Mrs O'Brien's roses.","She'll be on the phone about them tulips.","Flower bed flattened.","That was the good begonias."];
+function updMow(dt){
+  const p=job.p,[jx,jy,m]=stick();
+  const ener=day.energy<=0?0.55:1,buzz=day.buzz>0?1.15:1,gas=save.petrol>0?1:0.3;
+  const maxV=(78+save.up.eng*18)*ener*buzz*gas;
+  let tv=0;
+  if(m>0.12){const ta=Math.atan2(jy,jx),da=angDiff(ta,p.a);p.a+=clamp(da,-3.1*dt,3.1*dt);tv=maxV*Math.min(1,m)*Math.max(0.25,Math.cos(da));}
+  p.v+=(tv-p.v)*Math.min(1,dt*5);
+  p.x+=Math.cos(p.a)*p.v*dt;p.y+=Math.sin(p.a)*p.v*dt;
+  if(collide(p,13,1))p.v*=0.6;
+  if(p.v>4){
+    const ca=Math.cos(p.a),sa=Math.sin(p.a),dr=16+save.up.deck*4;
+    const stripe=Math.abs(ca)>Math.abs(sa)?ca>0:sa<0;
+    const n=cutAt(p.x+ca*4,p.y+sa*4,dr,stripe);
+    if(n&&E.parts.length<140){for(let k=0;k<2;k++)E.parts.push({x:p.x-sa*(dr-2),y:p.y+ca*(dr-2),vx:-sa*(50+Math.random()*40)+(Math.random()-.5)*30,vy:ca*(50+Math.random()*40)+(Math.random()-.5)*30,l:.5});}
+    save.petrol=Math.max(0,save.petrol-dt*0.32);
+    if(save.petrol===0&&!job.dry){job.dry=1;toast("Mower's out of petrol. Crawling now. Get a jerry can at the shop.");}
+  }
+  for(const gn of E.gnomes)if(!gn.down&&Math.hypot(gn.x-p.x,gn.y-p.y)<17){gn.down=1;penal(3,"Knocked the gnome. Glue for his hat,");}
+  for(const b of E.beds)if(!b.dam&&p.x>b.x&&p.x<b.x+b.w&&p.y>b.y&&p.y<b.y+b.h){b.dam=1;paintBed(E.bg,b);penal(8,BEDLINES[(Math.random()*BEDLINES.length)|0]);}
+  for(let i=E.parts.length-1;i>=0;i--){const q=E.parts[i];q.l-=dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.vx*=.9;q.vy*=.9;if(q.l<=0)E.parts.splice(i,1);}
+  job.pct=E.total?E.cut/E.total:1;
+}
+function cutAt(x,y,r,stripe){
+  let n=0;const g=E.bg,mg=E.mg,r2=r*r;
+  const i0=Math.max(0,Math.floor((x-r)/G)),i1=Math.min(E.gw-1,Math.floor((x+r)/G));
+  const j0=Math.max(0,Math.floor((y-r)/G)),j1=Math.min(E.gh-1,Math.floor((y+r)/G));
+  g.fillStyle=stripe?"#7dc350":"#63aa3e";mg.fillStyle="#5fa83a";
+  for(let j=j0;j<=j1;j++)for(let i=i0;i<=i1;i++){
+    const k=j*E.gw+i;if(E.grid[k]!==1)continue;
+    const dx=(i+.5)*G-x,dy=(j+.5)*G-y;if(dx*dx+dy*dy>r2)continue;
+    E.grid[k]=stripe?2:3;g.fillRect(i*G,j*G,G,G);mg.fillRect(i,j,1,1);n++;
+  }
+  E.cut+=n;return n;
+}
+const LEAFC=["#c8642a","#d9952c","#a8452a","#e0b13a","#8a5a2b","#b5762f"];
+function updBlow(dt){
+  const p=job.p,[jx,jy,m]=stick();
+  const ener=day.energy<=0?0.55:1,buzz=day.buzz>0?1.15:1;
+  job.blowing=m>0.1;job.moving=0;
+  if(m>0.1){const ta=Math.atan2(jy,jx);p.a+=clamp(angDiff(ta,p.a),-9*dt,9*dt);}
+  if(m>0.4){const sp=74*ener*buzz*Math.min(1,m),l=Math.hypot(jx,jy);p.x+=jx/l*sp*dt;p.y+=jy/l*sp*dt;job.moving=1;}
+  collide(p,7,0.55);
+  const Rg=88+save.up.blow*18,pow=(820+save.up.blow*230)*ener,ca=Math.cos(p.a),sa=Math.sin(p.a),ch=Math.cos(0.5),fr=Math.exp(-2.6*dt);
+  const L=job.leaves;
+  for(let i=L.length-1;i>=0;i--){
+    const l=L[i];
+    if(job.blowing){const dx=l.x-p.x,dy=l.y-p.y,d2=dx*dx+dy*dy;
+      if(d2<Rg*Rg&&d2>1){const d=Math.sqrt(d2),dot=(dx*ca+dy*sa)/d;
+        if(dot>ch){const f=pow*(1-d/Rg)*(0.4+0.6*dot)*dt/l.s;l.vx+=(dx/d*0.4+ca*0.6)*f;l.vy+=(dy/d*0.4+sa*0.6)*f;l.sp=(Math.random()-.5)*14;}}}
+    l.vx*=fr;l.vy*=fr;
+    const v2=l.vx*l.vx+l.vy*l.vy;if(v2<0.3)continue;
+    if(v2>270*270){const k=270/Math.sqrt(v2);l.vx*=k;l.vy*=k;}
+    l.x+=l.vx*dt;if(hitWall(l.x,l.y)||l.x<2||l.x>E.w-2){l.x-=l.vx*dt;l.vx*=-0.35;}
+    l.y+=l.vy*dt;if(hitWall(l.x,l.y)||l.y<2||l.y>E.h-2){l.y-=l.vy*dt;l.vy*=-0.35;}
+    l.r+=l.sp*dt;l.sp*=fr;
+    const t=inTarp(l.x,l.y);
+    if(t){t.n++;job.bagged++;L[i]=L[L.length-1];L.pop();}
+  }
+  job.pct=job.total?job.bagged/job.total:1;
+}
+
+/* ============ driving ============ */
+const CRUISE=520;
+function startDrive(s){
+  mode="drive";
+  const len=14000+Math.random()*4000;
+  D={s,len,dist:0,v:CRUISE*0.4,x:-0.5,tx:-0.5,ents:[],spawn:1.6,crash:0,shake:0,z:0.55,rw:280,
+    st:{d:len*(0.42+Math.random()*0.14),visited:0,missed:0},toldTr:0,toldFumes:0,arrived:0};
+  toast(s.home?"Heading back to the yard.":"On the road to "+s.to+".");
+}
+function geo(){
+  const rw=Math.min(W*0.62,280),L=Math.max((W-rw)/2,W*0.3);
+  D.rw=rw;return {rw,L,Rr:L+rw,cx:L+rw/2,vanY:H*0.74,vw:Math.min(42,rw*0.17)};
+}
+function Y(d,gm){return gm.vanY-(d-D.dist)*D.z;}
+function spawnEnt(gm){
+  const r=Math.random(),ahead=D.dist+(gm.vanY+80)/D.z;
+  const inLane=D.ents.filter(e=>e.nx<0&&e.d>ahead-700).length;
+  if(r<0.42)D.ents.push({t:"car",nx:0.5+(Math.random()-.5)*0.18,d:ahead+300+Math.random()*500,spd:-(220+Math.random()*120),col:CARC[(Math.random()*CARC.length)|0]});
+  else if(inLane)D.ents.push({t:"car",nx:0.5,d:ahead+400,spd:-260,col:CARC[(Math.random()*CARC.length)|0]});
+  else if(r<0.64)D.ents.push({t:"tractor",nx:-0.5,d:ahead,spd:160+Math.random()*30});
+  else if(r<0.82)D.ents.push({t:"hole",nx:-0.75+Math.random()*0.55,d:ahead,spd:0});
+  else if(r<0.94)D.ents.push({t:"bike",nx:-0.78,d:ahead,spd:120});
+  else D.ents.push({t:"sheep",nx:-1.35,d:ahead,spd:0,vx:0.32});
+}
+function entSize(e,gm){
+  const w=gm.vw;
+  switch(e.t){case"car":return [w*0.95,w*1.85];case"tractor":return [w*1.1,w*1.7];case"hole":return [w*0.7,w*0.42];case"bike":return [w*0.32,w*0.75];default:return [w*1.4,w*0.8];}
+}
+function updDrive(dt){
+  const gm=geo();
+  if(D.crash>0){D.crash-=dt;D.v=Math.max(0,D.v-900*dt);}
+  else{
+    const top=save.diesel>0?CRUISE:190;
+    if(brake||keys.has("arrowdown")||keys.has("s"))D.v=Math.max(0,D.v-700*dt);
+    else D.v+=(top-D.v)*Math.min(1,dt*0.9);
+  }
+  if(keys.has("arrowleft")||keys.has("a"))D.tx=Math.max(-1.15,D.tx-2.2*dt);
+  if(keys.has("arrowright")||keys.has("d"))D.tx=Math.min(1.15,D.tx+2.2*dt);
+  D.x+=clamp(D.tx-D.x,-3.2*dt,3.2*dt);
+  if(Math.abs(D.x)>0.92){D.v*=Math.pow(0.45,dt);}
+  D.dist+=D.v*dt;
+  save.diesel=Math.max(0,save.diesel-D.v*dt/D.len*9);
+  if(save.diesel===0&&!D.toldFumes){D.toldFumes=1;toast("Out of diesel. Limping along. Fill her at the shop.");}
+  D.shake=Math.max(0,D.shake-dt);
+  for(const e of D.ents){e.d+=e.spd*dt;if(e.t==="sheep")e.nx+=e.vx*dt;}
+  D.ents=D.ents.filter(e=>Y(e.d,gm)<H+200&&e.nx<1.6&&Y(e.d,gm)>-2600);
+  if(D.dist<D.len-2000){D.spawn-=dt;if(D.spawn<=0){spawnEnt(gm);D.spawn=0.9+Math.random()*1.3;}}
+  // collisions
+  const vx=gm.cx+D.x*gm.rw/2,vh=gm.vw*1.9+gm.vw*1.2,vt=gm.vanY-gm.vw*0.95;
+  for(const e of D.ents){
+    if(e.hit)continue;
+    const [ew,eh]=entSize(e,gm),ex=gm.cx+e.nx*gm.rw/2,ey=Y(e.d,gm);
+    if(Math.abs(ex-vx)>(ew+gm.vw)/2-2)continue;
+    if(ey+eh/2<vt||ey-eh/2>vt+vh)continue;
+    if(D.crash>0)continue;
+    if(e.t==="car"){e.hit=1;D.crash=1.2;D.v=0;D.shake=0.5;penal(60,"Clipped a car. Wing mirror,");day.clock+=6;}
+    else if(e.t==="tractor"||e.t==="bike"){
+      D.dist=Math.min(D.dist,e.d-(gm.vanY-vt+eh/2)/D.z);
+      D.v=Math.min(D.v,e.spd*0.85);
+      if(D.toldTr!==e){D.toldTr=e;toast(e.t==="tractor"?"Stuck behind a tractor. Pull out when the other side's clear.":"Cyclist. Give him room.");}
+    }
+    else if(e.t==="hole"){e.hit=1;D.v*=0.6;D.shake=0.35;penal(15,"Pothole. That's the tracking gone,");}
+    else{e.hit=1;D.crash=1.6;D.v=0;D.shake=0.3;day.clock+=4;toast("Sheep on the road. Lost a few minutes.");}
+  }
+  // station
+  const sy=Y(D.st.d,gm);
+  const near=!D.st.visited&&sy>-420&&sy<gm.vanY+40;
+  $("bPull").classList.toggle("on",near);
+  if(near)$("bPull").textContent=day.clock<12*60?"Pull in for a roll":"Pull in at the shop";
+  if(!D.st.visited&&!D.st.missed&&sy>gm.vanY+60){D.st.missed=1;toast(day.energy<50?"Drove past the shop. No roll for Niall.":"Drove past the shop.");}
+  if(D.dist>=D.len&&!D.arrived){const s=D.s;D=null;$("bPull").classList.remove("on");
+    if(s.home)dayEnd();else{toast("Pulled into "+s.to+".");next();}}
+}
+function pullIn(){
+  if(!D||D.st.visited||paused)return;
+  D.st.visited=1;D.v=0;D.dist=Math.max(D.dist,D.st.d-200);day.clock+=6;
+  D.ents=D.ents.filter(e=>Math.abs(e.d-D.dist)>900);
+  $("bPull").classList.remove("on");
+  stationPanel();
+}
+
+/* ============ the shop ============ */
+const MENU=[
+  {id:"brekkie",n:"Breakfast roll",d:"Sausage, rasher, egg, pudding. The full thing.",p:5.5,e:45,ok:()=>day.clock<12*60,no:"Gone at 12"},
+  {id:"fillet",n:"Chicken fillet roll",d:"Spicy, with a bit of coleslaw.",p:5.95,e:45,ok:()=>day.clock>=11*60+30,no:"From half 11"},
+  {id:"sroll",n:"Sausage roll",d:"One for the dash.",p:2.8,e:18},
+  {id:"coffee",n:"Large coffee",d:"Two sugars. Niall works faster for a minute and a half.",p:3.2,e:8,buzz:90},
+  {id:"crisps",n:"Crisps and a can",d:"Cheese and onion.",p:2.6,e:10},
+  {id:"diesel",n:"Fill the van",d:"Diesel, to the top."},
+  {id:"petrol",n:"Jerry can for the mower",d:"Fills the ride on to the top.",p:14}
+];
+function itemPrice(it){if(it.id==="diesel")return Math.round((100-save.diesel)*0.6*100)/100;return it.p;}
+function stationPanel(){
+  const rows=MENU.map(it=>{
+    const price=itemPrice(it);let ok=save.money>=price,why="";
+    if(it.ok&&!it.ok()){ok=false;why=it.no;}
+    if(it.e&&day.energy>=98){ok=false;why="He's stuffed";}
+    if(it.id==="diesel"&&save.diesel>=99){ok=false;why="Full";}
+    if(it.id==="petrol"&&save.petrol>=99){ok=false;why="Full";}
+    if(it.buzz&&day.buzz>0){ok=false;why="Still buzzing";}
+    return `<div class="item"><div><b>${it.n}</b><small>${it.d}</small></div><button data-act="buy" data-arg="${it.id}" ${ok?"":"disabled"}>${why||eur2(price)}</button></div>`;
+  }).join("");
+  const meal=day.clock<11*60+30?"Breakfast":"Lunch";
+  panel(`<div class="kick">The shop, ${clk(day.clock)}</div><h2>${meal} at the deli counter</h2>
+  <div class="stat"><span><b>${Math.round(day.energy)}</b>belly</span><span><b>${Math.round(save.diesel)}</b>diesel</span><span><b>${Math.round(save.petrol)}</b>mower</span><span><b>${eur(save.money)}</b>bank</span></div>
+  ${rows}
+  <button class="btn" data-act="leave">Back on the road</button>`);
+}
+function buyItem(id){
+  const it=MENU.find(m=>m.id===id);if(!it)return;
+  const price=itemPrice(it);if(save.money<price)return;
+  spend(price);day.clock+=2;
+  if(it.e)day.energy=Math.min(100,day.energy+it.e);
+  if(it.buzz)day.buzz=it.buzz;
+  if(id==="diesel")save.diesel=100;
+  if(id==="petrol")save.petrol=100;
+  stationPanel();
+  toast(id==="brekkie"?"Into him. Belly full.":id==="fillet"?"Chicken fillet roll, sorted.":id==="coffee"?"Coffee in. He's flying.":id==="diesel"?"Van's full.":id==="petrol"?"Jerry can filled.":"Grand.");
+}
+
+/* ============ end of day ============ */
+const UPS=[{k:"deck",n:"Wider cutting deck",d:"Cuts a wider strip each pass."},{k:"eng",n:"Bigger engine on the ride on",d:"Gets round the gardens quicker."},{k:"blow",n:"Stronger leaf blower",d:"Reaches further and shifts more."}];
+const UPC=[200,400,700];
+function dayEnd(){
+  mode="yard";
+  $("bPull").classList.remove("on");
+  save.total+=day.earn;save.day++;persist();
+  dayEndPanel();
+}
+function dayEndPanel(){
+  const net=day.earn-day.spend-day.pen;
+  const ups=UPS.map(u=>{const lv=save.up[u.k],c=UPC[lv];
+    return `<div class="item"><div><b>${u.n} ${"&#9679;".repeat(lv)}${"&#9675;".repeat(3-lv)}</b><small>${u.d}</small></div><button data-act="up" data-arg="${u.k}" ${lv<3&&save.money>=c?"":"disabled"}>${lv>=3?"Maxed":eur(c)}</button></div>`;}).join("");
+  panel(`<div class="kick">Day ${day.n} done</div><h2>Back in the yard at ${clk(day.clock)}</h2>
+  <table class="sum">
+  <tr><td>Paid for jobs</td><td>${eur(day.earn)}</td></tr>
+  <tr><td>Shop and fuel</td><td class="neg">-${eur(day.spend)}</td></tr>
+  <tr><td>Damage</td><td class="${day.pen?"neg":""}">${day.pen?"-"+eur(day.pen):"&euro;0"}</td></tr>
+  <tr class="tot"><td>Day's profit</td><td class="${net<0?"neg":""}">${eur(net)}</td></tr>
+  <tr><td>In the bank</td><td>${eur(save.money)}</td></tr></table>
+  <h3>Spend it in the yard</h3>${ups}
+  <button class="btn" data-act="newday">Start day ${save.day}</button>`);
+}
+
+/* ============ drawing: characters ============ */
+function drawMower(g,x,y,a,dr){
+  g.save();g.translate(x,y);g.rotate(a);
+  g.fillStyle="rgba(0,0,0,.25)";g.beginPath();g.ellipse(1,4,19,Math.max(13,dr),0,0,6.283);g.fill();
+  g.fillStyle="#3a3d40";g.beginPath();g.ellipse(4,0,9,dr,0,0,6.283);g.fill();
+  g.fillStyle="#55595d";g.beginPath();g.ellipse(4,0,6,dr-3,0,0,6.283);g.fill();
+  g.fillStyle="#1b1b1b";g.fillRect(-18,-14,11,5);g.fillRect(-18,9,11,5);g.fillRect(8,-11,6,4);g.fillRect(8,7,6,4);
+  g.fillStyle="#2e8b3a";rr(g,-17,-9,32,18,5);g.fill();
+  g.fillStyle="#3fae4c";rr(g,2,-7,14,14,4);g.fill();
+  g.fillStyle="#f2c200";g.fillRect(13,-6,2,12);
+  g.fillStyle="#1d1d1d";rr(g,-16,-7,9,14,3);g.fill();
+  g.strokeStyle="#111";g.lineWidth=1.6;g.beginPath();g.arc(-1,0,3.2,0,6.283);g.stroke();
+  g.strokeStyle="#f4d10d";g.lineWidth=2.6;g.beginPath();g.moveTo(-9,-5);g.lineTo(-2,-3);g.moveTo(-9,5);g.lineTo(-2,3);g.stroke();
+  g.fillStyle="#f4d10d";g.beginPath();g.ellipse(-10,0,4.6,7,0,0,6.283);g.fill();
+  g.fillStyle="#cfd5d8";g.fillRect(-11.5,-7,1.4,14);
+  g.fillStyle="#6b4a2f";circ(g,-8,0,3.4);
+  g.fillStyle="#1f3a5f";circ(g,-9.4,0,3.5);g.fillRect(-7.5,-2.6,3.2,5.2);
+  g.restore();
+}
+function drawNiall(g,x,y,a,blowing,moving){
+  g.save();g.translate(x,y);g.rotate(a);
+  g.fillStyle="rgba(0,0,0,.25)";g.beginPath();g.ellipse(1,2,9,9,0,0,6.283);g.fill();
+  const sw=moving?Math.sin(T*13)*4:0;
+  g.fillStyle="#2f3b2a";g.fillRect(-2+sw,-5,7,3.6);g.fillRect(-2-sw,1.4,7,3.6);
+  g.fillStyle="#1b1b1b";g.fillRect(4+sw,-5,2.4,3.6);g.fillRect(4-sw,1.4,2.4,3.6);
+  g.fillStyle="#e8661c";rr(g,-14,-6,8,12,2);g.fill();g.fillStyle="#333";circ(g,-10,0,2.6);
+  g.fillStyle="#f4d10d";g.beginPath();g.ellipse(-1,0,5,8,0,0,6.283);g.fill();
+  g.fillStyle="#cfd5d8";g.fillRect(-3.5,-7.6,1.4,15.2);
+  g.strokeStyle="#4a4a4a";g.lineWidth=2.4;g.beginPath();g.moveTo(-7,5);g.quadraticCurveTo(2,9,12,6);g.stroke();
+  g.fillStyle="#e8661c";g.fillRect(11,4.6,6,3);
+  g.fillStyle="#6b4a2f";circ(g,1.2,0,3.6);
+  g.fillStyle="#1f3a5f";circ(g,0,0,3.7);g.fillRect(2,-2.7,3.4,5.4);
+  g.restore();
+  if(blowing){
+    const ca=Math.cos(a),sa=Math.sin(a),nx=x+ca*16-sa*6,ny=y+sa*16+ca*6,Rg=88+save.up.blow*18;
+    g.strokeStyle="rgba(255,255,255,.45)";g.lineWidth=1.3;g.beginPath();
+    for(let k=0;k<6;k++){const ph=(T*2.6+k/6)%1,off=(k-2.5)*0.15,d=8+ph*Rg*0.8,ax=Math.cos(a+off),ay=Math.sin(a+off);
+      g.moveTo(nx+ax*d,ny+ay*d);g.lineTo(nx+ax*(d+9),ny+ay*(d+9));}
+    g.stroke();
+  }
+}
+function drawTree(g,t,near){
+  const c=E.autumn?["#7a3d16","#b8611f","#d9902c"]:["#2d5e1f","#3d7a2a","#4f9136"];
+  g.fillStyle="rgba(0,0,0,.22)";circ(g,t.x+5,t.y+7,t.r*1.45);
+  g.globalAlpha=near?0.55:1;
+  g.fillStyle=c[0];circ(g,t.x,t.y,t.r*1.45);
+  g.fillStyle=c[1];circ(g,t.x-t.r*.3,t.y-t.r*.3,t.r*1.0);
+  g.fillStyle=c[2];circ(g,t.x-t.r*.55,t.y-t.r*.6,t.r*.48);
+  g.globalAlpha=1;
+}
+function drawGnome(g,n){
+  g.save();g.translate(n.x,n.y);if(n.down)g.rotate(1.4);
+  g.fillStyle="rgba(0,0,0,.25)";circ(g,1.5,3,5);
+  g.fillStyle="#2f5fb3";g.beginPath();g.ellipse(0,0,4.5,n.down?6:4.5,0,0,6.283);g.fill();
+  g.fillStyle="#f3efe6";circ(g,0,1.6,2.6);
+  g.fillStyle="#d8312b";circ(g,0,-1,2.8);g.fillStyle="#ff6a5f";circ(g,-.8,-1.8,1);
+  g.restore();
+}
+function drawPortrait(c){
+  const g=c.getContext("2d"),s=c.width/200;g.setTransform(s,0,0,s,0,0);g.clearRect(0,0,200,200);
+  g.fillStyle="#cfe6b8";circ(g,100,100,98);
+  g.save();g.beginPath();g.arc(100,100,98,0,6.283);g.clip();
+  g.fillStyle="#7dc350";g.fillRect(0,150,200,50);g.fillStyle="#63aa3e";for(let x=0;x<200;x+=40)g.fillRect(x,150,20,50);
+  g.fillStyle="#2f4a2a";g.beginPath();g.moveTo(30,200);g.quadraticCurveTo(35,140,100,138);g.quadraticCurveTo(165,140,170,200);g.fill();
+  g.fillStyle="#f4d10d";g.beginPath();g.moveTo(34,200);g.quadraticCurveTo(38,146,78,140);g.lineTo(88,200);g.fill();
+  g.beginPath();g.moveTo(166,200);g.quadraticCurveTo(162,146,122,140);g.lineTo(112,200);g.fill();
+  g.fillStyle="#d9dde0";g.fillRect(38,170,46,8);g.fillRect(116,170,46,8);
+  g.fillStyle="#e2ad86";g.fillRect(86,120,28,24);
+  g.fillStyle="#e9b994";g.beginPath();g.ellipse(100,92,34,40,0,0,6.283);g.fill();
+  circ(g,66,96,7);circ(g,134,96,7);
+  g.fillStyle="#6b4a2f";g.beginPath();g.moveTo(66,96);g.quadraticCurveTo(68,140,100,138);g.quadraticCurveTo(132,140,134,96);g.quadraticCurveTo(128,118,100,116);g.quadraticCurveTo(72,118,66,96);g.fill();
+  g.fillStyle="#5a3d26";g.beginPath();g.ellipse(100,110,13,4,0,0,6.283);g.fill();
+  g.fillStyle="#b86f5a";g.beginPath();g.ellipse(100,119,8,3,0,0,3.14);g.fill();
+  g.fillStyle="#2a2a2a";circ(g,87,92,3.4);circ(g,113,92,3.4);
+  g.fillStyle="#fff";circ(g,88,91,1.1);circ(g,114,91,1.1);
+  g.strokeStyle="#5a3d26";g.lineWidth=3;g.lineCap="round";g.beginPath();g.moveTo(80,83);g.lineTo(93,82);g.moveTo(107,82);g.lineTo(120,83);g.stroke();
+  g.fillStyle="#d79e78";g.beginPath();g.moveTo(100,94);g.lineTo(95,106);g.lineTo(104,106);g.fill();
+  g.fillStyle="#1f3a5f";g.beginPath();g.moveTo(64,76);g.quadraticCurveTo(66,44,100,42);g.quadraticCurveTo(134,44,136,76);g.fill();
+  g.fillStyle="#173050";g.beginPath();g.ellipse(100,76,46,8,0,3.14,6.283);g.fill();g.fillRect(54,74,92,5);
+  g.fillStyle="#f4d10d";g.font="800 16px sans-serif";g.textAlign="center";g.fillText("N",100,66);
+  g.restore();
+}
+
+/* ============ drawing: scenes ============ */
+function camera(px,py){
+  const s=Math.min(1.7,Math.max(W/640,Math.min(W,H)/400)),vw=W/s,vh=H/s,top=-HUDH/s;
+  const cx=E.w<=vw?(E.w-vw)/2:clamp(px-vw/2,0,E.w-vw);
+  const cy=E.h-top<=vh?top:clamp(py-vh*0.55,top,E.h-vh+20);
+  return {s,cx,cy,vw,vh};
+}
+function drawJob(){
+  const p=job?job.p:{x:320,y:E.ry+36,a:Math.PI/2};
+  const c=camera(p.x,p.y);
+  ctx.fillStyle="#2c3b22";ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.scale(c.s,c.s);ctx.translate(-c.cx,-c.cy);
+  const sx=Math.max(0,c.cx),sy=Math.max(0,c.cy),sw=Math.min(E.w-sx,c.vw),sh=Math.min(E.h-sy,c.vh+2);
+  if(sw>0&&sh>0)ctx.drawImage(E.base,sx*BS,sy*BS,sw*BS,sh*BS,sx,sy,sw,sh);
+  for(const t of E.tarps){
+    ctx.fillStyle="rgba(0,0,0,.2)";ctx.fillRect(t.x+3,t.y+4,t.w,t.h);
+    ctx.fillStyle="#2a6fd0";ctx.fillRect(t.x,t.y,t.w,t.h);ctx.strokeStyle="#5c97ea";ctx.lineWidth=1;ctx.strokeRect(t.x+3,t.y+3,t.w-6,t.h-6);
+    ctx.fillStyle="#d7dde3";for(const [gx,gy] of [[4,4],[t.w-4,4],[4,t.h-4],[t.w-4,t.h-4]])circ(ctx,t.x+gx,t.y+gy,1.6);
+    if(t.n){const r=Math.min(t.w*0.44,4+Math.sqrt(t.n)*2.1);ctx.fillStyle="#8a4f22";circ(ctx,t.x+t.w/2,t.y+t.h/2,r);ctx.fillStyle="#c07a33";circ(ctx,t.x+t.w/2-r*.25,t.y+t.h/2-r*.25,r*.65);ctx.fillStyle="#dca04a";circ(ctx,t.x+t.w/2-r*.4,t.y+t.h/2-r*.4,r*.3);}
+  }
+  if(job&&job.kind==="blow"){
+    const by=[[],[],[],[],[],[]];for(const l of job.leaves)by[l.c].push(l);
+    for(let k=0;k<by.length;k++){ctx.fillStyle=LEAFC[k];ctx.beginPath();for(const l of by[k]){if(l.x<c.cx-10||l.x>c.cx+c.vw+10||l.y<c.cy-10||l.y>c.cy+c.vh+10)continue;ctx.moveTo(l.x+3.4*l.s,l.y);ctx.ellipse(l.x,l.y,3.4*l.s,2*l.s,l.r,0,6.283);}ctx.fill();}
+  }
+  for(const n of E.gnomes)drawGnome(ctx,n);
+  if(job&&job.kind==="mow"){ctx.fillStyle="#8fd060";for(const q of E.parts)ctx.fillRect(q.x-1,q.y-1,2.2,2.2);drawMower(ctx,p.x,p.y,p.a,16+save.up.deck*4);}
+  else if(job&&job.kind==="blow")drawNiall(ctx,p.x,p.y,p.a,job.blowing,job.moving);
+  for(const t of E.trees)drawTree(ctx,t,Math.hypot(t.x-p.x,t.y-p.y)<t.r*1.6);
+  ctx.restore();
+  // minimap
+  if(job){
+    const mw=W<500?62:84,mh=Math.min(mw*E.h/E.w,150),mx=W-mw-10,my=HUDH+10;
+    ctx.fillStyle="rgba(0,0,0,.45)";ctx.fillRect(mx-3,my-3,mw+6,mh+6);
+    ctx.imageSmoothingEnabled=false;ctx.drawImage(E.mm,0,0,E.gw,E.gh,mx,my,mw,mh);ctx.imageSmoothingEnabled=true;
+    const k=mw/E.w;
+    if(job.kind==="blow"){ctx.fillStyle="#ff8a2a";for(const l of job.leaves)ctx.fillRect(mx+l.x*k-.6,my+l.y*mh/E.h-.6,1.3,1.3);
+      ctx.fillStyle="#2a6fd0";for(const t of E.tarps)ctx.fillRect(mx+t.x*k,my+t.y*mh/E.h,t.w*k,t.h*mh/E.h);}
+    ctx.fillStyle="#fff";circ(ctx,mx+p.x*k,my+p.y*(mh/E.h),2.6);ctx.fillStyle="#e0473a";circ(ctx,mx+p.x*k,my+p.y*(mh/E.h),1.6);
+  }
+  if(joy.on&&!paused){
+    ctx.strokeStyle="rgba(255,255,255,.55)";ctx.lineWidth=3;ctx.beginPath();ctx.arc(joy.ox,joy.oy,48,0,6.283);ctx.stroke();
+    const dx=joy.x-joy.ox,dy=joy.y-joy.oy,l=Math.hypot(dx,dy),k=l>48?48/l:1;
+    ctx.fillStyle="rgba(255,255,255,.75)";circ(ctx,joy.ox+dx*k,joy.oy+dy*k,20);
+  }
+}
+
+const FIELD=["#5f8f3c","#6b9a44","#567f35","#7aa64e"];
+function drawDrive(){
+  const gm=geo(),g=ctx,{rw,L,Rr,cx,vanY,vw}=gm;
+  g.save();
+  if(D.shake>0)g.translate((Math.random()-.5)*8*D.shake,(Math.random()-.5)*8*D.shake);
+  const seg=700,d0=D.dist-(H-vanY)/D.z-seg,d1=D.dist+vanY/D.z+seg;
+  for(let k=Math.floor(d0/seg);k<=Math.ceil(d1/seg);k++){
+    const yb=Y(k*seg,gm),yt=Y((k+1)*seg,gm),h=hs("f"+k);
+    g.fillStyle=FIELD[h%4];g.fillRect(-10,yt,L-8,yb-yt+1);
+    g.fillStyle=FIELD[(h>>4)%4];g.fillRect(Rr+8,yt,W-Rr+10,yb-yt+1);
+    g.fillStyle="#2f5122";g.fillRect(-10,yt,L-8,3);g.fillRect(Rr+8,yt,W-Rr+10,3);
+  }
+  g.fillStyle="#36602a";g.fillRect(L-16,-20,9,H+40);g.fillRect(Rr+7,-20,9,H+40);
+  g.fillStyle="#88b25a";g.fillRect(L-7,-20,7,H+40);g.fillRect(Rr,-20,7,H+40);
+  g.fillStyle="#4b4e54";g.fillRect(L,-20,rw,H+40);
+  g.fillStyle="#dcdcdc";g.fillRect(L+4,-20,2,H+40);g.fillRect(Rr-6,-20,2,H+40);
+  g.fillStyle="#f0e9c8";
+  const dp=170;for(let k=Math.floor(d0/dp);k<=Math.ceil(d1/dp);k++){const yb=Y(k*dp,gm),yt=Y(k*dp+85,gm);g.fillRect(cx-1.5,yt,3,yb-yt);}
+  // roadside trees
+  const ts=230;for(let k=Math.floor(d0/ts);k<=Math.ceil(d1/ts);k++){const h=hs("t"+k),y=Y(k*ts,gm);
+    if(h%3===0){const x=L-26-(h>>3)%Math.max(10,L-60),r=12+(h>>7)%12;g.fillStyle="rgba(0,0,0,.2)";circ(g,x+5,y+6,r);g.fillStyle="#2e5a20";circ(g,x,y,r);g.fillStyle="#417a2d";circ(g,x-r*.3,y-r*.3,r*.6);}
+    if(h%4===1&&W-Rr>34){const x=Rr+22+(h>>5)%Math.max(6,W-Rr-40),r=10+(h>>9)%10;g.fillStyle="rgba(0,0,0,.2)";circ(g,x+5,y+6,r);g.fillStyle="#2e5a20";circ(g,x,y,r);g.fillStyle="#417a2d";circ(g,x-r*.3,y-r*.3,r*.6);}}
+  // the shop
+  const sd=D.st.d,ya=Y(sd+330,gm),yb=Y(sd-330,gm);
+  if(yb>-50&&ya<H+50){
+    const fw=Math.min(L-24,200),fx=L-18-fw;
+    g.fillStyle="#55585e";g.fillRect(L-16,Y(sd+300,gm),16,Y(sd+200,gm)-Y(sd+300,gm));g.fillRect(L-16,Y(sd-200,gm),16,Y(sd-300,gm)-Y(sd-200,gm));
+    g.fillStyle="#8d9196";g.fillRect(fx,ya,fw,yb-ya);
+    g.fillStyle="#e9e6dc";g.fillRect(fx+4,ya+8,fw*0.42,yb-ya-16);
+    g.fillStyle="#1e6b45";g.fillRect(fx+4,ya+8,fw*0.42,10);
+    g.save();g.translate(fx+4+fw*0.21,(ya+yb)/2);g.rotate(-Math.PI/2);g.fillStyle="#1e6b45";g.font="800 13px sans-serif";g.textAlign="center";g.textBaseline="middle";g.fillText("SHOP  DELI  FUEL",0,0);g.restore();
+    const cxp=fx+fw*0.72,ch=(yb-ya)*0.5;
+    g.fillStyle="rgba(0,0,0,.2)";g.fillRect(cxp-fw*0.22+4,(ya+yb)/2-ch/2+5,fw*0.44,ch);
+    g.fillStyle="#f4f4f0";g.fillRect(cxp-fw*0.22,(ya+yb)/2-ch/2,fw*0.44,ch);
+    g.fillStyle="#d8312b";g.fillRect(cxp-fw*0.22,(ya+yb)/2-ch/2,fw*0.44,5);g.fillRect(cxp-fw*0.22,(ya+yb)/2+ch/2-5,fw*0.44,5);
+    for(let i=-1;i<=1;i++){g.fillStyle="#3a3d40";g.fillRect(cxp-4,(ya+yb)/2+i*ch*0.3-5,8,10);}
+  }
+  const sgn=Y(sd-1100,gm);
+  if(sgn>-40&&sgn<H+40){g.fillStyle="#555";g.fillRect(L-22,sgn,3,22);g.fillStyle="#1e6b45";rr(g,L-70,sgn-22,62,24,4);g.fill();g.fillStyle="#fff";g.font="700 10px sans-serif";g.textAlign="center";g.fillText("Shop 500m",L-39,sgn-6);}
+  // ents
+  for(const e of D.ents){
+    const [ew,eh]=entSize(e,gm),ex=cx+e.nx*rw/2,ey=Y(e.d,gm);
+    if(ey<-80||ey>H+80)continue;
+    if(e.t==="car"){g.fillStyle="rgba(0,0,0,.25)";rr(g,ex-ew/2+3,ey-eh/2+5,ew,eh,7);g.fill();g.fillStyle=e.col;rr(g,ex-ew/2,ey-eh/2,ew,eh,7);g.fill();
+      g.fillStyle="rgba(25,35,48,.85)";rr(g,ex-ew/2+4,ey+eh*0.12,ew-8,eh*0.2,3);g.fill();rr(g,ex-ew/2+5,ey-eh*0.38,ew-10,eh*0.13,3);g.fill();
+      g.fillStyle="#fff7c2";circ(g,ex-ew/2+5,ey+eh/2-3,2.6);circ(g,ex+ew/2-5,ey+eh/2-3,2.6);}
+    else if(e.t==="tractor"){g.fillStyle="rgba(0,0,0,.25)";g.fillRect(ex-ew/2+3,ey-eh/2+5,ew,eh);
+      g.fillStyle="#1b1b1b";g.fillRect(ex-ew/2-3,ey+eh*0.05,ew*0.3,eh*0.42);g.fillRect(ex+ew/2-ew*0.3+3,ey+eh*0.05,ew*0.3,eh*0.42);g.fillRect(ex-ew/2+2,ey-eh*0.45,ew*0.2,eh*0.22);g.fillRect(ex+ew/2-ew*0.2-2,ey-eh*0.45,ew*0.2,eh*0.22);
+      g.fillStyle="#2f8a3a";g.fillRect(ex-ew*0.22,ey-eh/2,ew*0.44,eh*0.6);g.fillStyle="#f2c200";g.fillRect(ex-ew*0.32,ey+eh*0.02,ew*0.64,eh*0.42);g.fillStyle="#2f8a3a";g.fillRect(ex-ew*0.28,ey+eh*0.06,ew*0.56,eh*0.34);
+      g.fillStyle="#ff9a1a";circ(g,ex,ey+eh*0.2,3);}
+    else if(e.t==="hole"){g.fillStyle="#2c2d30";g.beginPath();g.ellipse(ex,ey,ew/2,eh/2,0.2,0,6.283);g.fill();g.strokeStyle="#6a6d72";g.lineWidth=1.5;g.stroke();}
+    else if(e.t==="bike"){g.fillStyle="#1b1b1b";g.fillRect(ex-1.5,ey-eh/2,3,eh);g.fillStyle="#f4d10d";g.beginPath();g.ellipse(ex,ey,ew*0.9,ew*0.6,0,0,6.283);g.fill();g.fillStyle="#333";circ(g,ex,ey-1,ew*0.4);}
+    else{for(let i=0;i<3;i++){const sx=ex-ew/2+i*ew*0.38,sy=ey+(i%2?-5:4);g.fillStyle="#f6f4ee";circ(g,sx,sy,8);circ(g,sx+5,sy,7);g.fillStyle="#1b1b1b";circ(g,sx+12,sy,3.4);}}
+  }
+  // oncoming warnings
+  for(const e of D.ents){if(e.t!=="car")continue;const ey=Y(e.d,gm);if(ey<HUDH+4&&ey>-1700){const a=clamp(1-(HUDH-ey)/1700,0.15,1),x=cx+e.nx*rw/2;g.globalAlpha=a;g.fillStyle="#ff5a4a";g.beginPath();g.moveTo(x,HUDH+22);g.lineTo(x-8,HUDH+8);g.lineTo(x+8,HUDH+8);g.fill();g.globalAlpha=1;}}
+  // van and trailer
+  const vx=cx+D.x*rw/2,vh=vw*1.9,top=vanY-vw*0.95,th=vw*1.15,tw=vw*0.9;
+  g.fillStyle="#333";g.fillRect(vx-1.5,top+vh-2,3,10);
+  g.fillStyle="rgba(0,0,0,.25)";g.fillRect(vx-tw/2+3,top+vh+8+5,tw,th);
+  g.fillStyle="#9a9ea3";g.fillRect(vx-tw/2,top+vh+8,tw,th);g.fillStyle="#7c8085";g.fillRect(vx-tw/2+3,top+vh+11,tw-6,th-6);
+  g.fillStyle="#2e8b3a";rr(g,vx-tw*0.3,top+vh+12,tw*0.6,th-12,4);g.fill();g.fillStyle="#1d1d1d";g.fillRect(vx-tw*0.16,top+vh+th*0.55,tw*0.32,th*0.25);
+  g.fillStyle="rgba(0,0,0,.28)";rr(g,vx-vw/2+3,top+6,vw,vh,7);g.fill();
+  g.fillStyle="#f2f2ee";rr(g,vx-vw/2,top,vw,vh,7);g.fill();
+  g.fillStyle="#1f2a36";rr(g,vx-vw/2+4,top+vh*0.1,vw-8,vh*0.15,3);g.fill();
+  g.fillStyle="#d6d6d0";g.fillRect(vx-vw/2+5,top+vh*0.32,vw-10,2);g.fillRect(vx-vw/2+5,top+vh*0.62,vw-10,2);
+  g.fillStyle="#1f2a36";g.fillRect(vx-vw/2-4,top+vh*0.2,4,6);g.fillRect(vx+vw/2,top+vh*0.2,4,6);
+  g.fillStyle="#1e6b45";g.font="800 "+Math.round(vw*0.24)+"px sans-serif";g.textAlign="center";g.textBaseline="middle";g.fillText("NIALL",vx,top+vh*0.47);
+  g.fillStyle="#fff7c2";circ(g,vx-vw/2+5,top+3,2.4);circ(g,vx+vw/2-5,top+3,2.4);
+  g.restore();
+  // speedo
+  g.fillStyle="rgba(0,0,0,.5)";rr(g,W-84,H-100,72,40,10);g.fill();
+  g.fillStyle="#fff";g.font="800 20px sans-serif";g.textAlign="center";g.textBaseline="middle";g.fillText(Math.round(D.v/CRUISE*80),W-48,H-80);
+  g.font="600 9px sans-serif";g.fillText("km/h",W-48,H-64);
+}
+function drawTitle(){
+  for(let x=0;x<W;x+=44){ctx.fillStyle=(x/44)%2?"#63aa3e":"#7dc350";ctx.fillRect(x,0,44,H);}
+  const mx=W/2+Math.sin(T*0.5)*W*0.38,a=Math.cos(T*0.5)>0?0:Math.PI;
+  ctx.save();ctx.scale(2,2);drawMower(ctx,mx/2,H*0.1/2+12,a,18);ctx.restore();
+}
+
+/* ============ hud ============ */
+const hc={};
+function setT(id,v){if(hc[id]!==v){hc[id]=v;$(id).textContent=v;}}
+function setW(id,pct,low){const k=id+"w",v=Math.round(clamp(pct,0,100));if(hc[k]!==v){hc[k]=v;const el=$(id);el.style.width=v+"%";el.classList.toggle("low",!!low);}}
+function hud(){
+  const on=mode!=="title"&&day;
+  $("hud").classList.toggle("on",!!on);
+  $("bBrake").classList.toggle("on",mode==="drive"&&!paused);
+  if(mode!=="drive")$("bPull").classList.remove("on");
+  const canFin=job&&!paused&&job.pct>=0.85;
+  $("bFinish").classList.toggle("on",!!canFin);
+  if(canFin)setT("bFinish",job.pct>=0.985?"All done, get paid":"Finish job ("+Math.round(job.pct*100)+"%)");
+  if(!on)return;
+  setT("hDay","Day "+day.n);setT("hClock",clk(day.clock)+(day.buzz>0?"  coffee":""));setT("hMoney",eur(save.money));
+  setW("bE",day.energy,day.energy<20);setW("bD",save.diesel,save.diesel<20);setW("bP",save.petrol,save.petrol<20);
+  if(mode==="drive"&&D){const left=Math.max(0,(D.len-D.dist)/1500);setT("hTask",(D.s.home?"Home to the yard":"To "+D.s.to)+", "+left.toFixed(1)+" km");setW("bT",D.dist/D.len*100);}
+  else if(job){setT("hTask",job.kind==="mow"?"Cutting "+job.name+", "+Math.floor(job.pct*100)+"%":"Leaves at "+job.name+", "+job.bagged+" of "+job.total);setW("bT",job.pct*100);}
+  else{setT("hTask","In the yard");setW("bT",0);}
+}
+
+/* ============ loop ============ */
+let last=performance.now();
+function frame(t){
+  const dt=Math.min(0.05,(t-last)/1000);last=t;T+=dt;
+  if(toastT>0){toastT-=dt;if(toastT<=0)$("toast").classList.remove("on");}
+  if(!paused&&day){
+    if(mode==="mow"||mode==="blow"||mode==="drive"){
+      day.clock+=dt;
+      if(day.buzz>0)day.buzz=Math.max(0,day.buzz-dt);
+      const drain=mode==="drive"?1/12:1/4.2;
+      const before=day.energy;day.energy=Math.max(0,day.energy-dt*drain);
+      if(before>=20&&day.energy<20)toast("Niall's fading. Get a roll into him at the next shop.");
+      if(before>0&&day.energy===0)toast("Niall's starving. Half speed till he eats.");
+    }
+    if(mode==="mow"&&job)updMow(dt);
+    else if(mode==="blow"&&job)updBlow(dt);
+    else if(mode==="drive"&&D)updDrive(dt);
+  }
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  if(mode==="drive"&&D)drawDrive();
+  else if((mode==="mow"||mode==="blow")&&E)drawJob();
+  else if(mode==="yard"&&E)drawJob();
+  else drawTitle();
+  hud();
+  requestAnimationFrame(frame);
+}
+showTitle();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

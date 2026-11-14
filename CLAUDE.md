@@ -6,12 +6,13 @@ have to answer with his thumbs.
 
 ## What this repo is
 
-Two standalone, self-contained HTML pages. That is the whole repo.
+Three standalone, self-contained HTML pages. That is the whole repo.
 
 | File | What it is |
 | --- | --- |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
+| `niall.html` | "Niall's Rounds", a landscaper game. Drive the van between Cork estates, ride on mower and leaf blower jobs, petrol station stops for rolls and fuel. |
 
 ## Hard rules
 
@@ -85,6 +86,23 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
 - Dark theme, colours are the `:root` custom properties. `--amber` is the
   accent, `--red` is the trailer button only.
 
+### `niall.html`
+
+- **One canvas, one loop.** `mode` is `title`, `yard`, `drive`, `mow` or
+  `blow`. `paused` is true whenever `#panel` is open, so every menu pauses
+  the game.
+- **A day is `makePlan(n)`**: drive, job, drive, job, drive, job, drive home.
+  `next()` steps through it. Every drive has a shop (`MENU`) halfway.
+- **Estates come from `genEstate()`**, seeded by estate name and day. Layout
+  numbers are multiples of 8 on purpose so grass cells (`G=8`) line up with
+  houses and beds. Change one and the grass bleeds.
+- **Grass** is `E.grid` (1 uncut, 2 and 3 cut stripes), painted onto an
+  offscreen `E.base` once and patched per cell by `cutAt()`.
+- **Save** is `localStorage` key `niall1`: day, money, diesel, mower petrol,
+  upgrades. Written at the end of each day only, so a refresh replays the day.
+- Niall is drawn in code (`drawPortrait`, `drawMower`, `drawNiall`). There is
+  no photo in the repo.
+
 ## Previewing on a phone
 
 The pages are full HTML documents, so they cannot be published as an Artifact
@@ -107,6 +125,7 @@ script and publish the same file path to update the same link:
 | --- | --- |
 | `movienight.html` | https://claude.ai/code/artifact/a4460892-791b-4885-86f1-6658ebb4c674 |
 | `vision-k7x9q2.html` | https://claude.ai/code/artifact/1ce07a3f-9675-4864-8e56-e670ab18b631 |
+| `niall.html` | https://claude.ai/artifact/EiyHe9KBaZ91UTHEE7tv5G |
 
 From a session that did not publish them, pass the URL above as `url` or a
 second, separate artifact is created instead.
