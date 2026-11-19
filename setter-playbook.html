@@ -1,0 +1,1266 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>FlexyStrength Setter Playbook</title>
+<style>
+/* Layout: one 760px column. A sticky row of chips swaps one panel at a time (hash routed).
+   Scripts render as DM bubbles with a Copy button, because the DMs are where they get used. */
+:root{
+  --bg:#f1f5f5;
+  --surface:#ffffff;
+  --ink:#0d191b;
+  --muted:#56676b;
+  --line:#d5e0e1;
+  --accent:#08737e;
+  --accent-ink:#ffffff;
+  --accent-soft:#d9eff0;
+  --bubble-in:#e3eaeb;
+  --ph:rgba(255,255,255,.24);
+  --warn:#a8340f;
+  --warn-soft:#fbe7df;
+  --good:#1b6f3d;
+  --good-soft:#dff1e5;
+  --mid:#875a00;
+  --mid-soft:#f6ecd2;
+  --display:"Avenir Next Condensed","Roboto Condensed",sans-serif-condensed,"Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1214;--surface:#121f22;--ink:#e2eced;--muted:#93a7aa;--line:#24373b;
+    --accent:#4cc6d1;--accent-ink:#03272b;--accent-soft:#0f383d;--bubble-in:#1b2b2f;--ph:rgba(0,0,0,.2);
+    --warn:#ff9373;--warn-soft:#3a1c13;--good:#69d291;--good-soft:#113021;--mid:#eabd55;--mid-soft:#33290f;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1214;--surface:#121f22;--ink:#e2eced;--muted:#93a7aa;--line:#24373b;
+  --accent:#4cc6d1;--accent-ink:#03272b;--accent-soft:#0f383d;--bubble-in:#1b2b2f;--ph:rgba(0,0,0,.2);
+  --warn:#ff9373;--warn-soft:#3a1c13;--good:#69d291;--good-soft:#113021;--mid:#eabd55;--mid-soft:#33290f;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.wrap{max-width:760px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--accent);text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+b,strong{font-weight:650}
+
+/* header */
+.top{padding-block:26px 16px}
+.eyebrow{margin:0 0 8px;font:600 12px/1.3 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0}
+h1{font-size:clamp(46px,13vw,76px);line-height:.9;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{margin:12px 0 0;font-size:17px;color:var(--ink);max-width:34em}
+.meta{margin:10px 0 0;font-size:13px;color:var(--muted);max-width:40em}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabrow{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.tabrow::-webkit-scrollbar{display:none}
+.tabrow a{flex:none;text-decoration:none;color:var(--ink);font:600 14px/1 var(--body);padding:9px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);white-space:nowrap}
+.tabrow a[aria-current="page"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+/* panels */
+main{padding-block:24px 56px}
+.panel{display:grid;gap:28px}
+.panel>header{display:grid;gap:8px}
+.panel>header p{margin:0;font-size:17px;color:var(--muted);max-width:36em}
+h2{font-size:clamp(36px,10vw,50px);line-height:.92;text-transform:uppercase}
+h3{font-size:22px;line-height:1.05;text-transform:uppercase;letter-spacing:.03em}
+h4{font-size:20px;line-height:1.05;text-transform:uppercase;letter-spacing:.03em}
+.block{display:grid;gap:12px;min-width:0}
+.block>p,.block>ul,.block>ol{margin:0}
+ul,ol{margin:0;padding-left:1.25em}
+li+li{margin-top:7px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0}
+.card p{margin:0}
+.card>*+*{margin-top:8px}
+code{font:600 .9em/1 var(--mono);background:var(--accent-soft);color:var(--ink);padding:3px 6px;border-radius:6px}
+.quote{margin:0;font:700 clamp(22px,6vw,27px)/1.12 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.quote+.quote{margin-top:4px}
+.next{justify-self:start;text-decoration:none;font:700 15px/1 var(--body);color:var(--accent-ink);background:var(--accent);padding:13px 18px;border-radius:999px}
+
+/* start: the money flow */
+.flow{list-style:none;padding:0;margin:0;display:grid}
+.flow li{position:relative;display:grid;grid-template-columns:66px minmax(0,1fr);gap:12px;align-items:start;padding-block:9px;margin:0}
+.flow li::before{content:"";position:absolute;left:32px;top:36px;bottom:-9px;width:2px;background:var(--line)}
+.flow li:last-child::before{display:none}
+.flow p{margin:0;padding-top:4px}
+.who{position:relative;z-index:1;display:block;text-align:center;font:700 11.5px/1 var(--body);letter-spacing:.07em;text-transform:uppercase;padding:8px 0;border-radius:999px}
+.who.y{background:var(--accent);color:var(--accent-ink)}
+.who.c{background:var(--ink);color:var(--bg)}
+.who.t{background:var(--bubble-in);color:var(--ink)}
+.who.b{background:var(--good-soft);color:var(--good)}
+.tools{display:grid;gap:10px}
+.tools .card b{font-family:var(--display);font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+.days{display:grid;gap:0}
+
+/* conor */
+.facts dl{margin:0;display:grid;gap:12px}
+.facts dl>div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px}
+.facts dt{font:700 11.5px/1.75 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:0}
+.proof{display:grid;gap:10px}
+.proof .card p{font-size:15px}
+.tag{display:inline-block;font:700 10.5px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;padding:4px 6px;border-radius:6px;background:var(--bubble-in);color:var(--muted);margin-right:6px;vertical-align:2px}
+.tag.good{background:var(--good-soft);color:var(--good)}
+.sendto{color:var(--accent);font-weight:650}
+.keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.key{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:4px;align-content:start}
+.key code{font-size:19px;justify-self:start;background:none;padding:0;color:var(--accent);letter-spacing:.06em}
+.key span{font-size:14px;color:var(--muted);line-height:1.35}
+.key.hot{border-color:var(--accent);background:var(--accent-soft)}
+.key.hot span{color:var(--ink)}
+
+/* tables */
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl th{font:700 11px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tbl .n{text-align:right;white-space:nowrap}
+.cmds td:first-child{white-space:nowrap}
+
+/* who to book */
+.score{margin:0;display:grid;gap:2px;padding:8px}
+.score label{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start;padding:10px 8px;border-radius:10px;cursor:pointer}
+.score label:has(input:checked){background:var(--accent-soft)}
+.score input{width:22px;height:22px;margin:1px 0 0;accent-color:var(--accent)}
+.verdict{display:block;margin:6px 0 0;padding:12px 14px;border-radius:10px;font-weight:650;background:var(--warn-soft);color:var(--warn)}
+.verdict[data-level="mid"]{background:var(--mid-soft);color:var(--mid)}
+.verdict[data-level="good"]{background:var(--good-soft);color:var(--good)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.legend3{display:grid;gap:8px}
+.legend3 p{margin:0}
+.pill{display:inline-block;min-width:66px;text-align:center;font:700 12px/1 var(--body);padding:6px 8px;border-radius:999px;margin-right:8px}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.mid{background:var(--mid-soft);color:var(--mid)}
+.pill.low{background:var(--warn-soft);color:var(--warn)}
+
+/* leads: hottest first */
+.heat{list-style:none;padding:0;margin:0;display:grid;gap:8px;counter-reset:h}
+.heat li{margin:0;counter-increment:h;display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.heat li::before{content:counter(h);font:700 19px/34px var(--display);text-align:center;height:34px;border-radius:8px;background:var(--bubble-in);color:var(--muted)}
+.heat li:nth-child(-n+2)::before{background:var(--accent);color:var(--accent-ink)}
+.heat li:nth-child(n+3):nth-child(-n+4)::before{background:var(--accent-soft);color:var(--accent)}
+
+/* dm flow */
+.stages{list-style:none;padding:0;margin:0;display:grid;gap:18px;counter-reset:s}
+.stages li{margin:0;counter-increment:s;display:grid;gap:8px;padding-left:46px;position:relative;min-width:0}
+.stages li::before{content:counter(s);position:absolute;left:0;top:-2px;width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--bg);text-align:center;font:700 17px/32px var(--display)}
+.stages p{margin:0;color:var(--muted)}
+.rules li::marker{color:var(--accent)}
+
+/* bubbles and scripts */
+.bubble{margin:0;padding:10px 14px;border-radius:18px;max-width:min(34em,92%);font-size:15.5px;line-height:1.45;white-space:pre-line;overflow-wrap:anywhere}
+.bubble.out{background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:6px;justify-self:end}
+.bubble.in{background:var(--bubble-in);color:var(--ink);border-bottom-left-radius:6px;justify-self:start}
+.ph{background:var(--ph);border-radius:5px;padding:0 3px;font-weight:650}
+.script{display:grid;gap:6px;justify-items:end;min-width:0}
+.slabel{margin:0;font:700 11.5px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.copy{font:650 13px/1 var(--body);color:var(--accent);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.copy.done{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.group{display:grid;gap:18px}
+.hint{margin:0;font-size:14px;color:var(--muted)}
+.qs{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.q{font:500 14.5px/1.35 var(--body);text-align:left;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;border-bottom-right-radius:6px;padding:9px 12px;cursor:pointer}
+.q.done{border-color:var(--good);color:var(--good)}
+.cadence{display:grid;gap:14px}
+
+/* objections */
+.obj{display:grid;gap:12px}
+.obj .card{display:grid;gap:10px}
+.obj .card>*+*{margin-top:0}
+.why{margin:0;font-size:14px;color:var(--muted)}
+.note{margin:0;font-size:13.5px;color:var(--muted)}
+
+/* health */
+.callout{border-radius:var(--r);padding:16px;display:grid;gap:10px;background:var(--warn-soft);border:1px solid var(--warn)}
+.callout h3,.callout .lbl{color:var(--warn)}
+.callout p,.callout ul{margin:0}
+.never li::marker{color:var(--warn)}
+
+/* your day */
+.dayplan{display:grid;gap:10px}
+.time{font:700 12.5px/1.2 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.dayplan ol{font-size:15px}
+
+/* numbers */
+.calc{display:grid;gap:16px}
+.calc>*+*{margin-top:0}
+.inputs{margin:0;padding:0;border:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+.inputs legend{padding:0;margin-bottom:8px;font:700 11.5px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.inputs.funnel label:first-of-type{grid-column:1/-1}
+.inputs label{display:grid;gap:5px;font-size:13px;font-weight:600;color:var(--muted);min-width:0}
+.inputs input{font:650 17px/1.2 var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;width:100%;font-variant-numeric:tabular-nums}
+.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.big{display:grid;gap:4px;background:var(--accent-soft);border-radius:12px;padding:12px 14px}
+.big span{font:700 clamp(32px,9vw,42px)/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+.big small{font-size:13px;color:var(--muted)}
+.bars{display:grid;gap:8px}
+.bars .cap{margin:0;font:700 11.5px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.bar{display:grid;grid-template-columns:86px minmax(0,1fr) 52px;gap:10px;align-items:center;font-size:13.5px}
+.track{height:14px;background:var(--bubble-in);border-radius:7px;overflow:hidden}
+.fill{display:block;height:100%;background:var(--accent);border-radius:7px;min-width:3px}
+.bar .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:650}
+
+/* deal */
+.deals{display:grid;gap:10px}
+.deals .card b{font-family:var(--display);font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+.ask{background:var(--accent-soft);border-radius:var(--r);padding:14px 16px;margin:0}
+
+/* copilot */
+.steps li::marker{font-weight:700;color:var(--accent)}
+.prompt{justify-items:stretch}
+.prompt .copy{justify-self:end}
+.prompt pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:12.5px/1.55 var(--mono);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:14px;max-height:440px;overflow:auto}
+
+/* words */
+.gloss{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.gloss>div{display:grid;grid-template-columns:118px minmax(0,1fr);gap:12px;padding:11px 14px;border-bottom:1px solid var(--line)}
+.gloss>div:last-child{border-bottom:0}
+.gloss dt{font-weight:700}
+.gloss dd{margin:0;color:var(--muted)}
+
+footer{padding-block:0 40px;font-size:13px;color:var(--muted)}
+footer p{margin:0;max-width:44em}
+
+@media (min-width:620px){
+  .tools,.deals{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .dayplan{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .proof{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .proof>:nth-child(-n+2){grid-column:span 3}
+  .proof>:nth-child(n+3){grid-column:span 2}
+  .keys{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Conor Oliver · FlexyStrength</p>
+    <h1>Setter <em>Playbook</em></h1>
+    <p class="lede">How to fill Conor's calendar with people he can actually help, and get paid properly for it.</p>
+    <p class="meta">Private working notes for Conor's appointment setter. Built 19 Nov 2026 from his public Instagram, website and workshop pages. Not an official FlexyStrength page.</p>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Playbook sections">
+  <div class="wrap">
+    <div class="tabrow">
+      <a href="#start" data-tab="start">Start</a>
+      <a href="#conor" data-tab="conor">Conor</a>
+      <a href="#who" data-tab="who">Who to book</a>
+      <a href="#leads" data-tab="leads">Leads</a>
+      <a href="#flow" data-tab="flow">DM flow</a>
+      <a href="#scripts" data-tab="scripts">Scripts</a>
+      <a href="#objections" data-tab="objections">Objections</a>
+      <a href="#health" data-tab="health">Health line</a>
+      <a href="#day" data-tab="day">Your day</a>
+      <a href="#numbers" data-tab="numbers">Numbers</a>
+      <a href="#deal" data-tab="deal">The deal</a>
+      <a href="#copilot" data-tab="copilot">Copilot</a>
+      <a href="#words" data-tab="words">Words</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- START -->
+<section class="panel" data-panel="start" id="p-start">
+  <header>
+    <h2>The job</h2>
+    <p>Conor posts. People comment, follow and DM. Most of them will never buy. You talk to all of them, find the few with a real problem who are ready to sort it, and book them onto Conor's free movement assessment. Conor does the selling. You get paid when your bookings turn up and buy.</p>
+  </header>
+
+  <div class="block">
+    <h3>How the money moves</h3>
+    <ol class="flow">
+      <li><span class="who c">Conor</span><p>Posts a reel: "comment FLEX for a free mobility routine".</p></li>
+      <li><span class="who t">Them</span><p>Comment, follow, or DM "START". Conor's account sends them the freebie.</p></li>
+      <li><span class="who y">You</span><p>Open a conversation. Find out what's going on with them.</p></li>
+      <li><span class="who y">You</span><p>Check they're a fit with the 6 point check.</p></li>
+      <li><span class="who y">You</span><p>Book the free movement assessment. Confirm it, send proof, remind them.</p></li>
+      <li><span class="who c">Conor</span><p>Runs the assessment and offers the €1,200 coaching.</p></li>
+      <li><span class="who b">Both</span><p>They join. Conor gets a client, you get paid.</p></li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>Your 3 tools</h3>
+    <div class="tools">
+      <div class="card"><b>This playbook</b><p>Learn it once. Come back to Scripts and Objections every day.</p></div>
+      <div class="card"><b>The tracker</b><p>Every lead gets a row. If it's not in the tracker, it didn't happen.</p><p><a href="https://claude.ai/artifact/9xu1UzsFXacCRM6DhnJTJE" target="_blank" rel="noopener">Open the tracker</a></p></div>
+      <div class="card"><b>The copilot</b><p>Paste a DM screenshot, get the next message, the lead's score and what to log. Set up in the Copilot tab.</p></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Your first 7 days</h3>
+    <ol class="days">
+      <li><b>Day 1.</b> Agree the deal with Conor (The deal tab). Get inbox access and his booking link.</li>
+      <li><b>Day 2.</b> Read Conor, Who to book, Leads and DM flow. Watch his 3 testimonial reels.</li>
+      <li><b>Day 3.</b> Set up the copilot. Add the last 2 weeks of FLEX, BACK and STRONG commenters to the tracker.</li>
+      <li><b>Days 4 to 7.</b> Run Your day. Send Conor the end of day report every night.</li>
+      <li><b>Day 7.</b> First review with Conor: your numbers, and what leads keep saying.</li>
+    </ol>
+  </div>
+  <a class="next" href="#conor">Next: Conor →</a>
+</section>
+
+<!-- CONOR -->
+<section class="panel" data-panel="conor" id="p-conor">
+  <header>
+    <h2>Conor in 2 minutes</h2>
+    <p>Spell it right in every message: <b>Conor</b>, one n. <b>FlexyStrength</b>, with a y.</p>
+  </header>
+
+  <div class="card facts">
+    <dl>
+      <div><dt>Who</dt><dd>Conor Oliver, strength &amp; mobility coach</dd></div>
+      <div><dt>Instagram</dt><dd>@flexy_strength: 9.7K followers, verified, 500 posts. Coaching page @flexystrength_coaching</dd></div>
+      <div><dt>Website</dt><dd>flexystrength.com</dd></div>
+      <div><dt>Where</dt><dd>In person around Dublin and Meath, plus online. Workshops at CrossFit Meath in Ashbourne and Navan Strength Collective</dd></div>
+      <div><dt>The offer</dt><dd>1 to 1 coaching, €1,200. Length and payment terms to confirm with Conor</dd></div>
+      <div><dt>Front door</dt><dd>A free movement assessment. This is the call you book</dd></div>
+      <div><dt>Workshops</dt><dd>2 hour group sessions on hips and mobility, €25, and they sell out. Next: Hip Mobility Workshop, 5 December</dd></div>
+    </dl>
+  </div>
+
+  <div class="block">
+    <h3>His method, in his words</h3>
+    <p class="quote">"Build a strong, mobile &amp; athletic body."</p>
+    <p class="quote">"No gimmicks. No endless stretching routines. Just building real, quality strength from the ground up."</p>
+    <p>He calls it an integrated strength &amp; mobility system, built on 3 Progression Pillars:</p>
+    <ol>
+      <li><b>Joint Capacity.</b> Active mobility and joint strength through the knees, hips, shoulders and back.</li>
+      <li><b>Relative Strength.</b> Stretch strength, bodyweight movement and heavy compound lifts.</li>
+      <li><b>Expansion.</b> Explosive power and advanced skills like pistol squats and handstands.</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>Why people buy</h3>
+    <p>Every one of his testimonials tells the same story. Learn it, you'll hear it in the DMs every day:</p>
+    <ul>
+      <li>Training or sport is a big part of their life.</li>
+      <li>Something keeps breaking: lower back, a disc, hamstrings, groin, calves, tight hips.</li>
+      <li>They've done physio. Got told "weak glutes, weak hamstrings". It didn't stick.</li>
+      <li>They're stuck in a loop: get back, break down, stop.</li>
+      <li>They've copped that the way they train has to change.</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>The proof, and who to send it to</h3>
+    <div class="proof">
+      <article class="card">
+        <h4>Niall</h4>
+        <p><span class="tag">Before</span>Office job, 8 to 10 hours a day sitting. Back pain so bad he stopped the gym and teaching his classes. "I could barely walk."</p>
+        <p><span class="tag good">After</span>Back pain gone in 12 weeks. Got his first pistol squat.</p>
+        <p class="sendto">Send to desk workers with back pain.</p>
+      </article>
+      <article class="card">
+        <h4>Colin</h4>
+        <p><span class="tag">Before</span>Hamstring, groin and calf niggles from his 20s. Physio didn't stick, so he stopped sport.</p>
+        <p><span class="tag good">After</span>12 months on: Hell &amp; Back, a half marathon, working on handstands, eyeing Hyrox.</p>
+        <p class="sendto">Send to sporty people who keep getting injured.</p>
+      </article>
+      <article class="card">
+        <h4>The disc client</h4>
+        <p><span class="tag">Before</span>Herniated disc, back went every 3 to 6 months.</p>
+        <p><span class="tag good">After</span>Hasn't gone in 18 months.</p>
+        <p class="sendto">Send to anyone whose back "goes". From "The FlexyStrength Effect" reel.</p>
+      </article>
+      <article class="card">
+        <h4>Larry</h4>
+        <p><span class="tag good">After</span>Overcame a herniated disc and lost 20kg.</p>
+        <p class="sendto">Send to back pain plus weight to lose.</p>
+      </article>
+      <article class="card">
+        <h4>Malik</h4>
+        <p><span class="tag good">After</span>Overcame weak and tight hips.</p>
+        <p class="sendto">Send to stiff hips, can't squat deep.</p>
+      </article>
+    </div>
+    <p class="small muted">Ask Conor for the link to each story so you can send the right one in seconds.</p>
+  </div>
+
+  <div class="block">
+    <h3>His lead magnets</h3>
+    <p>People comment a word and Conor's account sends them the freebie. By the time you open a chat, they've already got it. Your job is the follow up.</p>
+    <div class="keys">
+      <div class="key"><code>FLEX</code><span>Free mobility routine</span></div>
+      <div class="key"><code>BACK</code><span>Hip rotation sequence breakdown</span></div>
+      <div class="key"><code>STRONG</code><span>Full strength &amp; flexibility session video</span></div>
+      <div class="key hot"><code>START</code><span>DM for coaching info. Your hottest leads</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>What's pulling people in</h3>
+    <div class="tblwrap">
+      <table class="tbl">
+        <thead><tr><th>Keyword reel</th><th>Posted</th><th class="n">Plays</th><th class="n">Comments</th></tr></thead>
+        <tbody>
+          <tr><td>Hip rotation sequence, comment BACK</td><td>5 Nov</td><td class="n">52,800</td><td class="n">52</td></tr>
+          <tr><td>Free mobility routine, comment FLEX</td><td>8 Nov</td><td class="n">12,500</td><td class="n">30</td></tr>
+          <tr><td>Strength &amp; flexibility session, comment STRONG</td><td>14 Nov</td><td class="n">7,300</td><td class="n">2</td></tr>
+          <tr><td>Strong &amp; mobile hips, comment STRONG</td><td>3 Nov</td><td class="n">3,700</td><td class="n">6</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Hips and back pull the crowd. His testimonial reels only get 1,400 to 2,100 plays, but they're your best weapon in the DMs.</p>
+  </div>
+
+  <div class="block">
+    <h3>Still to find out from Conor</h3>
+    <ul>
+      <li>How long is the €1,200 programme? Paid upfront or monthly?</li>
+      <li>Same price online and in person? Where does he train people in person?</li>
+      <li>The free movement assessment: how long, and is it a phone call, a video call, or in the gym?</li>
+      <li>Is there a cheaper option for people who can't do €1,200?</li>
+      <li>Can you give a ballpark price in DMs?</li>
+      <li>Does the freebie send automatically when someone comments?</li>
+    </ul>
+  </div>
+
+  <p class="small muted">Sources, checked 19 Nov 2026: <a href="https://www.instagram.com/flexy_strength/" target="_blank" rel="noopener">@flexy_strength</a>, <a href="https://www.instagram.com/flexystrength_coaching/" target="_blank" rel="noopener">@flexystrength_coaching</a>, <a href="https://flexystrength.com/" target="_blank" rel="noopener">flexystrength.com</a>, and his workshop pages at <a href="https://luma.com/k24378ju" target="_blank" rel="noopener">CrossFit Meath</a> and <a href="https://luma.com/t8hjsiit" target="_blank" rel="noopener">Navan Strength Collective</a>.</p>
+  <a class="next" href="#who">Next: Who to book →</a>
+</section>
+
+<!-- WHO TO BOOK -->
+<section class="panel" data-panel="who" id="p-who">
+  <header>
+    <h2>Who to book</h2>
+    <p>Your pay depends on Conor closing. Book the right people and he closes more. Book everyone and he stops trusting your bookings.</p>
+  </header>
+
+  <div class="block">
+    <h3>The person Conor helps most</h3>
+    <ul>
+      <li>A lad in his 20s to mid 40s. Women are welcome too, same rules.</li>
+      <li>Trains, plays sport, runs, or did until his body stopped him.</li>
+      <li>Desk job, or lots of sitting and driving. Has a wage.</li>
+      <li>Pain or restriction: lower back, a disc, hips, hamstrings, groin, knees. Or just stiff and stuck.</li>
+      <li>Has tried physio, stretching or YouTube routines. Still breaking down.</li>
+      <li>Wants something specific back: the gym, 5 a side, GAA, a race, Hyrox, lifting the kids without his back going.</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>The 6 point check</h3>
+    <p>Tick only what the chat has actually shown you. Guessing doesn't count.</p>
+    <fieldset class="card score" id="score">
+      <legend class="sr">6 point check</legend>
+      <label for="q1"><input type="checkbox" id="q1"><span><b>Problem.</b> Pain, injury, stiffness or a plateau that Conor's system fixes.</span></label>
+      <label for="q2"><input type="checkbox" id="q2"><span><b>It matters.</b> It's stopping or limiting something they care about.</span></label>
+      <label for="q3"><input type="checkbox" id="q3"><span><b>Why now.</b> A reason to sort it now: an event, sick of the loop, getting worse.</span></label>
+      <label for="q4"><input type="checkbox" id="q4"><span><b>Will do the work.</b> Can train 3 to 4 times a week, online or in person.</span></label>
+      <label for="q5"><input type="checkbox" id="q5"><span><b>Open to investing.</b> Gets that 1 to 1 coaching costs money.</span></label>
+      <label for="q6"><input type="checkbox" id="q6"><span><b>Their call.</b> An adult with their own money and their own say.</span></label>
+      <output id="verdict" class="verdict" data-level="low" for="q1 q2 q3 q4 q5 q6">0 of 6. Give value, don't book yet.</output>
+    </fieldset>
+    <div class="legend3">
+      <p><span class="pill good">5 or 6</span>Book them.</p>
+      <p><span class="pill mid">3 or 4</span>Keep talking. Find the missing box first.</p>
+      <p><span class="pill low">0 to 2</span>Give value, don't book. Mark Nurture.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Don't book</h3>
+    <ul>
+      <li>Under 18.</li>
+      <li>Only wants freebies and says no to everything else.</li>
+      <li>Any health red flag (see Health line). Doctor first.</li>
+      <li>Can't train at least 3 times a week right now.</li>
+      <li>Says straight out there's no money for coaching. Point them to the free content or a workshop.</li>
+      <li>Wants it fixed in 2 weeks.</li>
+    </ul>
+    <p>Fewer, better bookings beat more, worse ones. A booking that doesn't fit wastes Conor's evening and costs you his trust.</p>
+  </div>
+  <a class="next" href="#leads">Next: Leads →</a>
+</section>
+
+<!-- LEADS -->
+<section class="panel" data-panel="leads" id="p-leads">
+  <header>
+    <h2>Where leads come from</h2>
+    <p>Hottest first. Work them in this order every day.</p>
+  </header>
+  <ol class="heat">
+    <li><span><b>START DMs.</b> Asked for coaching info. Reply within minutes, book the same day if they fit.</span></li>
+    <li><span><b>Workshop people.</b> Met Conor, paid €25, felt the difference. Message them the next day. Next workshop: 5 December.</span></li>
+    <li><span><b>Website bookings.</b> Already booked a free assessment. Confirm and remind them so they turn up. Ask Conor if these come to you.</span></li>
+    <li><span><b>Keyword commenters.</b> FLEX, BACK, STRONG. They have the freebie. Follow up 2 to 24 hours later.</span></li>
+    <li><span><b>Story replies and reactions.</b> They're paying attention. Reply like a person, not a salesman.</span></li>
+    <li><span><b>New followers.</b> A welcome message within a day.</span></li>
+    <li><span><b>Old leads.</b> Asked before, went quiet. Message again when Conor posts a story that matches their problem.</span></li>
+  </ol>
+
+  <div class="block">
+    <h3>How many to expect</h3>
+    <p>His last 3 weeks of keyword reels brought in roughly 20 commenters a week, more when a reel takes off. New followers and START DMs come on top. You'll know the real number after your first week in the inbox.</p>
+  </div>
+
+  <div class="block">
+    <h3>More leads, no ads</h3>
+    <p>Suggest these to Conor. More conversations means more bookings means more pay.</p>
+    <ul>
+      <li><b>Story polls.</b> "Is your back giving you bother? Yes or no." DM every yes.</li>
+      <li><b>Story question box.</b> "Ask me anything about hips." Everyone who asks is a lead.</li>
+      <li><b>A keyword reel every week.</b> His best reels all have one.</li>
+      <li><b>Workshop follow up.</b> Every attendee gets a message the next day.</li>
+      <li><b>Referrals.</b> Happy clients know other lads with bad backs. Ask them.</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>Keep the account safe</h3>
+    <p>It's Conor's Instagram. Send openers in small batches, change each one to fit the person, and never paste the same message 50 times in a row. Accounts that act like spam bots get restricted.</p>
+  </div>
+  <a class="next" href="#flow">Next: DM flow →</a>
+</section>
+
+<!-- DM FLOW -->
+<section class="panel" data-panel="flow" id="p-flow">
+  <header>
+    <h2>The DM flow</h2>
+    <p>7 stages, in order. Most bookings die because someone jumped from Open straight to Book.</p>
+  </header>
+  <ol class="stages">
+    <li>
+      <h4>Open</h4>
+      <p>Start the chat. Mention why they're there. One easy question.</p>
+      <p class="bubble out">Did the hip routine come through grand? Is it more tightness you're working on, or have you a bit of pain going on?</p>
+    </li>
+    <li>
+      <h4>Dig</h4>
+      <p>Find the problem. Where, how long, what it's stopping.</p>
+      <p class="bubble out">How long has the back been at you?</p>
+    </li>
+    <li>
+      <h4>Tried</h4>
+      <p>What they've already done: physio, stretching, rest. This is the gap Conor fills.</p>
+      <p class="bubble out">Did the physio help at all, or does it keep coming back?</p>
+    </li>
+    <li>
+      <h4>Feel</h4>
+      <p>Why it matters, and what happens if nothing changes.</p>
+      <p class="bubble out">If it's still like this in 6 months, what does that look like for you?</p>
+    </li>
+    <li>
+      <h4>Want</h4>
+      <p>The goal, made specific. Not "be healthy". "Play 5 a side on Thursdays."</p>
+      <p class="bubble out">What would you love to be able to do again?</p>
+    </li>
+    <li>
+      <h4>Fit</h4>
+      <p>Check the boxes you haven't ticked yet: commitment, timing, money.</p>
+      <p class="bubble out">If there was a plan that sorted this, could you give it 3 or 4 sessions a week?</p>
+    </li>
+    <li>
+      <h4>Book</h4>
+      <p>Offer the free movement assessment. Give 2 real times, not "whenever suits".</p>
+      <p class="bubble out">Conor does a free movement assessment where he looks at exactly what's going on and maps out a plan. Would Tuesday at 7 or Wednesday at 12 suit better?</p>
+    </li>
+  </ol>
+  <p>Then lock it in: confirm, send the matching proof, and remind them the morning of and an hour before. Scripts for all of it are in the next tab.</p>
+
+  <div class="block">
+    <h3>Rules of a good DM</h3>
+    <ul class="rules">
+      <li>Short. 1 to 3 lines, like texting a mate.</li>
+      <li>One question per message.</li>
+      <li>Use their words. If they say "my back keeps going", you say "keeps going".</li>
+      <li>Ask, don't pitch. The more they talk, the more they book.</li>
+      <li>No booking offer until you know the problem and why it matters.</li>
+      <li>Reply fast. A START DM answered in 5 minutes books far more often than one answered tomorrow.</li>
+      <li>Voice notes build trust fast. Use them once you're chatting.</li>
+      <li>Never argue. Never chase someone who said no. Mark it and move on.</li>
+      <li>Never give health advice. See Health line.</li>
+      <li>Log the chat in the tracker before you close the app.</li>
+    </ul>
+  </div>
+  <a class="next" href="#scripts">Next: Scripts →</a>
+</section>
+
+<!-- SCRIPTS -->
+<section class="panel" data-panel="scripts" id="p-scripts">
+  <header>
+    <h2>Scripts</h2>
+    <p>Tap Copy, paste into Instagram, swap the [brackets]. Written as you, from Conor's team. If Conor wants you messaging as him, change "Conor" to "I".</p>
+  </header>
+
+  <div class="block">
+    <h3>Openers</h3>
+    <p class="hint">The first message. Send keyword openers 2 to 24 hours after the freebie goes out.</p>
+    <div class="group">
+      <div class="script"><p class="slabel">FLEX commenter</p><p class="bubble out copytext">Hey [name], Jack here from Conor's team 👋 Did the mobility routine come through ok? Out of curiosity, what has you working on your mobility, is it stiffness or is something giving you bother?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">BACK commenter</p><p class="bubble out copytext">Hey [name], Jack from Conor's team. Did the hip sequence come through grand? It's a spicy one 😅 Is it the back that's been at you, or more the hips?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">STRONG commenter</p><p class="bubble out copytext">Hey [name], Jack from Conor's team here. Did the session video come through ok? What are you training for at the minute, or is it more about moving better?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">START DM, reply within minutes</p><p class="bubble out copytext">Hey [name], delighted you reached out 🤝 Jack here, I look after Conor's inbox. So I can point you the right way, what's the main thing you want help with? Pain, mobility, strength, or a bit of everything?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">New follower</p><p class="bubble out copytext">Hey [name], thanks for the follow 🤝 What brought you over to Conor's page, is it the mobility side or have you something niggling you?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Story reply</p><p class="bubble out copytext">Ha thanks [name]! Is that something you're working on yourself?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Workshop, the day after</p><p class="bubble out copytext">Hey [name], great having you at the hip workshop. How are the hips feeling today? 😅 Are you going to keep the routines going?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Old lead</p><p class="bubble out copytext">Hey [name], Jack from Conor's team. You were asking about the coaching back in [month]. How's the [back] been since?</p><button class="copy" type="button">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Dig questions</h3>
+    <p class="hint">Tap one to copy it. One per message.</p>
+    <div class="qs">
+      <button class="q" type="button">How long has it been going on?</button>
+      <button class="q" type="button">What's it stopping you doing right now?</button>
+      <button class="q" type="button">What have you tried for it so far?</button>
+      <button class="q" type="button">Did the physio help, or did it come back?</button>
+      <button class="q" type="button">What made you comment this week?</button>
+      <button class="q" type="button">If it's still like this in 6 months, how would that be?</button>
+      <button class="q" type="button">What would you love to be able to do again?</button>
+      <button class="q" type="button">Are you training at the minute? How many times a week?</button>
+      <button class="q" type="button">Would online suit you, or would you rather train in person?</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Pre frame the money</h3>
+    <p class="hint">Before you offer the call, so nobody gets a shock on it.</p>
+    <div class="script"><p class="bubble out copytext">Just so you know where you stand, Conor's coaching is proper 1 to 1, so it's an investment, not a €20 app. If the assessment shows he can sort this, is that something you'd be open to?</p><button class="copy" type="button">Copy</button></div>
+  </div>
+
+  <div class="block">
+    <h3>Book and lock in</h3>
+    <div class="group">
+      <div class="script"><p class="slabel">Offer the call</p><p class="bubble out copytext">Sounds like exactly what Conor works on. He does a free movement assessment where he looks at what's going on and maps out a plan to fix it. No cost, no pressure. Would [day] at [time] or [day] at [time] suit better?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">If they want the link</p><p class="bubble out copytext">No bother, here's Conor's calendar, grab whatever slot suits: [booking link]. Give me a shout once you're in and I'll make sure he has your notes.</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Confirm, straight after</p><p class="bubble out copytext">Locked in ✅ [day] at [time]. Conor will [ring you / see you at the gym / send a video link]. Before then, have a think about the one thing you'd love to be able to do pain free. That's what he'll build the plan around.</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Send proof, same day</p><p class="bubble out copytext">Thought you'd like this. [Niall] had the same [desk job back pain] as you: [link]. It's the same thing Conor will look at on [day].</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Reminder, morning of</p><p class="bubble out copytext">Morning [name]! Just a reminder you're with Conor today at [time] 💪 Still good for you?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Reminder, 1 hour before</p><p class="bubble out copytext">See you in an hour [name]. [Link or address] 👇</p><button class="copy" type="button">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>No reply</h3>
+    <p class="hint">Most bookings come after the second or third message. Set the next follow up date in the tracker every time.</p>
+    <div class="cadence">
+      <div class="script"><p class="slabel">Day 1</p><p class="bubble out copytext">Hey [name], did that come through ok?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Day 3</p><p class="bubble out copytext">Quick one [name], is it more stiffness or actual pain you're dealing with?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Day 7</p><p class="bubble out copytext">Conor posted this today and I thought of you: [link]. How's the [back] been?</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Day 14, the last one</p><p class="bubble out copytext">I won't keep at you [name]. If sorting the [back] is still on your list, just reply "yes" and I'll send you a couple of times for the free assessment.</p><button class="copy" type="button">Copy</button></div>
+    </div>
+    <p class="hint">After day 14, mark them Nurture. Message again when Conor posts a story that fits them, or a workshop goes up.</p>
+  </div>
+
+  <div class="block">
+    <h3>No show</h3>
+    <div class="group">
+      <div class="script"><p class="slabel">10 minutes after the start time</p><p class="bubble out copytext">Hey [name], Conor's on now, everything ok? No stress if something came up.</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">Later that day</p><p class="bubble out copytext">Life happens! Want me to grab you another slot? [day] at [time] or [day] at [time]?</p><button class="copy" type="button">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>For Conor</h3>
+    <div class="group">
+      <div class="script"><p class="slabel">Handoff note, before every call</p><p class="bubble out copytext">📋 [Name] @[handle], [day] [time]
+Problem: [what, how long]
+Tried: [physio / stretching / rest]
+Stopping them: [what they can't do]
+Goal: [what they want to do]
+Why now: [reason]
+Online or in person: [ ]
+Training now: [x] times a week
+Money: [open to investing? any hints]
+Score: [x]/6
+Watch for: [anything]</p><button class="copy" type="button">Copy</button></div>
+      <div class="script"><p class="slabel">End of day report, every night</p><p class="bubble out copytext">EOD [date]
+New chats: [ ]
+Follow ups sent: [ ]
+Replies: [ ]
+Qualified: [ ]
+Booked: [ ]
+Calls tomorrow: [ ]
+Wins: [ ]
+What leads are saying: [ ]
+Need from you: [ ]</p><button class="copy" type="button">Copy</button></div>
+    </div>
+  </div>
+  <a class="next" href="#objections">Next: Objections →</a>
+</section>
+
+<!-- OBJECTIONS -->
+<section class="panel" data-panel="objections" id="p-objections">
+  <header>
+    <h2>Objections</h2>
+    <p>An objection is usually a question in disguise. Stay calm, find out what's behind it, answer that one thing.</p>
+  </header>
+  <div class="obj">
+    <article class="card">
+      <p class="bubble in">How much is it?</p>
+      <p class="why"><b>Usually:</b> interested, but braced for a big number.</p>
+      <div class="script"><p class="bubble out copytext">Fair question. It depends on online or in person and what you need, Conor maps that out on the free assessment. I'll be straight with you, it's proper 1 to 1, so it's an investment. If it sorts the [back] for good, is that something you'd be open to?</p><button class="copy" type="button">Copy</button></div>
+      <p class="note">If Conor OKs a ballpark, give it. Never make one up.</p>
+    </article>
+    <article class="card">
+      <p class="bubble in">I'll think about it.</p>
+      <p class="why"><b>Usually:</b> something's unclear, or it isn't a priority yet.</p>
+      <div class="script"><p class="bubble out copytext">Course. What's the main thing you're weighing up?</p><button class="copy" type="button">Copy</button></div>
+      <p class="note">Then answer that one thing. Nothing else.</p>
+    </article>
+    <article class="card">
+      <p class="bubble in">I can't afford it.</p>
+      <p class="why"><b>Usually:</b> either true, or they don't see the value yet.</p>
+      <div class="script"><p class="bubble out copytext">Totally get it. Is it that money's tight right now, or more that you're not sure it'd work for you?</p><button class="copy" type="button">Copy</button></div>
+      <p class="note">If money's tight, point them to the free content or a workshop and mark Nurture. Don't push.</p>
+    </article>
+    <article class="card">
+      <p class="bubble in">I'll just do the free routine for now.</p>
+      <p class="why"><b>Usually:</b> not convinced they need help yet.</p>
+      <div class="script"><p class="bubble out copytext">Do, it's a great start. Give it a couple of weeks and let me know how the [back] feels. If it's still at you, the assessment is there.</p><button class="copy" type="button">Copy</button></div>
+      <p class="note">Set a follow up for 14 days.</p>
+    </article>
+    <article class="card">
+      <p class="bubble in">I've tried physio, nothing works.</p>
+      <p class="why"><b>Usually:</b> lost hope. This is Conor's sweet spot.</p>
+      <div class="script"><p class="bubble out copytext">That's the story with most of the lads Conor works with. Colin was the same, physio told him weak glutes, weak hamstrings, and it kept coming back. Want me to send you his story?</p><button class="copy" type="button">Copy</button></div>
+    </article>
+    <article class="card">
+      <p class="bubble in">What if this makes my back worse?</p>
+      <p class="why"><b>Usually:</b> scared. Someone asked exactly this under his BACK reel.</p>
+      <div class="script"><p class="bubble out copytext">Fair worry. That's why Conor starts with an assessment, he looks at what's going on before he gives you anything. Most people who come to him have been through physio already. Has a physio or doctor had a look at it?</p><button class="copy" type="button">Copy</button></div>
+      <p class="note">If they mention any red flag, go to Health line.</p>
+    </article>
+    <article class="card">
+      <p class="bubble in">I don't have time.</p>
+      <p class="why"><b>Usually:</b> picturing 2 hours a day in the gym.</p>
+      <div class="script"><p class="bubble out copytext">How many times are you training at the minute? Conor builds it around what you've got, most of his clients train 3 or 4 times a week.</p><button class="copy" type="button">Copy</button></div>
+    </article>
+    <article class="card">
+      <p class="bubble in">I need to ask my partner.</p>
+      <p class="why"><b>Usually:</b> a shared money decision. Respect it.</p>
+      <div class="script"><p class="bubble out copytext">Makes sense. Would it help if they jumped on the assessment too? Then you both hear the plan.</p><button class="copy" type="button">Copy</button></div>
+    </article>
+    <article class="card">
+      <p class="bubble in">Is it online or in person?</p>
+      <p class="why"><b>Usually:</b> a buying question. Good sign.</p>
+      <div class="script"><p class="bubble out copytext">Both. In person around [Dublin and Meath], or fully online with a programme built for you. Which would suit you better?</p><button class="copy" type="button">Copy</button></div>
+      <p class="note">Check Conor's in person locations with him first.</p>
+    </article>
+    <article class="card">
+      <p class="bubble in">I'm already with a PT.</p>
+      <p class="why"><b>Usually:</b> either happy, or quietly not.</p>
+      <div class="script"><p class="bubble out copytext">Ah sound. Is it going well, or what made you check out Conor's stuff?</p><button class="copy" type="button">Copy</button></div>
+      <p class="note">If they're happy, wish them well and leave it.</p>
+    </article>
+    <article class="card">
+      <p class="bubble in">Maybe in the new year.</p>
+      <p class="why"><b>Usually:</b> a real timing issue, or a soft no.</p>
+      <div class="script"><p class="bubble out copytext">No bother. What would need to happen for it to be the right time?</p><button class="copy" type="button">Copy</button></div>
+      <p class="note">Set a follow up for the date they give you.</p>
+    </article>
+    <article class="card">
+      <p class="bubble in">Is this Conor?</p>
+      <p class="why"><b>Usually:</b> just checking. Always tell the truth.</p>
+      <div class="script"><p class="bubble out copytext">Jack here, I look after Conor's inbox so he can spend his time coaching. Conor runs every assessment himself.</p><button class="copy" type="button">Copy</button></div>
+    </article>
+  </div>
+  <a class="next" href="#health">Next: Health line →</a>
+</section>
+
+<!-- HEALTH -->
+<section class="panel" data-panel="health" id="p-health">
+  <header>
+    <h2>Health line</h2>
+    <p>You're not a physio, and a DM isn't an assessment. This tab protects the lead, Conor, and you.</p>
+  </header>
+  <div class="block">
+    <h3>Never</h3>
+    <ul class="never">
+      <li>Diagnose. ("Sounds like sciatica.")</li>
+      <li>Promise a fix. ("Conor will sort your disc.")</li>
+      <li>Give exercises for their pain.</li>
+      <li>Tell them to stop seeing their physio or doctor.</li>
+      <li>Make up results or timelines.</li>
+    </ul>
+    <div class="script"><p class="slabel">Say this instead</p><p class="bubble out copytext">Conor works with a lot of people with [back] stuff. He'll look at exactly what's going on at the assessment.</p><button class="copy" type="button">Copy</button></div>
+  </div>
+
+  <div class="callout">
+    <h3>Stop selling if you hear these</h3>
+    <p class="lbl"><b>Tell them to go to A&amp;E today:</b></p>
+    <ul>
+      <li>Numbness around the groin, bum or inner thighs.</li>
+      <li>Losing control of their bladder or bowels, or they can't pee.</li>
+      <li>Weakness or numbness in both legs, or weakness that's getting worse.</li>
+    </ul>
+    <div class="script"><p class="bubble out copytext">Thanks for telling me. Please don't sit on that one, numbness there or changes with your bladder need to be checked today, and A&amp;E is the right place for it. Look after yourself, and let me know how you get on.</p><button class="copy" type="button">Copy</button></div>
+    <p class="lbl"><b>Tell them to see a GP before training:</b></p>
+    <ul>
+      <li>Pain that started after a fall, crash or accident.</li>
+      <li>Fever, or losing weight without trying.</li>
+      <li>Pain that's worse at night and won't ease.</li>
+      <li>A history of cancer, or recent surgery.</li>
+    </ul>
+    <div class="script"><p class="bubble out copytext">Thanks for telling me that. Honestly, that's something to get checked by a GP first, just to be safe. Once you're cleared, Conor would love to help you build back up. Will you let me know how you get on?</p><button class="copy" type="button">Copy</button></div>
+    <p>Either way: mark them Nurture in the tracker and tell Conor.</p>
+  </div>
+
+  <div class="block">
+    <h3>Other numbness or tingling</h3>
+    <p>Plenty of Conor's clients had it. Niall used to go numb sitting in the car. Don't judge it yourself. Ask if a doctor or physio has looked at it, and put it in Conor's handoff note. Conor decides, not you.</p>
+  </div>
+  <div class="block">
+    <h3>Screenshots and privacy</h3>
+    <p>Before you paste a screenshot into the copilot, crop out phone numbers and email addresses. Keep chats between you, the lead and Conor.</p>
+  </div>
+  <a class="next" href="#day">Next: Your day →</a>
+</section>
+
+<!-- YOUR DAY -->
+<section class="panel" data-panel="day" id="p-day">
+  <header>
+    <h2>Your day</h2>
+    <p>2 to 3 hours in 3 blocks, same times every day. Showing up every day books more calls than talent does.</p>
+  </header>
+  <div class="dayplan">
+    <article class="card">
+      <p class="time">Morning, 30 to 45 min</p>
+      <ol>
+        <li>Answer every reply from overnight. START DMs first.</li>
+        <li>Send the morning reminders for today's calls.</li>
+        <li>Send Conor a handoff note for each of today's calls.</li>
+      </ol>
+    </article>
+    <article class="card">
+      <p class="time">Midday, 30 min</p>
+      <ol>
+        <li>New FLEX, BACK and STRONG commenters: openers.</li>
+        <li>New followers: openers.</li>
+        <li>Every new lead gets a row in the tracker.</li>
+      </ol>
+    </article>
+    <article class="card">
+      <p class="time">Evening, 45 to 60 min</p>
+      <ol>
+        <li>Live chats: dig, qualify, book. Evenings are when people reply.</li>
+        <li>Every follow up due today (the Next follow up column).</li>
+        <li>1 hour reminders for evening calls.</li>
+        <li>Fill in today's row on the Daily tab.</li>
+        <li>Send Conor the end of day report.</li>
+      </ol>
+    </article>
+    <article class="card">
+      <p class="time">Sunday, 20 min</p>
+      <ol>
+        <li>Check the Dashboard. The number furthest off target is next week's focus.</li>
+        <li>Paste 5 chats that didn't book into the copilot with "review".</li>
+        <li>List the Nurture leads to message this week.</li>
+      </ol>
+    </article>
+  </div>
+  <p>When Conor posts a new keyword reel, check the comments that evening. Fresh leads go cold fast.</p>
+  <a class="next" href="#numbers">Next: Numbers →</a>
+</section>
+
+<!-- NUMBERS -->
+<section class="panel" data-panel="numbers" id="p-numbers">
+  <header>
+    <h2>Numbers</h2>
+    <p>5 numbers tell you everything. The tracker works them out for you.</p>
+  </header>
+  <div class="block">
+    <h3>The 5 numbers</h3>
+    <ol>
+      <li><b>Reply rate.</b> Replies ÷ openers sent. Aim for 30 to 50% on warm leads.</li>
+      <li><b>Booking rate.</b> Booked ÷ replies. Aim for 15 to 25%.</li>
+      <li><b>Show rate.</b> Turned up ÷ booked. Aim for 70% or better.</li>
+      <li><b>Close rate.</b> Bought ÷ turned up. Conor's number, but your bookings drive it. Aim for 25 to 40%.</li>
+      <li><b>Speed to lead.</b> How fast you answer a START DM. Aim for under 15 minutes during your blocks.</li>
+    </ol>
+    <p class="small muted">Common starting targets, not laws. After a month, your own numbers become the targets.</p>
+  </div>
+
+  <div class="block">
+    <h3>When a number is low</h3>
+    <div class="tblwrap">
+      <table class="tbl">
+        <thead><tr><th>Low</th><th>Usually means</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Reply rate</td><td>Openers too long or too salesy</td><td>Shorter. Ask about them. Mention what they commented.</td></tr>
+          <tr><td>Booking rate</td><td>Pitching too early</td><td>Spend longer on Dig and Feel.</td></tr>
+          <tr><td>Show rate</td><td>Booked too far out, weak lock in</td><td>Book within 48 hours. Confirm, send proof, remind twice.</td></tr>
+          <tr><td>Close rate</td><td>Booking people who don't fit</td><td>Stick to the 6 point check. Better handoff notes.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card calc" id="calc">
+    <h3>What you could earn</h3>
+    <p class="small muted">The starting numbers are a guess from Conor's last 3 weeks of reels. Swap in your real ones after week 1.</p>
+    <fieldset class="inputs funnel">
+      <legend>Your week</legend>
+      <label for="c-open">Openers sent a week<input id="c-open" type="number" inputmode="numeric" min="0" step="5" value="60"></label>
+      <label for="c-reply">Reply rate %<input id="c-reply" type="number" inputmode="decimal" min="0" max="100" step="5" value="40"></label>
+      <label for="c-book">Booked, % of replies<input id="c-book" type="number" inputmode="decimal" min="0" max="100" step="5" value="20"></label>
+      <label for="c-show">Show rate %<input id="c-show" type="number" inputmode="decimal" min="0" max="100" step="5" value="70"></label>
+      <label for="c-close">Close rate %<input id="c-close" type="number" inputmode="decimal" min="0" max="100" step="5" value="25"></label>
+    </fieldset>
+    <fieldset class="inputs">
+      <legend>The money</legend>
+      <label for="c-price">Programme price €<input id="c-price" type="number" inputmode="numeric" min="0" step="100" value="1200"></label>
+      <label for="c-pct">Your % of cash<input id="c-pct" type="number" inputmode="decimal" min="0" max="100" step="1" value="10"></label>
+      <label for="c-fee">Your fee per show €<input id="c-fee" type="number" inputmode="numeric" min="0" step="5" value="0"></label>
+      <label for="c-hrs">Your hours a week<input id="c-hrs" type="number" inputmode="decimal" min="0" step="1" value="12"></label>
+    </fieldset>
+    <div class="results">
+      <div class="big"><span id="r-pay">€436</span><small>your pay a month</small></div>
+      <div class="big"><span id="r-hour">€8.40</span><small>per hour worked</small></div>
+    </div>
+    <div class="bars" id="bars">
+      <p class="cap">A month</p>
+    </div>
+    <p class="small" id="r-line">A month: 21 calls booked, 15 turn up, 3.6 buy. That's €4,365 for Conor.</p>
+  </div>
+
+  <div class="block">
+    <h3>The honest read</h3>
+    <p>On a % only deal with these numbers, you'd earn about €440 a month for about 52 hours. That's under €9 an hour. Add a €25 fee for every qualified call that shows and it's about €800, around €15 an hour. That's why the deal matters more than any script.</p>
+    <p>From Conor alone, expect roughly €400 to €1,100 a month part time, depending on his lead flow and your deal. Full time money comes from the moves at the bottom of The deal tab.</p>
+  </div>
+  <a class="next" href="#deal">Next: The deal →</a>
+</section>
+
+<!-- DEAL -->
+<section class="panel" data-panel="deal" id="p-deal">
+  <header>
+    <h2>The deal</h2>
+    <p>Sort this before you send a single DM. It decides what every hour of your work is worth.</p>
+  </header>
+  <div class="block">
+    <h3>10 things to agree with Conor</h3>
+    <ol>
+      <li><b>What am I paid on?</b> Booked, showed, or closed? Best for you: a fee for every qualified call that shows, plus a % of every sale.</li>
+      <li><b>What %, of what?</b> A % of cash collected is normal. If a client pays monthly, do you get your % on every payment?</li>
+      <li><b>Renewals.</b> If a client you booked renews or upgrades, are you paid on that? Colin's been with Conor 12 months. That's where the money is.</li>
+      <li><b>Which leads are mine?</b> Anyone you message first? Website bookings? Get it in writing, even a WhatsApp.</li>
+      <li><b>Payday.</b> Weekly or monthly, and how will you see what closed? Ask to see sales for your leads, or share the tracker.</li>
+      <li><b>Access.</b> Inbox access through Meta Business Suite, so he doesn't have to share his password. Plus his booking link.</li>
+      <li><b>You or him?</b> Do you message as "Jack from Conor's team" or as Conor? As yourself is more honest, and you can send voice notes.</li>
+      <li><b>Price talk.</b> Can you give a ballpark in DMs? What exactly is the €1,200: how long, online or in person?</li>
+      <li><b>Other coaches.</b> Are you free to set for coaches who aren't in his space?</li>
+      <li><b>Review.</b> Look at the numbers together after 30 days.</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>What's normal</h3>
+    <p class="small muted">Ranges people commonly quote, not rules. Every deal is different.</p>
+    <div class="deals">
+      <div class="card"><b>% only</b><p>Often 5 to 10% of cash collected. On €1,200 that's €60 to €120 a sale, and slow weeks pay nothing.</p></div>
+      <div class="card"><b>Per show</b><p>A flat fee for each qualified call that turns up. Pays for your work, not for Conor's closing.</p></div>
+      <div class="card"><b>Hybrid</b><p>A smaller fee per show plus a %. The best fit for a €1,200 offer.</p></div>
+    </div>
+    <p class="ask"><b>What I'd ask for:</b> €25 for every qualified call that shows, plus 10% of all cash collected from clients you booked, including monthly payments and renewals for 12 months. Review after 30 days.</p>
+  </div>
+
+  <div class="block">
+    <div class="script"><p class="slabel">Message to send Conor</p><p class="bubble out copytext">Hey Conor, buzzing to get going. Before I start, can we lock in a few things so I can hit the ground running?
+1. Pay: what structure have you in mind? I'd love €25 for every qualified call that shows, plus 10% of cash collected on clients I book, including monthly payments and renewals. Open to chat.
+2. Leads: which ones count as mine? I'm thinking anyone I message first, plus any assessment I book.
+3. Access: can you add me to the IG inbox through Meta Business Suite, and send me your booking link?
+4. Offer: how long is the €1,200 programme, is it upfront or monthly, and is online the same price as in person?
+5. Price in DMs: can I give a ballpark, or keep it for the call?
+6. Messaging: will I go as "Jack from Conor's team" or as you?
+7. Payday: weekly or monthly, and how will I see what closed?
+Then we review the numbers after 30 days. Sound?</p><button class="copy" type="button">Copy</button></div>
+  </div>
+
+  <div class="block">
+    <h3>How setters get to full time</h3>
+    <ol>
+      <li><b>Get great with Conor.</b> 30 to 60 days. Your numbers become your CV.</li>
+      <li><b>Get proof.</b> Once your bookings close, ask Conor for a testimonial and referrals.</li>
+      <li><b>Add a second coach, then a third.</b> Not his competitors. 2 to 3 hours a day each.</li>
+      <li><b>Learn to close.</b> Closers usually earn a bigger cut per sale. Ask to sit in on Conor's calls.</li>
+      <li><b>Go up in price.</b> Same skill, but coaches with €3,000 offers pay more per booking.</li>
+    </ol>
+  </div>
+  <a class="next" href="#copilot">Next: Copilot →</a>
+</section>
+
+<!-- COPILOT -->
+<section class="panel" data-panel="copilot" id="p-copilot">
+  <header>
+    <h2>Your copilot</h2>
+    <p>An AI assistant set up for this job and nothing else. Paste a DM screenshot and it tells you where the lead is, their score, and the next message to send.</p>
+  </header>
+  <div class="block">
+    <h3>Set it up once</h3>
+    <ol class="steps">
+      <li>In Claude, make a new Project. Call it <b>FlexyStrength Setter</b>.</li>
+      <li>Open the project's instructions, paste the prompt below, save.</li>
+      <li>Start a chat inside that project. Paste a DM screenshot and type <code>next</code>.</li>
+    </ol>
+  </div>
+  <div class="block">
+    <h3>What to type</h3>
+    <div class="tblwrap">
+      <table class="tbl cmds">
+        <tbody>
+          <tr><td><code>next</code> + chat</td><td>Stage, score, the next message (2 options) and what to log</td></tr>
+          <tr><td><code>opener</code> + source</td><td>2 openers for FLEX, BACK, STRONG, START, follower, story, workshop or old lead</td></tr>
+          <tr><td><code>objection</code> + what they said</td><td>What's behind it, and 2 replies</td></tr>
+          <tr><td><code>followup</code> + chat + days quiet</td><td>The right follow up for that day</td></tr>
+          <tr><td><code>prep</code> + chat</td><td>The handoff note for Conor</td></tr>
+          <tr><td><code>eod</code> + your numbers</td><td>The end of day report</td></tr>
+          <tr><td><code>review</code> + a chat that didn't book</td><td>3 fixes, each with the line you should have sent</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="block">
+    <h3>The prompt</h3>
+    <div class="script prompt"><pre class="copytext" id="prompt">You are my appointment setting copilot for FlexyStrength, the strength and mobility coaching business run by Conor Oliver (Instagram @flexy_strength, website flexystrength.com). Conor coaches in person around Dublin and Meath, and online.
+
+I'm Jack, Conor's appointment setter. I message leads on Instagram, find the ones Conor can help, and book them onto his free movement assessment. Conor runs the assessment and sells the coaching (€1,200). I get paid when my bookings show up and buy.
+
+ABOUT CONOR
+- Method: an integrated strength and mobility system. "Build a strong, mobile &amp; athletic body." "No gimmicks. No endless stretching routines. Just building real, quality strength from the ground up."
+- 3 Progression Pillars: 1 Joint Capacity (active mobility, joint strength), 2 Relative Strength (stretch strength, bodyweight, heavy compound lifts), 3 Expansion (power, skills like pistol squats and handstands).
+- Most clients have already been through physio. Many start with pain or restriction. Clients usually train 3 to 4 times a week.
+- Lead magnets: comment FLEX (free mobility routine), BACK (hip rotation sequence breakdown), STRONG (full strength and flexibility session). DM START for coaching info, the hottest lead.
+- Workshops: 2 hour group sessions on hips and mobility, about €25. Next: Hip Mobility Workshop, 5 December.
+- Proof to match to leads:
+  Niall: desk job, 8 to 10 hours sitting, back pain so bad he stopped the gym and teaching classes. Pain gone in 12 weeks. For desk workers with back pain.
+  Colin: years of hamstring, groin and calf niggles, physio didn't stick, stopped sport. 12 months on: Hell &amp; Back, a half marathon, working on handstands. For sporty people who keep getting injured.
+  A herniated disc client whose back went every 3 to 6 months: hasn't gone in 18 months. Larry: herniated disc, lost 20kg. For disc and back people.
+  Malik: weak and tight hips. For hip stiffness.
+
+WHO TO BOOK: THE 6 POINT CHECK
+1 Problem Conor fixes (pain, injury, stiffness, plateau)
+2 It matters (stopping or limiting something they care about)
+3 Why now (an event, sick of the cycle, getting worse)
+4 Will do the work (3 to 4 sessions a week, online or in person)
+5 Open to investing (gets that 1 to 1 coaching costs money)
+6 Their call (adult, own money)
+5 or 6: book. 3 or 4: keep talking and find the missing box. 0 to 2: give value, mark Nurture.
+Only tick a box if the chat shows it. Never guess.
+Don't book: under 18, only wants freebies, health red flags, can't train 3 times a week, says plainly there's no money, wants a 2 week fix.
+
+THE DM FLOW
+Open, Dig (problem, how long), Tried (physio, stretching, rest), Feel (why it matters, what if nothing changes), Want (a specific goal), Fit (check missing boxes, pre frame the investment), Book (free movement assessment, offer 2 specific times), Lock in (confirm, send matching proof, remind the morning of and 1 hour before).
+
+HOW TO WRITE MY MESSAGES
+- 1 to 3 short lines, like texting a mate. Irish and casual: "grand", "sound", "no bother" are fine. One emoji at most, like 🤝 or 💪.
+- One question per message. Mirror their words.
+- Ask, don't pitch. No booking offer until I know the problem and why it matters.
+- Write as Jack from Conor's team, with Conor in the third person. If I say "as Conor", write as Conor in the first person.
+- No em dashes. No hyphens used as dashes. Use commas or full stops.
+- Never invent results, prices, dates, availability or scarcity. If a fact isn't in this prompt or in what I give you, put [brackets] for me to fill in.
+- Don't quote a price unless I tell you Conor allows it. Use: "it's proper 1 to 1, so it's an investment, not a €20 app."
+- No pressure, no fake urgency, no guilt trips. If they say no, be gracious and point them to Conor's free content.
+
+HEALTH LINE (NEVER BREAK THIS)
+- Never diagnose, never promise to fix an injury, never give exercises for their pain, never tell them to stop seeing a physio or doctor.
+- Numbness around the groin, bum or inner thighs, losing control of bladder or bowels, can't pee, or weakness in both legs or weakness getting worse: kindly tell them to go to A&amp;E today, drop the sales chat, and tell me to flag it to Conor.
+- Pain after a fall or accident, fever, weight loss without trying, pain worse at night that won't ease, history of cancer, recent surgery: tell them to see a GP first, mark Nurture, and tell me to flag it to Conor.
+- Any other numbness or tingling: ask if a doctor or physio has looked at it, and put it in the handoff note. Conor decides, not us.
+
+WHEN I PASTE A CHAT OR SCREENSHOT, ANSWER IN EXACTLY THIS SHAPE
+STAGE: Open / Dig / Tried / Feel / Want / Fit / Book / Booked / Nurture / Not a fit
+SCORE: x/6. Ticked: which. Missing: which.
+SEND THIS: the message
+OR THIS: an alternative
+WHY: one line
+TRACKER: Stage, Next follow up date, Notes in under 10 words
+FLAGS: red flags, reasons not to book, or "none"
+
+COMMANDS
+- next + chat: the shape above.
+- opener + source (FLEX, BACK, STRONG, START, follower, story, workshop, old lead) + anything I know: 2 openers.
+- objection + what they said: what's usually behind it, then 2 replies.
+- followup + chat + days since they last replied: day 1 check in, day 3 easy question, day 7 share a matching story, day 14 last check, then Nurture.
+- prep + chat: the handoff note for Conor: name and handle, call time, problem and how long, what they tried, what it stops them doing, goal, why now, online or in person, training now, money signals, score, anything to watch.
+- eod + my numbers: the end of day report: new chats, follow ups sent, replies, qualified, booked, calls tomorrow, wins, what leads are saying, what I need from Conor.
+- review + a chat that didn't book: 3 things to do better, each with the exact line I should have sent.
+
+If something I paste is unclear, ask me one short question instead of guessing.</pre><button class="copy" type="button">Copy prompt</button></div>
+  </div>
+  <a class="next" href="#words">Next: Words →</a>
+</section>
+
+<!-- WORDS -->
+<section class="panel" data-panel="words" id="p-words">
+  <header>
+    <h2>Words you'll hear</h2>
+    <p>Setter slang, in plain English.</p>
+  </header>
+  <dl class="gloss">
+    <div><dt>Setter</dt><dd>You. Starts chats, qualifies, books calls.</dd></div>
+    <div><dt>Closer</dt><dd>Whoever runs the sales call. Here, Conor.</dd></div>
+    <div><dt>Lead</dt><dd>Anyone who might buy.</dd></div>
+    <div><dt>Warm lead</dt><dd>Has already engaged: commented, DMed, came to a workshop.</dd></div>
+    <div><dt>Cold lead</dt><dd>Never interacted. You won't do much cold.</dd></div>
+    <div><dt>Opener</dt><dd>Your first message.</dd></div>
+    <div><dt>Qualify</dt><dd>Check they're a fit before booking.</dd></div>
+    <div><dt>DQ</dt><dd>Disqualify. Decide they're not a fit.</dd></div>
+    <div><dt>Speed to lead</dt><dd>How fast you reply to a hot lead.</dd></div>
+    <div><dt>Lead magnet</dt><dd>The freebie people comment for: FLEX, BACK, STRONG.</dd></div>
+    <div><dt>Pre frame</dt><dd>Setting expectations before the call, like it being an investment.</dd></div>
+    <div><dt>Show rate</dt><dd>% of booked calls that turn up.</dd></div>
+    <div><dt>No show</dt><dd>Booked, didn't turn up.</dd></div>
+    <div><dt>Close rate</dt><dd>% of calls that buy.</dd></div>
+    <div><dt>Nurture</dt><dd>Not ready now. Stay in touch.</dd></div>
+    <div><dt>Reactivation</dt><dd>Messaging old leads again.</dd></div>
+    <div><dt>Handoff note</dt><dd>Your summary of the lead for Conor before the call.</dd></div>
+    <div><dt>EOD</dt><dd>End of day report.</dd></div>
+    <div><dt>Cash collected</dt><dd>Money actually paid, not promised.</dd></div>
+    <div><dt>PIF</dt><dd>Paid in full, as opposed to monthly payments.</dd></div>
+    <div><dt>KPI</dt><dd>A number you track to see if things are working.</dd></div>
+    <div><dt>Pipeline</dt><dd>All your leads, sorted by stage.</dd></div>
+    <div><dt>CRM</dt><dd>Software for tracking leads. Your tracker does the job for now.</dd></div>
+    <div><dt>ManyChat</dt><dd>A tool that sends a DM automatically when someone comments a keyword.</dd></div>
+  </dl>
+  <a class="next" href="#start">Back to Start →</a>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p>Figures on this page are from Conor's public posts on 19 Nov 2026, or are clearly marked guesses. Check anything about price, programme length and locations with Conor before you say it to a lead.</p>
+</footer>
+
+<script>
+(function(){
+  var TABS=["start","conor","who","leads","flow","scripts","objections","health","day","numbers","deal","copilot","words"];
+  var panels=document.querySelectorAll(".panel");
+  var chips=document.querySelectorAll(".tabrow a");
+  var nav=document.querySelector(".tabs");
+
+  function current(){
+    var id=location.hash.replace("#","");
+    return TABS.indexOf(id)>-1?id:"start";
+  }
+  function show(jump){
+    var id=current();
+    panels.forEach(function(p){p.hidden=p.getAttribute("data-panel")!==id;});
+    chips.forEach(function(a){
+      if(a.getAttribute("data-tab")===id){
+        a.setAttribute("aria-current","page");
+        var row=a.parentNode;
+        row.scrollLeft=a.offsetLeft-(row.clientWidth-a.offsetWidth)/2;
+      }else{
+        a.removeAttribute("aria-current");
+      }
+    });
+    if(jump){
+      var y=nav.offsetTop;
+      if(window.scrollY>y) window.scrollTo(0,y);
+    }
+  }
+  window.addEventListener("hashchange",function(){show(true);});
+  show(false);
+
+  // Highlight the [placeholders] so they're easy to spot before sending.
+  document.querySelectorAll("p.copytext").forEach(function(el){
+    el.innerHTML=el.innerHTML.replace(/\[([^\]<]+)\]/g,'<span class="ph">[$1]</span>');
+  });
+
+  // Copy buttons. Fall back to selecting the text where the clipboard is refused.
+  function selectEl(el){
+    var r=document.createRange();r.selectNodeContents(el);
+    var s=window.getSelection();s.removeAllRanges();s.addRange(r);
+  }
+  function flash(btn,label){
+    if(btn.classList.contains("q")){
+      btn.classList.add("done");
+      setTimeout(function(){btn.classList.remove("done");},1400);
+      return;
+    }
+    var old=btn.getAttribute("data-label")||btn.textContent;
+    btn.setAttribute("data-label",old);
+    btn.textContent=label;btn.classList.add("done");
+    setTimeout(function(){btn.textContent=old;btn.classList.remove("done");},1600);
+  }
+  document.addEventListener("click",function(e){
+    var btn=e.target.closest(".copy,.q");
+    if(!btn) return;
+    var src=btn.classList.contains("q")?btn:btn.parentNode.querySelector(".copytext");
+    if(!src) return;
+    var text=src.innerText.trim();
+    var p;
+    try{p=navigator.clipboard.writeText(text);}catch(err){p=Promise.reject(err);}
+    p.then(function(){flash(btn,"Copied");},function(){selectEl(src);flash(btn,"Selected, tap Copy");});
+  });
+
+  // 6 point check.
+  var boxes=document.querySelectorAll("#score input");
+  var verdict=document.getElementById("verdict");
+  function score(){
+    var n=0;
+    boxes.forEach(function(b){if(b.checked)n++;});
+    var level=n>=5?"good":n>=3?"mid":"low";
+    var msg=n>=5?"Book them.":n>=3?"Keep talking. Find the missing box first.":"Give value, don't book yet.";
+    verdict.textContent=n+" of 6. "+msg;
+    verdict.setAttribute("data-level",level);
+  }
+  boxes.forEach(function(b){b.addEventListener("change",score);});
+  score();
+
+  // Earnings calculator. Weekly inputs, monthly outputs (4.33 weeks a month).
+  var W=4.33;
+  function val(id){var x=parseFloat(document.getElementById(id).value);return isFinite(x)&&x>0?x:0;}
+  function eur(x){return "€"+Math.round(x).toLocaleString("en-IE");}
+  function count(x){return x>=10?Math.round(x).toLocaleString("en-IE"):String(Math.round(x*10)/10);}
+  var bars=document.getElementById("bars");
+  function calc(){
+    var open=val("c-open")*W;
+    var rep=open*val("c-reply")/100;
+    var bk=rep*val("c-book")/100;
+    var sh=bk*val("c-show")/100;
+    var won=sh*val("c-close")/100;
+    var cash=won*val("c-price");
+    var pay=cash*val("c-pct")/100+sh*val("c-fee");
+    var hrs=val("c-hrs")*W;
+    document.getElementById("r-pay").textContent=eur(pay);
+    document.getElementById("r-hour").textContent=hrs>0?"€"+(pay/hrs).toFixed(2):"€0";
+    document.getElementById("r-line").textContent="A month: "+count(bk)+" calls booked, "+count(sh)+" turn up, "+count(won)+" buy. That's "+eur(cash)+" for Conor.";
+    var rows=[["Openers",open],["Replies",rep],["Booked",bk],["Turned up",sh],["New clients",won]];
+    var max=open||1;
+    bars.querySelectorAll(".bar").forEach(function(el){el.remove();});
+    rows.forEach(function(r){
+      var row=document.createElement("div");row.className="bar";
+      var name=document.createElement("span");name.textContent=r[0];
+      var track=document.createElement("span");track.className="track";
+      var fill=document.createElement("span");fill.className="fill";
+      fill.style.width=Math.max(0,Math.min(100,r[1]/max*100)).toFixed(2)+"%";
+      track.appendChild(fill);
+      var v=document.createElement("span");v.className="v";v.textContent=count(r[1]);
+      row.appendChild(name);row.appendChild(track);row.appendChild(v);
+      bars.appendChild(row);
+    });
+  }
+  document.querySelectorAll("#calc input").forEach(function(i){i.addEventListener("input",calc);});
+  calc();
+})();
+</script>
+</body>
+</html>

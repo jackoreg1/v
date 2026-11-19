@@ -6,12 +6,13 @@ have to answer with his thumbs.
 
 ## What this repo is
 
-Two standalone, self-contained HTML pages. That is the whole repo.
+Three standalone, self-contained HTML pages. That is the whole repo.
 
 | File | What it is |
 | --- | --- |
 | `vision-k7x9q2.html` | Jack's "vision build" of jackoregan.com, written as if it is August 2027. Home page, weekly post, Leak Finder quiz, the EUR 29 book sales page, an interactive reader for the book, the EUR 999 assessment funnel, and a funnel map. |
 | `movienight.html` | A trailer-rating app. 61 films, score each 1-10, anything 7+ is kept on a shortlist that survives refreshes. |
+| `setter-playbook.html` | Jack's appointment setting playbook for Conor Oliver's FlexyStrength coaching (Dublin and Meath, EUR 1,200 offer). Brand research, who to book, DM scripts with copy buttons, objections, health red flags, daily routine, an earnings calculator, the deal to agree with Conor, and the prompt for a Claude Project "setter copilot". |
 
 ## Hard rules
 
@@ -23,7 +24,7 @@ Two standalone, self-contained HTML pages. That is the whole repo.
   wrong.
 - **No tracking, no analytics, no third-party scripts.** `vision-k7x9q2.html`
   is deliberately `noindex,nofollow`.
-- **Mobile first.** Both pages are designed to be used on a phone. Check any
+- **Mobile first.** Every page is designed to be used on a phone. Check any
   layout change at a narrow width before a wide one.
 - **Do not "fix" the 2027 numbers.** The dates, the EUR 214,000, the 61
   assessments, the 1,100 copies, the testimonials and the follower count in
@@ -38,7 +39,7 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
 - Irish, spoken, plain. "the fella ranking first", "grand", "aye", "on the
   tools", "before the dinner".
 - Short sentences. Comma splices are fine and used on purpose.
-- **No em dashes.** There are none in either file. Do not introduce any.
+- **No em dashes.** There are none in any page. Do not introduce any.
 - Numbers do the persuading, not adjectives. Every claim carries a figure.
 - Never inflate. The book itself argues for the honesty cap and the mean
   0.1 multiplier. Copy that goes the other way is off-voice.
@@ -85,6 +86,25 @@ Jack's copy has a specific voice and it is easy to wreck. Match it:
 - Dark theme, colours are the `:root` custom properties. `--amber` is the
   accent, `--red` is the trailer button only.
 
+### `setter-playbook.html`
+
+- **Tabs are the URL hash.** `TABS` lists the ids; each tab is a
+  `<section class="panel" data-panel="x">` plus a chip in `.tabrow`. Adding a
+  tab needs all three. The `[hidden]` rule at the top of the CSS is what hides
+  the inactive tabs when the file is opened directly, keep it.
+- **Scripts** are `.script` blocks: a `p.bubble.out.copytext` and a
+  `button.copy`. `[brackets]` get highlighted on load and are copied as typed.
+- **The calculator** reads the weekly `c-*` inputs and writes `r-pay`,
+  `r-hour`, `r-line` and the `#bars` funnel per month (4.33 weeks).
+- **Facts about Conor** come from his public pages on 19 Nov 2026, and the
+  EUR 1,200 price comes from Jack. They appear twice, in the Conor tab and in
+  the copilot prompt (`pre#prompt`). Change both together. Unknowns
+  (programme length, payment terms, locations) are listed under "Still to find
+  out", so update that list when Jack learns them.
+- **The pipeline tracker** is a separate Sheets artifact, linked from the Start
+  tab: https://claude.ai/artifact/9xu1UzsFXacCRM6DhnJTJE. Its reply rate is
+  replies divided by openers, same as the playbook.
+
 ## Previewing on a phone
 
 The pages are full HTML documents, so they cannot be published as an Artifact
@@ -107,6 +127,7 @@ script and publish the same file path to update the same link:
 | --- | --- |
 | `movienight.html` | https://claude.ai/code/artifact/a4460892-791b-4885-86f1-6658ebb4c674 |
 | `vision-k7x9q2.html` | https://claude.ai/code/artifact/1ce07a3f-9675-4864-8e56-e670ab18b631 |
+| `setter-playbook.html` | https://claude.ai/artifact/MBQMDJBUkotQHRR8XKvZXL (built with no banner) |
 
 From a session that did not publish them, pass the URL above as `url` or a
 second, separate artifact is created instead.
